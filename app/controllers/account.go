@@ -38,7 +38,7 @@ func (c *Account) PostRegister(user *models.MockUser) revel.Result {
 
   err = dal.RegisterUser(user) 
   if err != nil { 
-    c.Flash.Error(err.Error()) 
+    c.Flash.Error(err.Error())         
     return c.Redirect((*Account).Register) 
   }
 
