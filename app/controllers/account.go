@@ -2,7 +2,7 @@ package controllers
 
 import ( 
   "github.com/robfig/revel" 
-  "DaiDai/app/models" 
+  "DaiDai/app/models"  
 )
 
 type Account struct { 
@@ -13,9 +13,9 @@ func (c *Account) Register() revel.Result {
   return c.Render() 
 }
 
-// func (c *Account) PostRegister(user *models.MockUser) revel.Result { 
-//   return c.Render() 
-// }
+func (c *Account) RegisterSuccessful() revel.Result { 
+  return c.Render() 
+}
 
 func (c *Account) PostRegister(user *models.MockUser) revel.Result { 
   c.Validation.Email(user.Email).Message("电子邮件格式无效") 
@@ -24,6 +24,7 @@ func (c *Account) PostRegister(user *models.MockUser) revel.Result {
   c.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
 
   if c.Validation.HasErrors() { 
+    c.Validation.Keep()
     c.FlashParams() 
     return c.Redirect((*Account).Register) 
   }
@@ -42,8 +43,4 @@ func (c *Account) PostRegister(user *models.MockUser) revel.Result {
   }
 
   return c.Redirect((*Account).RegisterSuccessful) 
-}
-
-func (c *Account) RegisterSuccessful() revel.Result { 
-  return c.Render() 
 }

@@ -1,3 +1,6 @@
+{{set . "title" "注册"}}
+{{template "header.html" .}}
+
 <form action="{{url "Account.PostRegister"}}" method="POST"> 
     {{with $field := field "user.Email" .}} 
     <div class="control-group {{$field.ErrorClass}}"> 
@@ -27,10 +30,10 @@
     <div class="control-group {{$field.ErrorClass}}"> 
       <label class="control-label" for="{{$field.Id}}">密码</label> 
       <div class="controls"> 
-        <input type="password" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" required> 
+        <input type="password" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" required>       
         {{if $field.Error}} 
         <span class="help-inline">{{$field.Error}}</span> 
-        {{end}} 
+        {{end}}         
       </div> 
     </div> 
     {{end}} 
@@ -49,3 +52,5 @@
 
      <input type="submit" value="注册" />
 </form>
+
+{{template "footer.html" .}}

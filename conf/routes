@@ -10,6 +10,8 @@ GET     /register                               Account.Register
 
 POST    /register                               Account.PostRegister
 
+GET     /registersuccessful                     Account.RegisterSuccessful
+
 # Ignore favicon requests
 GET     /favicon.ico                            404
 
