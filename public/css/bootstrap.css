@@ -1504,20 +1504,6 @@ select:focus:required:invalid:focus {
   *zoom: 1;
 }
 
-.form-register {
-  padding: 19px 20px 20px;
-  margin-top: 30px;
-  margin-bottom: 20px;
-  margin-left: 30%;
-  margin-right: 30%;
-  background-color: #f5f5f5;
-  border-top: 2px solid #afafaf;
-  border-bottom: 2px solid #afafaf;
-  border-left: 2px solid #afafaf;
-  border-right: 2px solid #afafaf;
-  *zoom: 1;
-}
-
 .form-actions:before,
 .form-actions:after {
   display: table;
@@ -5717,7 +5703,7 @@ a.badge:hover {
 
 .carousel-caption {
   position: absolute;
-  right: 0;
+  right: 10;
   bottom: 0;
   left: 0;
   padding: 15px;
@@ -5785,4 +5771,42 @@ a.badge:hover {
 
 .affix {
   position: fixed;
+}
+
+/*自定义css*/
+
+.form-register {
+  padding: 19px 20px 20px;
+  margin-top: 30px;
+  margin-bottom: 20px;
+  margin-left: 30%;
+  margin-right: 30%;
+  background-color: #f5f5f5;
+  border-top: 2px solid #afafaf;
+  border-bottom: 2px solid #afafaf;
+  border-left: 2px solid #afafaf;
+  border-right: 2px solid #afafaf;
+  *zoom: 1;
+}
+
+.register-successful {
+  padding: 19px 20px 20px;
+  margin-top: 100px;
+  margin-bottom: 20px;
+  margin-left: 30%;
+  margin-right: 30%;
+  background-color: #f5f5f5;
+  border-top: 2px solid #afafaf;
+  border-bottom: 2px solid #afafaf;
+  border-left: 2px solid #afafaf;
+  border-right: 2px solid #afafaf;
+  background: rgba(0, 0, 0, 0.10);  
+  text-align: center;
+}
+
+.register-successful .info{
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  *zoom: 1;
 }
