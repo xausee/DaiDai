@@ -1,7 +1,7 @@
 {{set . "title" "注册"}}
 {{template "header.html" .}}
 
-<form action="{{url "Account.PostRegister"}}" method="POST"> 
+<form class="form-register" action="{{url "Account.PostRegister"}}" method="POST"> 
     {{with $field := field "user.Email" .}} 
     <div class="control-group {{$field.ErrorClass}}"> 
       <label class="control-label" for="{{$field.Id}}">电子邮件</label> 

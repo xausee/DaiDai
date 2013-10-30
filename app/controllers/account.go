@@ -24,7 +24,7 @@ func (c *Account) PostRegister(user *models.MockUser) revel.Result {
   c.Validation.MinSize(user.Password, 6).Message("密码长度不短于6位")
   c.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
 
-   if c.Validation.HasErrors() { 
+  if c.Validation.HasErrors() { 
     c.Validation.Keep()
     c.FlashParams() 
     return c.Redirect((*Account).Register) 
