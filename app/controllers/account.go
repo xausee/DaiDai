@@ -2,7 +2,7 @@ package controllers
 
 import ( 
   "github.com/robfig/revel" 
-  "DaiDai/app/models"  
+  "DaiDaiJia/app/models"  
 )
 
 type Account struct { 
@@ -19,11 +19,12 @@ func (c *Account) RegisterSuccessful() revel.Result {
 
 func (c *Account) PostRegister(user *models.MockUser) revel.Result { 
   c.Validation.Email(user.Email).Message("电子邮件格式无效") 
-  c.Validation.Required(user.Nickname).Message("用户昵称不能为空") 
+  c.Validation.Required(user.Nickname).Message("用户昵称不能为空")   
   c.Validation.Required(user.Password).Message("密码不能为空") 
+  c.Validation.MinSize(user.Password, 6).Message("密码长度不短于6位")
   c.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
 
-  if c.Validation.HasErrors() { 
+   if c.Validation.HasErrors() { 
     c.Validation.Keep()
     c.FlashParams() 
     return c.Redirect((*Account).Register) 
@@ -38,7 +39,7 @@ func (c *Account) PostRegister(user *models.MockUser) revel.Result {
 
   err = dal.RegisterUser(user) 
   if err != nil { 
-    c.Flash.Error(err.Error())         
+    c.Flash.Error(err.Error())           
     return c.Redirect((*Account).Register) 
   }
 

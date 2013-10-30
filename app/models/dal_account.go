@@ -23,7 +23,8 @@ func (d *Dal) RegisterUser(mu *MockUser) error {
 
   var u User 
   u.Email = mu.Email 
-  u.Nickname = mu.Nickname  
+  u.Nickname = mu.Nickname 
+  u.Sex = mu.Sex 
   u.Password, _ = bcrypt.GenerateFromPassword([]byte(mu.Password), bcrypt.DefaultCost)
 
   err := uc.Insert(u)

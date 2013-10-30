@@ -48,21 +48,21 @@
         {{end}} 
       </div> 
     </div> 
-    {{end}} 
+    {{end}}
 
-    <div class="control-group">
+     <div class="control-group">
       <label class="control-label">性别</label>
       <div class="controls">
         <label class="radio inline">
-          <input type="radio" name="user.Sex" value="true" checked> 男
+          <input type="radio" name="user.Sex" value="male" checked> 男
         </label>
         <label class="radio inline">
-          <input type="radio" name="user.Sex" value="false"> 女
+          <input type="radio" name="user.Sex" value="female"> 女
         </label>
       </div>
     </div>
-
-     <input type="submit" value="注册" />
+     
+     <button type="submit" class="btn btn-primary" id="button_Register_Form_Submit">注册</button>
 </form>
 
 {{template "footer.html" .}}
