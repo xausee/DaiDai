@@ -5805,7 +5805,7 @@ a.badge:hover {
 }
 
 .form-register .signupbutton{  
-  margin-right: 30%; 
+  margin-right: auto; 
   float: right; 
   *zoom: 1;
 }
