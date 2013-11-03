@@ -5785,7 +5785,28 @@ a.badge:hover {
   border-top: 2px solid #afafaf;
   border-bottom: 2px solid #afafaf;
   border-left: 2px solid #afafaf;
-  border-right: 2px solid #afafaf;
+  border-right: 2px solid #afafaf;  
+  *zoom: 1;
+}
+
+.form-register .control-label{  
+  text-align: center;
+  font-size: 16px;
+  margin-left: 10%;
+  float: left;
+  *zoom: 1;
+}
+
+.form-register .controls{  
+  text-align: left; 
+  margin-left: 30%;
+  margin-right: 30%;
+  *zoom: 1;
+}
+
+.form-register .signupbutton{  
+  margin-right: 30%; 
+  float: right; 
   *zoom: 1;
 }
 
