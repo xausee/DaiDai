@@ -5831,3 +5831,17 @@ a.badge:hover {
   margin-left: auto;
   *zoom: 1;
 }
+
+.footer{
+  text-align: center;
+  margin-right: auto;
+  margin-left: auto;
+  margin-top: auto;   
+}
+
+.footer .copyright{
+  text-align: center;
+  position:fixed;
+  bottom:10px;
+  right:10px; 
+}
