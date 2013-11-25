@@ -1,12 +1,14 @@
 {{set . "title" "注册"}}
 {{template "header.html" .}}
 
-<form class="form-register" action="{{url "Account.PostRegister"}}" method="POST"> 
+<div class="container">
+
+<form class="form-horizontal" role="form" action="{{url "Account.PostRegister"}}" method="POST"> 
     {{with $field := field "user.Email" .}} 
-    <div class="control-group {{$field.ErrorClass}}"> 
-      <label class="control-label" for="{{$field.Id}}">电子邮件</label> 
-      <div class="controls"> 
-        <input type="email" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="电子邮件" required> 
+    <div class="form-group {{$field.ErrorClass}}"> 
+      <label class="col-sm-2 control-label" for="{{$field.Id}}">电子邮件</label> 
+      <div class="col-sm-10"> 
+        <input type="email" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="电子邮件" required> 
         {{if $field.Error}} 
         <span class="help-inline">{{$field.Error}}</span> 
         {{end}} 
@@ -15,10 +17,10 @@
     {{end}} 
     
     {{with $field := field "user.Nickname" .}} 
-    <div class="control-group {{$field.ErrorClass}}"> 
-      <label class="control-label" for="{{$field.Id}}">昵称</label> 
-      <div class="controls"> 
-        <input type="text" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="昵称" required> 
+    <div class="form-group {{$field.ErrorClass}}"> 
+      <label class="col-sm-2 control-label" for="{{$field.Id}}">昵称</label> 
+      <div class="col-sm-10"> 
+        <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="昵称" required> 
         {{if $field.Error}} 
         <span class="help-inline">{{$field.Error}}</span> 
         {{end}} 
@@ -27,10 +29,10 @@
     {{end}} 
 
     {{with $field := field "user.Password" .}} 
-    <div class="control-group {{$field.ErrorClass}}"> 
-      <label class="control-label" for="{{$field.Id}}">密码</label> 
-      <div class="controls"> 
-        <input type="password" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="密码" required>       
+    <div class="form-group {{$field.ErrorClass}}"> 
+      <label class="col-sm-2 control-label" for="{{$field.Id}}">密码</label> 
+      <div class="col-sm-10"> 
+        <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="密码" required>       
         {{if $field.Error}} 
         <span class="help-inline">{{$field.Error}}</span> 
         {{end}}         
@@ -39,10 +41,10 @@
     {{end}} 
 
      {{with $field := field "user.ConfirmPassword" .}} 
-    <div class="control-group {{$field.ErrorClass}}"> 
-      <label class="control-label" for="{{$field.Id}}">重复密码</label> 
-      <div class="controls"> 
-        <input type="password" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码" required> 
+    <div class="form-group {{$field.ErrorClass}}"> 
+      <label class="col-sm-2 control-label" for="{{$field.Id}}">重复密码</label> 
+      <div class="col-sm-10"> 
+        <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码" required> 
         {{if $field.Error}} 
         <span class="help-inline">{{$field.Error}}</span> 
         {{end}} 
@@ -50,21 +52,22 @@
     </div> 
     {{end}}
 
-     <div class="control-group">
-      <label class="control-label">性别</label>
-      <div class="controls">
+     <div class="form-group">
+      <label class="col-sm-2 control-label">性别</label>
+      <div class="radio">
         <label class="radio inline">
           <input type="radio" name="user.Gender" value="male" checked> 男
         </label>
         <label class="radio inline">
           <input type="radio" name="user.Gender" value="female"> 女
-        </label>   
-        <label class="signupbutton">
-          <button type="submit" class="btn btn-primary" id="button_Register_Form_Submit">注册</button>
-        </label>     
-      </div>      
+        </label>
+      </div>  
+      <div class="col-sm-offset-2 col-sm-10">
+         <button type="submit" class="btn btn-primary" id="button_Register_Form_Submit">注册</button>
+      </div>     
     </div>     
      
 </form>
+</div> 
 
 {{template "footer.html" .}}
