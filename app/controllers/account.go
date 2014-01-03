@@ -2,7 +2,7 @@ package controllers
 
 import ( 
   "github.com/robfig/revel" 
-  "DaiDaiJia/app/models"  
+  "ZhaiLuBaiKe/app/models"  
 )
 
 type Account struct { 
@@ -44,4 +44,35 @@ func (c *Account) PostRegister(user *models.MockUser) revel.Result {
   }
 
   return c.Redirect((*Account).RegisterSuccessful) 
+}
+
+func (c *Account) Login() revel.Result { 
+  return c.Render() 
+}
+
+func (c *Account) PostLogin(user *models.MockUser) revel.Result {  
+  c.Validation.Email(user.Email).Message("电子邮件格式无效")     
+  c.Validation.Required(user.Password).Message("请输入密码")
+  c.Validation.Required(user.ConfirmPassword == user.Password).Message("密码不对")
+
+  if c.Validation.HasErrors() { 
+    c.Validation.Keep()
+    c.FlashParams() 
+    return c.Redirect((*Account).Login) 
+  }
+
+  dal, err := models.NewDal() 
+  if err != nil { 
+    c.Response.Status = 500 
+    return c.RenderError(err) 
+  } 
+  defer dal.Close()
+
+  err = dal.LoginUser(user) 
+  if err != nil { 
+    c.Flash.Error(err.Error())           
+    return c.Redirect((*Account).Login) 
+  }
+
+  return c.Redirect((*App).Index) 
 }

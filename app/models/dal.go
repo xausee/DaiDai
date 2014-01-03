@@ -6,7 +6,7 @@ import (
 )
 
 const ( 
-  DbName                         = "DaiDaiJia" 
+  DbName                         = "ZhaiLuBaiKe" 
   UserCollection                 = "user" 
 )
 
