@@ -1,69 +1,75 @@
 package models
 
-
-import (   
-  "errors" 
-  "labix.org/v2/mgo/bson" 
-  "code.google.com/p/go.crypto/bcrypt"
+import (
+	"code.google.com/p/go.crypto/bcrypt"
+	"errors"
+	"fmt"
+	"labix.org/v2/mgo/bson"
 )
 
-func (d *Dal) RegisterUser(mu *MockUser) error { 
-  uc := d.session.DB(DbName).C(UserCollection)
+func (d *Dal) RegisterUser(mu *MockUser) error {
+	uc := d.session.DB(DbName).C(UserCollection)
 
-  //先检查email和nickname是否已经被使用 
-  i, _ := uc.Find(bson.M{"nickname": mu.Nickname}).Count() 
-  if i != 0 { 
-    return errors.New("用户昵称已经被使用")     
-  }
+	//先检查email和nickname是否已经被使用
+	i, _ := uc.Find(bson.M{"nickname": mu.Nickname}).Count()
+	if i != 0 {
+		return errors.New("用户昵称已经被使用")
+	}
 
-  i, _ = uc.Find(bson.M{"email": mu.Email}).Count() 
-  if i != 0 { 
-    return errors.New("邮件地址已经被使用")     
-  }
+	i, _ = uc.Find(bson.M{"email": mu.Email}).Count()
+	if i != 0 {
+		return errors.New("邮件地址已经被使用")
+	}
 
-  var u User 
-  u.Email = mu.Email 
-  u.Nickname = mu.Nickname 
-  u.Gender = mu.Gender 
-  u.Password, _ = bcrypt.GenerateFromPassword([]byte(mu.Password), bcrypt.DefaultCost)
+	var u User
+	u.Email = mu.Email
+	u.Nickname = mu.Nickname
+	u.Gender = mu.Gender
+	u.Password, _ = bcrypt.GenerateFromPassword([]byte(mu.Password), bcrypt.DefaultCost)
 
-  err := uc.Insert(u)
+	err := uc.Insert(u)
 
-  return err 
+	return err
 }
 
-func (d *Dal) LoginUser(mu *MockUser) error { 
-  uc := d.session.DB(DbName).C(UserCollection)
+func (d *Dal) LoginUser(mu *MockUser) error {
+	uc := d.session.DB(DbName).C(UserCollection)
 
-  //先检查email和nickname是否已经被使用 
-  i, _ := uc.Find(bson.M{"nickname": mu.Nickname}).Count() 
-  if i == 0 { 
-    return errors.New("用户不存在")     
-  }
+	//先检查email和nickname是否已经被使用
+	i, _ := uc.Find(bson.M{"nickname": mu.Nickname}).Count()
+	if i == 0 {
+		return errors.New("用户不存在")
+	}
 
-  i, _ = uc.Find(bson.M{"email": mu.Email}).Count() 
-  if i == 0 { 
-    return errors.New("邮件帐号不存在")     
-  }
+	i, _ = uc.Find(bson.M{"email": mu.Email}).Count()
+	if i == 0 {
+		return errors.New("邮件帐号不存在")
+	}
 
-  //var password []byte
-  password := uc.Find(bson.M{"password": mu.Password})
+	var user *User
+	//var password []byte
+	uc.Find(bson.M{"email": mu.Email}).One(&user)
+	fmt.Println(user.Email)
+	if mu.Email != user.Email {
+		return errors.New("邮件不正确")
+	}
 
-  if password == nil { 
-    return errors.New("获取密码错误")     
-  }
+	uc.Find(bson.M{"password": mu.Password}).One(&user)
+	fmt.Println(user.Password)
+	fmt.Println("user.Password")
 
-  var u User 
-  u.Email = mu.Email 
-  u.Nickname = mu.Nickname 
-  u.Gender = mu.Gender 
-  u.Password, _ = bcrypt.GenerateFromPassword([]byte(mu.Password), bcrypt.DefaultCost)
+	if user.Password == nil {
+		return errors.New("获取密码错误")
+	}
 
-  if u.Password != password{
-    return errors.New("密码不正确")
-  }
+	var u User
+	u.Email = mu.Email
+	u.Nickname = mu.Nickname
+	u.Gender = mu.Gender
+	u.Password, _ = bcrypt.GenerateFromPassword([]byte(mu.Password), bcrypt.DefaultCost)
 
-  //err := uc.Find(u)
-
-  return nil//err 
+	// if u.Password != user.Password {
+	// 	return errors.New("密码不正确")
+	// }
+	return nil
 }
