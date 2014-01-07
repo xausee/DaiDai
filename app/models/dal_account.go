@@ -31,26 +31,26 @@ func (manager *DbManager) RegisterUser(mu *MockUser) error {
 	return err
 }
 
-func (manager *DbManager) LoginUser(lu *LoginUser) error {
+func (manager *DbManager) LoginUser(lu *LoginUser) (user *User, err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
 	i, _ := uc.Find(bson.M{"email": lu.Email}).Count()
 	if i == 0 {
 		fmt.Println("此账号不存在")
-		return errors.New("此账号不存在")
+		err = errors.New("此账号不存在")
 	}
 
-	var user *User
+	// var user *User
 	uc.Find(bson.M{"email": lu.Email}).One(&user)
 
 	if user.Password == nil {
-		return errors.New("获取密码错误")
+		err = errors.New("获取密码错误")
 	}
 
-	err := bcrypt.CompareHashAndPassword(user.Password, []byte(lu.Password))
+	err = bcrypt.CompareHashAndPassword(user.Password, []byte(lu.Password))
 	if err != nil {
 		fmt.Println("密码不正确")
-		return errors.New("密码不正确")
+		err = errors.New("密码不正确")
 	}
-	return err
+	return
 }

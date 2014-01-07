@@ -70,16 +70,18 @@ func (c *Account) PostLogin(user *models.LoginUser) revel.Result {
 	}
 	defer manager.Close()
 
-	fmt.Println(user.Email)
-	fmt.Println(user.Password)
-
-	err = manager.LoginUser(user)
+	var u *models.User
+	u, err = manager.LoginUser(user)
 	if err != nil {
 		//c.Validation.Keep()
 		// c.FlashParams()
 		c.Flash.Error(err.Error())
 		return c.Redirect((*Account).Login)
 	}
+	c.Session["email"] = u.Email
+	c.Session["nickName"] = u.Nickname
+	fmt.Println("Login successful with email: ", user.Email)
+	fmt.Println("Nickname is: ", u.Nickname)
 
 	return c.Redirect((*App).Index)
 }
