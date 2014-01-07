@@ -1,78 +1,85 @@
 package controllers
 
-import ( 
-  "github.com/robfig/revel" 
-  "ZhaiLuBaiKe/app/models"  
+import (
+	"ZhaiLuBaiKe/app/models"
+	"fmt"
+	"github.com/robfig/revel"
 )
 
-type Account struct { 
-  *revel.Controller 
+type Account struct {
+	*revel.Controller
 }
 
-func (c *Account) Register() revel.Result { 
-  return c.Render() 
+func (c *Account) Register() revel.Result {
+	return c.Render()
 }
 
-func (c *Account) RegisterSuccessful() revel.Result { 
-  return c.Render() 
+func (c *Account) RegisterSuccessful() revel.Result {
+	return c.Render()
 }
 
-func (c *Account) PostRegister(user *models.MockUser) revel.Result { 
-  c.Validation.Email(user.Email).Message("电子邮件格式无效") 
-  c.Validation.Required(user.Nickname).Message("用户昵称不能为空")   
-  c.Validation.Required(user.Password).Message("密码不能为空") 
-  c.Validation.MinSize(user.Password, 6).Message("密码长度不短于6位")
-  c.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
-
-  if c.Validation.HasErrors() { 
-    c.Validation.Keep()
-    c.FlashParams() 
-    return c.Redirect((*Account).Register) 
-  }
-
-  dal, err := models.NewDal() 
-  if err != nil { 
-    c.Response.Status = 500 
-    return c.RenderError(err) 
-  } 
-  defer dal.Close()
-
-  err = dal.RegisterUser(user) 
-  if err != nil { 
-    c.Flash.Error(err.Error())           
-    return c.Redirect((*Account).Register) 
-  }
-
-  return c.Redirect((*Account).RegisterSuccessful) 
+func (c *Account) Login() revel.Result {
+	return c.Render()
 }
 
-func (c *Account) Login() revel.Result { 
-  return c.Render() 
+func (c *Account) PostRegister(user *models.MockUser) revel.Result {
+	c.Validation.Email(user.Email).Message("电子邮件格式无效")
+	c.Validation.Required(user.Nickname).Message("用户昵称不能为空")
+	c.Validation.Required(user.Password).Message("密码不能为空")
+	c.Validation.MinSize(user.Password, 6).Message("密码长度不短于6位")
+	c.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
+
+	if c.Validation.HasErrors() {
+		c.Validation.Keep()
+		c.FlashParams()
+		return c.Redirect((*Account).Register)
+	}
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		c.Response.Status = 500
+		return c.RenderError(err)
+	}
+	defer manager.Close()
+
+	err = manager.RegisterUser(user)
+	if err != nil {
+		// c.Validation.Keep()
+		// c.FlashParams()
+		c.Flash.Error(err.Error())
+		return c.Redirect((*Account).Register)
+	}
+
+	return c.Redirect((*Account).RegisterSuccessful)
 }
 
-func (c *Account) PostLogin(user *models.MockUser) revel.Result {  
-  c.Validation.Email(user.Email).Message("电子邮件格式无效")     
-  c.Validation.Required(user.Password).Message("请输入密码")
-  c.Validation.Required(user.ConfirmPassword == user.Password).Message("密码不对")
+func (c *Account) PostLogin(user *models.LoginUser) revel.Result {
+	c.Validation.Email(user.Email).Message("电子邮件格式无效")
+	c.Validation.Required(user.Password).Message("请输入密码")
 
-  if c.Validation.HasErrors() { 
-    c.Validation.Keep()
-    c.FlashParams() 
-    return c.Redirect((*Account).Login) 
-  }
+	if c.Validation.HasErrors() {
+		c.Validation.Keep()
+		c.FlashParams()
+		return c.Redirect((*Account).Login)
+	}
 
-  dal, err := models.NewDal() 
-  if err != nil { 
-    c.Response.Status = 500 
-    return c.RenderError(err) 
-  } 
-  defer dal.Close()
+	manager, err := models.NewDbManager()
+	if err != nil {
+		c.Response.Status = 500
+		return c.RenderError(err)
+	}
+	defer manager.Close()
 
-  err = dal.LoginUser(user) 
-  if err != nil { 
-    c.Flash.Error(err.Error())           
-    return c.Redirect((*Account).Login) 
-  }
+	fmt.Println(user.Email)
+	fmt.Println(user.Password)
 
-  return c.Redirect((*App).Index) 
+	err = manager.LoginUser(user)
+	if err != nil {
+		//c.Validation.Keep()
+		// c.FlashParams()
+		c.Flash.Error(err.Error())
+		return c.Redirect((*Account).Login)
+	}
+
+	return c.Redirect((*App).Index)
 }

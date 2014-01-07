@@ -3,17 +3,11 @@
 # ~~~~
 
 module:testrunner
-
 GET     /                                       App.Index
-
 GET     /register                               Account.Register
-
 POST    /register                               Account.PostRegister
-
 GET     /registersuccessful                     Account.RegisterSuccessful
-
 GET     /login                                  Account.Login
-
 POST    /login                                  Account.PostLogin
 
 # Ignore favicon requests
