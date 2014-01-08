@@ -3,7 +3,6 @@
 <html>
   <head>
     <title>{{.title}}</title>
-
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <!-- <link rel="stylesheet" type="text/css" href="/public/css/bootstrap.css"> -->    
     <!-- Bootstrap -->
@@ -18,33 +17,43 @@
     {{end}}
   </head>
 
-<div class="container"> 
-  <div class="row">
-    <div class="col-xs-3"></div>
-    <div class="col-xs-6">
-      <div class="page-header text-center text-muted">
-         <strong>做一个有态度的摘录人</strong>         
-      </div>
-    </div> 
-    <div class="row">
-      <div class="hero-text">  
-      <br><br>      
-        {{if .nickName}}
-          您好， {{.nickName}} <a href="/logout">退出</a>
-        {{else}}
-          <a href="/login">登陆</a>
-          <a href="/register">注册</a>
-        {{end}}             
-      </div>
-    </div>    
-  </div>   
-
   <div class="container"> 
+    <div class="row">
+      <div class="col-xs-5"></div>
+      <div class="col-xs-2">
+        <div class="page-header text-center text-muted">
+           <strong>做一个有态度的摘录人</strong>         
+        </div>
+      </div>  
+      <div class="col-xs-4">  
+        <br> 
+        <ul class="nav navbar-nav navbar-right">
+        {{if .nickName}}     
+          <li><a>您好，{{.nickName}}</a></li>        
+          <li><a href="/logout">退出</a></li>             
+          <li class="dropdown">
+            <a href="#" class="dropdown-toggle" data-toggle="dropdown">我的百科<b class="caret"></b></a>
+            <ul class="dropdown-menu">
+              <li><a href="#">主页</a></li> 
+              <li><a href="#">个人信息</a></li>              
+              <li class="divider"></li>
+              <li><a href="#">私信</a></li> 
+              <li><a href="#">朋友圈</a></li>
+            </ul>
+          </li>
+        {{else}}
+          <li><a href="/login">登陆</a></li>
+          <li><a href="/register">注册</a></li>
+          {{end}}
+        </ul>  
+      </div>    
+    </div>   
+  
     <div class="row">
       <div class="col-xs-1"></div>
       <div class="col-xs-10">
         <nav class="navbar navbar-inverse" role="navigation">
-          <!-- Brand and toggle get grouped for better mobile display -->
+            <!-- Brand and toggle get grouped for better mobile display -->
           <div class="navbar-header">
             <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
               <span class="sr-only">Toggle navigation</span>
@@ -54,9 +63,9 @@
             </button>
             <a class="navbar-brand" href="#">首页</a>
           </div>
-
+  
           <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav">              
+           <ul class="nav navbar-nav">              
               <li class="dropdown">
                 <a href="#" class="dropdown-toggle" data-toggle="dropdown">名人语录 <b class="caret"></b></a>
                 <ul class="dropdown-menu">
@@ -65,7 +74,7 @@
                   <li class="divider"></li>
                   <li><a href="#">尼采</a></li>
                   <li><a href="#">牛顿</a></li>
-                  <li><a href="#">爱因斯坦</a></li>                
+                   <li><a href="#">爱因斯坦</a></li>                
                 </ul>
               </li>                      
               <li class="dropdown">
@@ -99,7 +108,6 @@
               <li><a href="#">关于我们</a></li>
               <li class="active"><a href="#">捐赠</a></li>
             </ul> 
-
             <form class="navbar-form navbar-right" role="search">
               <div class="form-group">
                 <input type="text" class="form-control" placeholder="关键字">
@@ -109,8 +117,7 @@
           </div>
         </nav>    
       </div>
-    </div>
+    </div> 
   </div> 
-</div> 
 
   <body>
