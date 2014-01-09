@@ -22,6 +22,10 @@ func (c *Account) Login() revel.Result {
 	return c.Render()
 }
 
+func (c *Account) Logout() revel.Result {
+	return c.Render()
+}
+
 func (c *Account) PostRegister(user *models.MockUser) revel.Result {
 	c.Validation.Email(user.Email).Message("电子邮件格式无效")
 	c.Validation.Required(user.Nickname).Message("用户昵称不能为空")
@@ -83,5 +87,12 @@ func (c *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 	fmt.Println("Login successful with email: ", loginUser.Email)
 	fmt.Println("Nickname is: ", u.Nickname)
 
+	return c.Redirect((*App).Index)
+}
+
+func (c *Account) PostLogout() revel.Result {
+	delete(c.Session, "email")
+	delete(c.Session, "nickName")
+	fmt.Println("Logout successful with email: ", c.Session["email"])
 	return c.Redirect((*App).Index)
 }
