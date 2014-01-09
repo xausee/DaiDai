@@ -53,9 +53,9 @@ func (c *Account) PostRegister(user *models.MockUser) revel.Result {
 	return c.Redirect((*Account).RegisterSuccessful)
 }
 
-func (c *Account) PostLogin(user *models.LoginUser) revel.Result {
-	c.Validation.Email(user.Email).Message("电子邮件格式无效")
-	c.Validation.Required(user.Password).Message("请输入密码")
+func (c *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
+	c.Validation.Email(loginUser.Email).Message("电子邮件格式无效")
+	c.Validation.Required(loginUser.Password).Message("请输入密码")
 
 	if c.Validation.HasErrors() {
 		c.Validation.Keep()
@@ -71,7 +71,7 @@ func (c *Account) PostLogin(user *models.LoginUser) revel.Result {
 	defer manager.Close()
 
 	var u *models.User
-	u, err = manager.LoginUser(user)
+	u, err = manager.LoginUser(loginUser)
 	if err != nil {
 		//c.Validation.Keep()
 		// c.FlashParams()
@@ -80,7 +80,7 @@ func (c *Account) PostLogin(user *models.LoginUser) revel.Result {
 	}
 	c.Session["email"] = u.Email
 	c.Session["nickName"] = u.Nickname
-	fmt.Println("Login successful with email: ", user.Email)
+	fmt.Println("Login successful with email: ", loginUser.Email)
 	fmt.Println("Nickname is: ", u.Nickname)
 
 	return c.Redirect((*App).Index)

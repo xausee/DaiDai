@@ -5,7 +5,7 @@
   <div class="col-md-4"></div>
   <div class="col-md-4">
     <form class="form-horizontal" role="form" action="{{url "Account.PostLogin"}}" method="POST">     
-      {{with $field := field "user.Email" .}} 
+      {{with $field := field "loginUser.Email" .}} 
       <div class="form-group {{$field.ErrorClass}}"> 
         <label class="col-sm-2 control-label" for="{{$field.Id}}">电子邮件</label> 
         <div class="col-sm-10"> 
@@ -17,7 +17,7 @@
       </div> 
       {{end}} 
 
-      {{with $field := field "user.Password" .}} 
+      {{with $field := field "loginUser.Password" .}} 
       <div class="form-group {{$field.ErrorClass}}"> 
         <label class="col-sm-2 control-label" for="{{$field.Id}}">密码</label> 
         <div class="col-sm-10"> 
