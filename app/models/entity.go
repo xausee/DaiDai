@@ -20,3 +20,9 @@ type LoginUser struct {
 	Nickname string
 	Password string
 }
+
+type Quotation struct {
+	Content  string
+	Original string
+	Author   string
+}

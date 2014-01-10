@@ -1,0 +1,47 @@
+{{set . "title" "新增摘录"}}
+{{template "header.html" .}}
+
+<div class="container"> 
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <form role="form" action="{{url "Quotation.PostAdd"}}" method="POST">    
+      
+      {{with $field := field "quotation.Content" .}} 
+      <div class="form-group {{$field.ErrorClass}}"> 
+        <label for="{{$field.Id}}">内容</label>         
+          <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5"></textarea> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}}         
+      </div> 
+      {{end}} 
+
+      {{with $field := field "quotation.Original" .}} 
+      <div class="form-group {{$field.ErrorClass}}"> 
+        <label for="{{$field.Id}}">原文</label>         
+          <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="8"></textarea> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}}         
+      </div> 
+      {{end}}    
+
+      {{with $field := field "quotation.Author" .}} 
+      <div class="form-group {{$field.ErrorClass}}"> 
+        <label for="{{$field.Id}}">作者</label>          
+          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入作者" required> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}}        
+      </div> 
+      {{end}} 
+
+      <div class="form-group">                  
+        <button type="submit" class="btn btn-primary" id="button_Login_Form_Submit">提交</button> 
+      </div>          
+    </form>    
+  </div>
+  <div class="col-md-4"></div>
+</div> 
+
+{{template "footer.html" .}}

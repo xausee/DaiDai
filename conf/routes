@@ -10,6 +10,8 @@ GET     /registersuccessful                     Account.RegisterSuccessful
 GET     /login                                  Account.Login
 POST    /login                                  Account.PostLogin
 GET     /logout                                 Account.Logout
+GET     /add                                    Quotation.Add
+POST    /add                                    Quotation.PostAdd
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

@@ -6,8 +6,9 @@ import (
 )
 
 const (
-	DbName         = "ZhaiLuBaiKe"
-	UserCollection = "user"
+	DbName              = "ZhaiLuBaiKe"
+	UserCollection      = "user"
+	QuotationCollection = "quotation"
 )
 
 type DbManager struct {
