@@ -23,7 +23,11 @@ func (c *Account) Login() revel.Result {
 }
 
 func (c *Account) Logout() revel.Result {
-	return c.Render()
+	fmt.Println("Logout successful with email: ", c.Session["email"])
+	fmt.Println("Nickname is: ", c.Session["nickName"])
+	delete(c.Session, "email")
+	delete(c.Session, "nickName")
+	return c.Redirect((*App).Index)
 }
 
 func (c *Account) PostRegister(user *models.MockUser) revel.Result {
@@ -87,12 +91,5 @@ func (c *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 	fmt.Println("Login successful with email: ", loginUser.Email)
 	fmt.Println("Nickname is: ", u.Nickname)
 
-	return c.Redirect((*App).Index)
-}
-
-func (c *Account) PostLogout() revel.Result {
-	delete(c.Session, "email")
-	delete(c.Session, "nickName")
-	fmt.Println("Logout successful with email: ", c.Session["email"])
 	return c.Redirect((*App).Index)
 }
