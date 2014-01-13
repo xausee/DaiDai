@@ -5,41 +5,56 @@
   <div class="col-md-1"></div>
   <div class="col-md-10">
     <form role="form" action="{{url "Quotation.PostAdd"}}" method="POST">    
+            
+      <div class="input-group">
+      <span class="input-group-addon">标签</span>     
+      <select class="form-control input-sm" name="quotation.Tag">
+        <option>名人语录</option>
+        <option>古代经典</option>
+        <option>现代经典</option>
+        <option>名家访谈</option>        
+      </select>
+      </div> 
+      <br>
       
       {{with $field := field "quotation.Content" .}} 
-      <div class="form-group {{$field.ErrorClass}}"> 
-        <label for="{{$field.Id}}">内容</label>         
-          <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5"></textarea> 
-          {{if $field.Error}} 
+      <div class="input-group {{$field.ErrorClass}}">         
+        <span class="input-group-addon">内容</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5"></textarea> 
+        {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
-          {{end}}         
+        {{end}}         
       </div> 
       {{end}} 
+      <br>
 
       {{with $field := field "quotation.Original" .}} 
-      <div class="form-group {{$field.ErrorClass}}"> 
-        <label for="{{$field.Id}}">原文</label>         
-          <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="8"></textarea> 
-          {{if $field.Error}} 
+      <div class="input-group {{$field.ErrorClass}}">            
+        <span class="input-group-addon">原文</span>    
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="8"></textarea> 
+        {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
-          {{end}}         
+        {{end}}         
       </div> 
-      {{end}}    
+      {{end}}  
+      <br>  
 
       {{with $field := field "quotation.Author" .}} 
-      <div class="form-group {{$field.ErrorClass}}"> 
-        <label for="{{$field.Id}}">作者</label>          
+      <div class="input-group {{$field.ErrorClass}}">            
+          <span class="input-group-addon">作者</span>    
           <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入作者" required> 
           {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
           {{end}}        
       </div> 
       {{end}} 
+      <br>
 
-      <div class="form-group">                  
+      <div class="input-group">                  
         <button type="submit" class="btn btn-primary" id="button_Login_Form_Submit">提交</button> 
-      </div>          
-    </form>    
+      </div>  
+      <br>        
+    </form> 
   </div>
   <div class="col-md-4"></div>
 </div> 

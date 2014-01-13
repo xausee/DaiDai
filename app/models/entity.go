@@ -22,6 +22,7 @@ type LoginUser struct {
 }
 
 type Quotation struct {
+	Tag      string
 	Content  string
 	Original string
 	Author   string

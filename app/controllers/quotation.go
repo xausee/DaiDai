@@ -17,12 +17,14 @@ func (q *Quotation) Add() revel.Result {
 }
 
 func (q *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
+	q.Validation.Required(quotation.Tag).Message("请选择一个标签")
 	q.Validation.Required(quotation.Content).Message("摘录内容不能为空")
-	//q.Validation.Required(quotation.Original).Message("原文不能为空")
 	q.Validation.Required(quotation.Author).Message("作者不能为空")
 
-	fmt.Println(quotation.Content)
-	fmt.Println(quotation.Author)
+	fmt.Println("摘录标签： ", quotation.Tag)
+	fmt.Println("摘录被容： ", quotation.Content)
+	fmt.Println("原文： ", quotation.Original)
+	fmt.Println("作者： ", quotation.Author)
 
 	if q.Validation.HasErrors() {
 		q.Validation.Keep()

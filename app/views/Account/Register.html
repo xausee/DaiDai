@@ -8,7 +8,7 @@
     
       {{with $field := field "user.Email" .}} 
       <div class="form-group {{$field.ErrorClass}}"> 
-        <label class="col-sm-2 control-label" for="{{$field.Id}}">电子邮件</label> 
+        <label class="col-sm-2 control-label" for="{{$field.Id}}">电子邮件</label>            
         <div class="col-sm-10"> 
           <input type="email" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="电子邮件" required> 
           {{if $field.Error}} 
