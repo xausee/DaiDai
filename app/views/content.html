@@ -2,7 +2,7 @@
 
   <div class="row">
     <div class="col-xs-1"></div>
-    <div class="col-xs-5">
+    <div class="col-xs-10">
       <div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
         <!-- Indicators -->
         <ol class="carousel-indicators">
@@ -15,7 +15,7 @@
         <!-- Wrapper for slides -->
         <div class="carousel-inner">
           <div class="item active">
-            <img src="/public/img/background0.png" alt="300x200">
+            <img src="/public/img/bk0.jpg" alt="300x200">
              <div class="carousel-caption">
                <a hrf="www.baidu.com"></a>               
                <p>做一个有态度的摘录人0</p>
@@ -23,7 +23,7 @@
           </div>
           
           <div class="item">
-            <img src="/public/img/background1.png" alt="300x200">
+            <img src="/public/img/bk1.jpg" alt="300x200">
              <div class="carousel-caption">
                <a hrf="www.baidu.com"></a>               
                <p>做一个有态度的摘录人1</p>
@@ -31,7 +31,7 @@
           </div>
 
           <div class="item">
-            <img src="/public/img/background2.png" alt="300x200">
+            <img src="/public/img/bk2.jpg" alt="300x200">
              <div class="carousel-caption">
                <a hrf="www.baidu.com"></a>              
                <p>做一个有态度的摘录人2</p>
@@ -39,7 +39,7 @@
           </div>
 
           <div class="item">
-            <img src="/public/img/background3.png" alt="300x200">
+            <img src="/public/img/bk3.jpg" alt="300x200">
              <div class="carousel-caption">
                <a hrf="www.baidu.com"></a>               
                <p>做一个有态度的摘录人3</p>
@@ -115,9 +115,12 @@
       </blockquote>
     </div>    
     <div class="col-xs-5">
-       <blockquote>
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;你该将名誉作为你最高人格的标志。</p>
-          <small class="text-right">这句话源于<a hef="adf">牛顿（英国）</a>手指在燃烧</small>
+       <blockquote>        
+        <!-- <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{.tag}}</p> -->
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{.content}}</p>
+        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{.original}}</p>
+        <!-- <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{{.author}}</p> -->
+          <small class="text-right">这句话源于<a hef="adf">{{.author}}</a>手指在燃烧</small>
         </blockquote>
     </div> 
   </div>  
