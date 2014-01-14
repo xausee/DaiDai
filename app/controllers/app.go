@@ -19,9 +19,13 @@ func (c App) Index() revel.Result {
 	}
 	defer manager.Close()
 	qs, err := manager.GetAllQuotation()
-	c.RenderArgs["tag"] = qs[3].Tag
-	c.RenderArgs["content"] = qs[3].Content
-	c.RenderArgs["original"] = qs[3].Original
-	c.RenderArgs["author"] = qs[3].Author
+	count := len(qs)
+	fmt.Println("总共存在", count, "条数据")
+	if count > 4 {
+		c.RenderArgs["quotations1"] = qs[count-4]
+		c.RenderArgs["quotations2"] = qs[count-3]
+		c.RenderArgs["quotations3"] = qs[count-2]
+		c.RenderArgs["quotations4"] = qs[count-1]
+	}
 	return c.Render(email, nickName)
 }
