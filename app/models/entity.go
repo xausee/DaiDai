@@ -22,43 +22,16 @@ type LoginUser struct {
 }
 
 type Quotation struct {
-	Title    string
-	Tag      string
-	Content  string
-	Original string
-	Author   string
+	Tag           string
+	Content       string
+	Original      string
+	OriginalTitle string
+	Author        string
 }
 
 type AncientPoetry struct {
 	Title   string
-	Tag     string
-	Content string
-	Author  string
-}
-
-type YueFu struct {
-	Title   string
-	Tag     string
-	Content string
-	Author  string
-}
-
-type TangPoems struct {
-	Title   string
-	Tag     string
-	Content string
-	Author  string
-}
-
-type SongPoems struct {
-	Title   string
-	Tag     string
-	Content string
-	Author  string
-}
-
-type YuanVerse struct {
-	Title   string
+	Style   string
 	Tag     string
 	Content string
 	Author  string

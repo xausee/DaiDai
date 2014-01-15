@@ -40,7 +40,6 @@ func (manager *DbManager) LoginUser(lu *LoginUser) (user *User, err error) {
 		err = errors.New("此账号不存在")
 	}
 
-	// var user *User
 	uc.Find(bson.M{"email": lu.Email}).One(&user)
 
 	if user.Password == nil {

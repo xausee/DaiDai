@@ -11,6 +11,7 @@ const (
 	QuotationCollection     = "quotation"
 	AncientPoetryCollection = "ancientPoetry"
 	ModernPoetryCollection  = "modernPoetry"
+	EssayCollection         = "essay"
 )
 
 type DbManager struct {

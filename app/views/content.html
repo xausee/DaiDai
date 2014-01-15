@@ -17,32 +17,32 @@
           <div class="item active">
             <img src="/public/img/bk0.jpg" alt="300x200">
               <div class="carousel-caption">
-                <a hrf="www.baidu.com"></a> 
-                <p>{{.quotations1.Content}}</p>
+                <a href="www.baidu.com"></a> 
+                <p>{{.witticism1.Content}}</p>
               </div>
           </div>
           
           <div class="item">
             <img src="/public/img/bk1.jpg" alt="300x200">
              <div class="carousel-caption">
-               <a hrf="www.baidu.com"></a>               
-               <p>{{.quotations2.Content}}</p>
+               <a href="www.baidu.com"></a>               
+               <p>{{.witticism2.Content}}</p>
             </div>
           </div>
 
           <div class="item">
             <img src="/public/img/bk2.jpg" alt="300x200">
              <div class="carousel-caption">
-               <a hrf="www.baidu.com"></a>              
-               <p>{{.quotations3.Content}}</p>
+               <a href="www.baidu.com"></a>              
+               <p>{{.witticism3.Content}}</p>
             </div>
           </div>
 
           <div class="item">
             <img src="/public/img/bk3.jpg" alt="300x200">
              <div class="carousel-caption">
-               <a hrf="www.baidu.com"></a>               
-               <p>{{.quotations4.Content}}</p>
+               <a href="www.baidu.com"></a>               
+               <p>{{.witticism4.Content}}</p>
             </div>
           </div>
         </div>
@@ -62,7 +62,7 @@
   <div class="row">
   	<div class="col-xs-1"></div>    
     <div class="col-xs-5">
-      <div class="panel panel-primary" style="height:400px">
+      <div class="panel panel-primary" style="height:420px">
         <div class="panel-heading">
           <h3 class="panel-title">古体诗歌</h3>
         </div>
@@ -76,9 +76,20 @@
     </div> 
 
     <div class="col-xs-5">
-      <div class="panel panel-primary">        
+      <div class="panel panel-primary" style="height:200px">        
         <div class="panel-heading">
           <h3 class="panel-title">名人语录</h3>
+        </div>
+        <div class="panel-body">
+          <blockquote >
+            <p>{{.quotations2.Content}}</p>
+            <small class="text-right"><a hef="adf">{{.quotations2.Author}}</a></small>
+          </blockquote>
+        </div>   
+      </div> 
+      <div class="panel panel-primary" style="height:200px">        
+        <div class="panel-heading">
+          <h3 class="panel-title">谚语</h3>
         </div>
         <div class="panel-body">
           <blockquote >
@@ -99,22 +110,22 @@
         </div>
         <div class="panel-body">
           <blockquote >
-            <p>{{.quotations3.Content}}</p>
-            <small class="text-right"><a hef="adf">{{.quotations3.Author}}</a></small>
+            <p>{{.quotations1.Content}}</p>
+            <small class="text-right"><a hef="adf">{{.quotations1.Author}}</a></small>
           </blockquote>
         </div>   
       </div>
     </div> 
 
     <div class="col-xs-5">
-      <div class="panel panel-primary">        
+      <div class="panel panel-primary" style="height:400px">        
         <div class="panel-heading">
           <h3 class="panel-title">现代诗歌</h3>
         </div>
         <div class="panel-body">
           <blockquote >
-            <p>{{.quotations4.Content}}</p>
-            <small class="text-right"><a hef="adf">{{.quotations4.Author}}</a></small>
+            <p>{{.quotations1.Content}}</p>
+            <small class="text-right"><a hef="adf">{{.quotations1.Author}}</a></small>
           </blockquote>
         </div>   
       </div> 

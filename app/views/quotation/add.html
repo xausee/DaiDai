@@ -4,34 +4,39 @@
 <div class="container"> 
   <div class="col-md-1"></div>
   <div class="col-md-10">
-    <form role="form" action="{{url "Quotation.PostAdd"}}" method="POST">    
-            
-      <div class="input-group">
-      <span class="input-group-addon">标签</span>     
-      <select class="form-control input-sm" name="quotation.Tag">
-        <option>名人语录</option>
-        <option>古代经典</option>
-        <option>现代经典</option>
-        <option>名家访谈</option>        
-      </select>
+    <form role="form" action="{{url "Quotation.PostAdd"}}" method="POST">  
+        <div class="input-group">
+        <span class="input-group-addon">标签</span>     
+        <select class="form-control input-sm" name="quotation.Tag">
+          <option>名人语录</option>
+          <option>先秦诗歌</option>
+          <option>诗经</option>
+          <option>楚辞</option>
+          <option>乐府</option>         
+          <option>南北朝民歌</option>
+          <option>唐诗</option>
+          <option>宋词</option> 
+          <option>元杂剧</option>   
+          <option>现代诗</option>              
+        </select>
       </div> 
-      <br>
-
-      {{with $field := field "quotation.Title" .}} 
+      <br>      
+      
+      {{with $field := field "quotation.Content" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
-        <span class="input-group-addon">标题</span>      
-        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1"></textarea> 
+        <span class="input-group-addon">内容</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5"></textarea> 
         {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
         {{end}}         
       </div> 
       {{end}} 
       <br>
-      
-      {{with $field := field "quotation.Content" .}} 
+
+      {{with $field := field "quotation.OriginalTitle" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
-        <span class="input-group-addon">内容</span>      
-        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5"></textarea> 
+        <span class="input-group-addon">原文标题</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1"></textarea> 
         {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
         {{end}}         
