@@ -42,30 +42,3 @@ func (manager *DbManager) GetAllWitticismQuotation() ([]Quotation, error) {
 
 	return allquotation, err
 }
-
-func (manager *DbManager) GetAllAncientPoetry() ([]AncientPoetry, error) {
-	uc := manager.session.DB(DbName).C(AncientPoetryCollection)
-
-	poems := []AncientPoetry{}
-	err := uc.Find(bson.M{"tag": "古体诗歌"}).All(&poems)
-
-	return poems, err
-}
-
-func (manager *DbManager) GetAllModernPoetry() ([]ModernPoetry, error) {
-	uc := manager.session.DB(DbName).C(ModernPoetryCollection)
-
-	poems := []ModernPoetry{}
-	err := uc.Find(bson.M{"tag": "现代诗"}).All(&poems)
-
-	return poems, err
-}
-
-func (manager *DbManager) GetAllEssay() ([]Essay, error) {
-	uc := manager.session.DB(DbName).C(EssayCollection)
-
-	allEssay := []Essay{}
-	err := uc.Find(bson.M{"tag": "散文"}).All(&allEssay)
-
-	return allEssay, err
-}

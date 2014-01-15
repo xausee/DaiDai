@@ -42,3 +42,10 @@ func (c App) Index() revel.Result {
 
 	return c.Render(email, nickName)
 }
+
+func (c App) Add() revel.Result {
+	email := c.Session["email"]
+	nickName := c.Session["nickName"]
+
+	return c.Render(email, nickName)
+}

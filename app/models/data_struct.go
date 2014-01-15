@@ -29,7 +29,7 @@ type Quotation struct {
 	Author        string
 }
 
-type AncientPoetry struct {
+type AncientPoem struct {
 	Title   string
 	Style   string
 	Tag     string
@@ -37,7 +37,7 @@ type AncientPoetry struct {
 	Author  string
 }
 
-type ModernPoetry struct {
+type ModernPoem struct {
 	Title   string
 	Tag     string
 	Content string
