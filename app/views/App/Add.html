@@ -2,10 +2,18 @@
 {{template "header.html" .}}
 
 <div class="container"> 
-  <div class="col-md-1"></div>
-  <div class="col-md-10">   
-  
-  <div class="col-md-4"></div>
+  <div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-7">  
+      <br> 
+      <ul class="nav navbar-nav navbar-right">         
+        <li><a href="/add/quotation">新增摘录</a></li>
+        <li><a href="/add/ancientpoem">新增古诗词</a></li>
+        <li><a href="/add/modernPoem">新增现代诗</a></li>
+        <li><a href="/add/essay">新增散文</a></li>
+      </ul>  
+    </div>    
+  </div> 
 </div> 
 
 {{template "footer.html" .}}
