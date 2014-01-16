@@ -45,5 +45,5 @@ func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
 		return e.Redirect((*Essay).Add)
 	}
 
-	return e.Redirect((*Account).RegisterSuccessful)
+	return e.Redirect((*App).Add)
 }

@@ -45,5 +45,5 @@ func (mp *ModernPoem) PostAdd(modernPoem *models.ModernPoem) revel.Result {
 		return mp.Redirect((*ModernPoem).Add)
 	}
 
-	return mp.Redirect((*Account).RegisterSuccessful)
+	return mp.Redirect((*App).Add)
 }

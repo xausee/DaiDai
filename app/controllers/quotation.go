@@ -47,6 +47,5 @@ func (q *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
 		return q.Redirect((*Quotation).Add)
 	}
 
-	return q.Redirect((*Account).RegisterSuccessful)
-	//return q.Redirect((*Quotation).AddSuccessful)
+	return q.Redirect((*App).Add)
 }

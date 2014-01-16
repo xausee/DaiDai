@@ -42,12 +42,9 @@ func (ap *AncientPoem) PostAdd(ancientPoem *models.AncientPoem) revel.Result {
 
 	err = manager.AddAncientPeom(ancientPoem)
 	if err != nil {
-		// q.Validation.Keep()
-		// q.FlashParams()
 		ap.Flash.Error(err.Error())
 		return ap.Redirect((*AncientPoem).Add)
 	}
 
-	return ap.Redirect((*Account).RegisterSuccessful)
-	//return q.Redirect((*Quotation).AddSuccessful)
+	return ap.Redirect((*App).Add)
 }
