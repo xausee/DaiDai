@@ -23,13 +23,9 @@ func (manager *DbManager) GetAllQuotation() ([]Quotation, error) {
 	uc := manager.session.DB(DbName).C(QuotationCollection)
 
 	count, err := uc.Count()
-	fmt.Println("所有的条目数： ", count)
+	fmt.Println("共有摘录： ", count, "条")
 	allquotation := []Quotation{}
 	err = uc.Find(nil).All(&allquotation)
-	for _, quotation := range allquotation {
-		fmt.Println(quotation)
-		fmt.Println("==================")
-	}
 
 	return allquotation, err
 }

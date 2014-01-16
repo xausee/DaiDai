@@ -11,7 +11,7 @@ func (manager *DbManager) AddEssay(e *Essay) error {
 
 	i, _ := uc.Find(bson.M{"Content": e.Content}).Count()
 	if i != 0 {
-		return errors.New("此条摘录已经存在")
+		return errors.New("此篇散文已经存在")
 	}
 
 	err := uc.Insert(e)
@@ -22,11 +22,11 @@ func (manager *DbManager) AddEssay(e *Essay) error {
 func (manager *DbManager) GetAllEssay() ([]Essay, error) {
 	uc := manager.session.DB(DbName).C(EssayCollection)
 
-	allEssay := []Essay{}
-	err := uc.Find(bson.M{"tag": "散文"}).All(&allEssay)
-
 	count, err := uc.Count()
-	fmt.Println("所有的条目数： ", count)
+	fmt.Println("共有散文 ", count, "篇")
+
+	allEssay := []Essay{}
+	err = uc.Find(nil).All(&allEssay)
 
 	return allEssay, err
 }

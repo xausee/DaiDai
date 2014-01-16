@@ -6,17 +6,17 @@
   <div class="col-md-10">
     <div class="text-muted">新增散文:</div>
     <br>
-    <form role="form" action="{{url "Quotation.PostAdd"}}" method="POST">  
+    <form role="form" action="{{url "Essay.PostAdd"}}" method="POST">  
       <div class="input-group">
         <span class="input-group-addon">标签</span>     
-        <select class="form-control input-sm" name="quotation.Tag">          
+        <select class="form-control input-sm" name="essay.Tag">          
           <option>中国散文</option>
           <option>国外散文</option>                   
         </select>
       </div> 
       <br>        
 
-      {{with $field := field "quotation.Title" .}} 
+      {{with $field := field "essay.Title" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">标题</span>      
         <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1"></textarea> 
@@ -27,7 +27,7 @@
       {{end}} 
       <br>           
       
-      {{with $field := field "quotation.Content" .}} 
+      {{with $field := field "essay.Content" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">内容</span>      
         <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="20"></textarea> 
@@ -38,7 +38,7 @@
       {{end}} 
       <br>    
 
-      {{with $field := field "quotation.Author" .}} 
+      {{with $field := field "essay.Author" .}} 
       <div class="input-group {{$field.ErrorClass}}">            
           <span class="input-group-addon">作者</span>    
           <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入作者" required> 
