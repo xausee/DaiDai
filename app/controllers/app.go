@@ -4,7 +4,6 @@ import (
 	"ZhaiLuBaiKe/app/models"
 	"fmt"
 	"github.com/robfig/revel"
-	"strings"
 )
 
 type App struct {
@@ -21,44 +20,20 @@ func (c App) Index() revel.Result {
 	}
 	defer manager.Close()
 
-	allQuotation, err := manager.GetAllQuotation()
-	aqCount := len(allQuotation)
-	fmt.Println("总共存在", aqCount, "条数据")
-	if aqCount >= 2 {
-		allQuotation[aqCount-1].Content = strings.Replace(allQuotation[aqCount-1].Content, "\r\n", "<br>", -1)
-		c.RenderArgs["quotations1"] = allQuotation[aqCount-1]
-		c.RenderArgs["quotations2"] = allQuotation[aqCount-2]
-	}
+	// 获取摘抄最新15条数据
+	c.RenderQuotations(manager)
 
 	// 获取名人语录最新4条数据
-	allWitticism, _ := manager.GetAllWitticismQuotation()
-	awCount := len(allWitticism)
-	fmt.Println("总共存在", awCount, "条名人语录")
-	if awCount >= 4 {
-		c.RenderArgs["witticism1"] = allWitticism[awCount-1]
-		c.RenderArgs["witticism2"] = allWitticism[awCount-2]
-		c.RenderArgs["witticism3"] = allWitticism[awCount-3]
-		c.RenderArgs["witticism4"] = allWitticism[awCount-4]
-	}
+	c.RenderWitticismQuotation(manager)
 
 	// 获取古诗词最新15条数据
 	c.RenderAncientPoems(manager)
 
 	// 获取现代诗最新15条数据
-	// mps, _ := manager.GetAllModernPoem()
-	// mpCount := len(mps)
-	// if mpCount >= 1 {
-	// 	c.RenderArgs["modernPoem1"] = mps[mpCount-1]
-	// }
-
 	c.RenderModernPoems(manager)
 
-	// 获取散文最新1条数据
-	es, _ := manager.GetAllEssay()
-	eCount := len(es)
-	if eCount >= 1 {
-		c.RenderArgs["essay1"] = es[eCount-1]
-	}
+	// 获取散文最新15条数据
+	c.RenderEssays(manager)
 
 	return c.Render(email, nickName)
 }
@@ -68,6 +43,30 @@ func (c App) Add() revel.Result {
 	nickName := c.Session["nickName"]
 
 	return c.Render(email, nickName)
+}
+
+func (c *App) RenderQuotations(manager *models.DbManager) error {
+	quotations, err := manager.GetAllQuotation()
+	count := len(quotations)
+	if count >= 4 {
+		c.RenderArgs["quotation1"] = quotations[count-1]
+		c.RenderArgs["quotation2"] = quotations[count-2]
+		c.RenderArgs["quotation3"] = quotations[count-3]
+		c.RenderArgs["quotation4"] = quotations[count-4]
+	}
+	return err
+}
+
+func (c *App) RenderWitticismQuotation(manager *models.DbManager) error {
+	witticisms, err := manager.GetAllQuotation()
+	count := len(witticisms)
+	if count >= 4 {
+		c.RenderArgs["witticism1"] = witticisms[count-1]
+		c.RenderArgs["witticism2"] = witticisms[count-2]
+		c.RenderArgs["witticism3"] = witticisms[count-3]
+		c.RenderArgs["witticism4"] = witticisms[count-4]
+	}
+	return err
 }
 
 func (c *App) RenderAncientPoems(manager *models.DbManager) error {
@@ -92,6 +91,19 @@ func (c *App) RenderModernPoems(manager *models.DbManager) error {
 		// c.RenderArgs["modernPoem3"] = poems[count-3]
 		// c.RenderArgs["modernPoem4"] = poems[count-4]
 		// c.RenderArgs["modernPoem5"] = poems[count-5]
+	}
+	return err
+}
+
+func (c *App) RenderEssays(manager *models.DbManager) error {
+	essays, err := manager.GetAllEssay()
+	count := len(essays)
+	if count >= 1 {
+		c.RenderArgs["essay1"] = essays[count-1]
+		// c.RenderArgs["essay2"] = essays[count-2]
+		// c.RenderArgs["essay3"] = essays[count-3]
+		// c.RenderArgs["essay4"] = essays[count-4]
+		// c.RenderArgs["essay5"] = essays[count-5]
 	}
 	return err
 }
