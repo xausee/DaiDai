@@ -25,8 +25,9 @@ func (c *Account) Login() revel.Result {
 func (c *Account) Logout() revel.Result {
 	fmt.Println("Logout successful with email: ", c.Session["email"])
 	fmt.Println("Nickname is: ", c.Session["nickName"])
-	delete(c.Session, "email")
-	delete(c.Session, "nickName")
+	for k := range c.Session {
+		delete(c.Session, k)
+	}
 	return c.Redirect((*App).Index)
 }
 
