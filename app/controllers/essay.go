@@ -56,13 +56,11 @@ func (e *Essay) Show(title string) revel.Result {
 	}
 	defer manager.Close()
 
-	essays, _ := manager.GetEssayByTitle("荷塘月色")
+	essays, _ := manager.GetEssayByTitle(title)
 	// if err != nil {
 	// 	e.Flash.Error(err.Error())
 	// 	//return e.Redirect((*Essay).Add)
 	// }
-
-	fmt.Println("作者： ", essays)
 	essay := essays[0]
 	return e.Render(essay)
 }
