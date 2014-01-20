@@ -1,0 +1,16 @@
+{{set . "title" "查看散文"}}
+{{template "header.html" .}}
+{{template "navigate_bar.html" .}}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-1"></div> 
+    <div class="col-xs-10">
+      <pre class="text-center">{{.essay.Title}}
+        <div class="text-center"><a hef="adf">{{.essay.Author}}</a></div>
+        <div class="text-left">{{.essay.Content}}</div>           
+      </pre>
+    </div> 
+  </div> 
+</div>
+{{template "footer.html" .}}

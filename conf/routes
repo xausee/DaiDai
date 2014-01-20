@@ -19,6 +19,7 @@ GET     /add/modernPoem                         ModernPoem.Add
 POST    /add/modernPoem                         ModernPoem.PostAdd
 GET     /add/essay                              Essay.Add
 POST    /add/essay                              Essay.PostAdd
+GET     /essay/show/:title                      Essay.Show
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

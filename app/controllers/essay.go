@@ -47,3 +47,22 @@ func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
 
 	return e.Redirect((*App).Add)
 }
+
+func (e *Essay) Show(title string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		e.Response.Status = 500
+		return e.RenderError(err)
+	}
+	defer manager.Close()
+
+	essays, _ := manager.GetEssayByTitle("荷塘月色")
+	// if err != nil {
+	// 	e.Flash.Error(err.Error())
+	// 	//return e.Redirect((*Essay).Add)
+	// }
+
+	fmt.Println("作者： ", essays)
+	essay := essays[0]
+	return e.Render(essay)
+}
