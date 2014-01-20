@@ -1,21 +1,22 @@
 <div class="container"> 
   {{template "carousel.html" .}}<br>
   <div class="row">
-  	<div class="col-xs-1"></div>    
-    <div class="col-xs-5">{{template "ancient_poem_panel.html" .}}</div> 
+  	<div class="col-xs-1"></div>  
     <div class="col-xs-5">{{template "modern_poem_panel.html" .}}</div> 
-  </div>
-
-  <div class="row">
-    <div class="col-xs-1"></div>    
-    <div class="col-xs-5">{{template "quotation_panel.html" .}}</div> 
-    <div class="col-xs-5">{{template "quotation_panel.html" .}}</div> 
-  </div>
-
-  <div class="row">
-    <div class="col-xs-1"></div>    
     <div class="col-xs-5">{{template "essay_panel.html" .}}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-1"></div>    
+    <div class="col-xs-5">{{template "quotation_panel.html" .}}</div> 
     <div class="col-xs-5">{{template "hint_fiction_panel.html" .}}</div>
+  </div>
+
+  <div class="row">
+    <div class="col-xs-1"></div>    
+    <div class="col-xs-5">{{template "essay_rank_panel.html" .}}</div>
+    <div class="col-xs-5">{{template "hint_fiction_rank_panel.html" .}}</div>
+    
 
     <!-- <div class="col-xs-5">
       <pre class="text-center">{{.essay1.Title}}
@@ -24,4 +25,9 @@
       </pre>
     </div>  -->
   </div>  
+
+  <div class="row">
+    <div class="col-xs-1"></div>    
+    <div class="col-xs-10">{{template "comment_rank_panel.html" .}}</div>    
+  </div>
  </div> 
