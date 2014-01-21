@@ -4,10 +4,15 @@ import (
 	"ZhaiLuBaiKe/app/models"
 	"fmt"
 	"github.com/robfig/revel"
+	"labix.org/v2/mgo/bson"
 )
 
 type Essay struct {
 	*revel.Controller
+}
+
+type BsonId struct {
+	Id bson.ObjectId
 }
 
 func (e *Essay) Add() revel.Result {
@@ -21,9 +26,9 @@ func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
 	e.Validation.Required(essay.Content).Message("摘录内容不能为空")
 	e.Validation.Required(essay.Author).Message("作者不能为空")
 
-	fmt.Println("诗歌标签： ", essay.Tag)
-	fmt.Println("诗歌标题： ", essay.Title)
-	fmt.Println("诗歌内容： ", essay.Content)
+	fmt.Println("散文标签： ", essay.Tag)
+	fmt.Println("散文标题： ", essay.Title)
+	fmt.Println("散文内容： ", essay.Content)
 	fmt.Println("作者： ", essay.Author)
 
 	if e.Validation.HasErrors() {
@@ -48,15 +53,14 @@ func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
 	return e.Redirect((*App).Add)
 }
 
-func (e *Essay) Show(title string) revel.Result {
+func (e *Essay) Show(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		e.Response.Status = 500
 		return e.RenderError(err)
 	}
 	defer manager.Close()
-
-	essays, _ := manager.GetEssayByTitle(title)
+	essays, _ := manager.GetEssayById(id)
 	// if err != nil {
 	// 	e.Flash.Error(err.Error())
 	// 	//return e.Redirect((*Essay).Add)

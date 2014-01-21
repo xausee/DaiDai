@@ -45,6 +45,7 @@ type ModernPoem struct {
 }
 
 type Essay struct {
+	Id      string
 	Title   string
 	Tag     string
 	Content string
