@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"ZhaiLuBaiKe/app/models"
+	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
 )

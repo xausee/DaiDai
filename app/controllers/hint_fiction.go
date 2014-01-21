@@ -1,7 +1,7 @@
 package controllers
 
 import (
-	"ZhaiLuBaiKe/app/models"
+	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
 )
@@ -55,7 +55,7 @@ func (hf *HintFiction) Show(id string) revel.Result {
 		return hf.RenderError(err)
 	}
 	defer manager.Close()
-	hintFiction, _ := manager.GetEssayById(id)
+	hintFiction, _ := manager.GetHintFictionById(id)
 	// if err != nil {
 	// 	hf.Flash.Error(err.Error())
 	// 	//return hf.Redirect((*Essay).Add)
