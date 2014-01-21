@@ -14,6 +14,7 @@ func (manager *DbManager) AddQuotation(q *Quotation) error {
 		return errors.New("此条摘录已经存在")
 	}
 
+	q.Id = bson.NewObjectId().Hex()
 	err := uc.Insert(q)
 
 	return err
@@ -37,4 +38,10 @@ func (manager *DbManager) GetAllWitticismQuotation() ([]Quotation, error) {
 	err := uc.Find(bson.M{"tag": "名人语录"}).All(&allquotation)
 
 	return allquotation, err
+}
+
+func (manager *DbManager) GetQuotationById(id string) (q *Quotation, err error) {
+	uc := manager.session.DB(DbName).C(QuotationCollection)
+	err = uc.Find(bson.M{"id": id}).One(&q)
+	return
 }

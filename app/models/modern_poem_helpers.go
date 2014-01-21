@@ -14,6 +14,7 @@ func (manager *DbManager) AddModernPeom(pm *ModernPoem) error {
 		return errors.New("此篇现代诗已经存在")
 	}
 
+	pm.Id = bson.NewObjectId().Hex()
 	err := uc.Insert(pm)
 
 	return err
@@ -29,4 +30,10 @@ func (manager *DbManager) GetAllModernPoem() ([]ModernPoem, error) {
 	err = uc.Find(nil).All(&poems)
 
 	return poems, err
+}
+
+func (manager *DbManager) GetModernPoemById(id string) (mp *ModernPoem, err error) {
+	uc := manager.session.DB(DbName).C(ModernPoemCollection)
+	err = uc.Find(bson.M{"id": id}).One(&mp)
+	return
 }

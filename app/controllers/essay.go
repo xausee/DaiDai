@@ -4,15 +4,10 @@ import (
 	"ZhaiLuBaiKe/app/models"
 	"fmt"
 	"github.com/robfig/revel"
-	"labix.org/v2/mgo/bson"
 )
 
 type Essay struct {
 	*revel.Controller
-}
-
-type BsonId struct {
-	Id bson.ObjectId
 }
 
 func (e *Essay) Add() revel.Result {
@@ -60,11 +55,10 @@ func (e *Essay) Show(id string) revel.Result {
 		return e.RenderError(err)
 	}
 	defer manager.Close()
-	essays, _ := manager.GetEssayById(id)
+	essay, _ := manager.GetEssayById(id)
 	// if err != nil {
 	// 	e.Flash.Error(err.Error())
 	// 	//return e.Redirect((*Essay).Add)
 	// }
-	essay := essays[0]
 	return e.Render(essay)
 }

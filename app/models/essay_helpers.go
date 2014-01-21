@@ -47,14 +47,8 @@ func (manager *DbManager) GetEssayByTitle(title string) ([]Essay, error) {
 	return allEssay, err
 }
 
-func (manager *DbManager) GetEssayById(id string) ([]Essay, error) {
+func (manager *DbManager) GetEssayById(id string) (e *Essay, err error) {
 	uc := manager.session.DB(DbName).C(EssayCollection)
-
-	count, err := uc.Count()
-	fmt.Println("共有散文 ", count, "篇")
-
-	allEssay := []Essay{}
-	err = uc.Find(bson.M{"id": id}).All(&allEssay)
-
-	return allEssay, err
+	err = uc.Find(bson.M{"id": id}).One(&e)
+	return
 }

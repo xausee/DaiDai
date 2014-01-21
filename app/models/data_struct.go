@@ -22,6 +22,7 @@ type LoginUser struct {
 }
 
 type Quotation struct {
+	Id            string
 	Tag           string
 	Content       string
 	Original      string
@@ -38,6 +39,7 @@ type AncientPoem struct {
 }
 
 type ModernPoem struct {
+	Id      string
 	Title   string
 	Tag     string
 	Content string
@@ -45,6 +47,14 @@ type ModernPoem struct {
 }
 
 type Essay struct {
+	Id      string
+	Title   string
+	Tag     string
+	Content string
+	Author  string
+}
+
+type HintFiction struct {
 	Id      string
 	Title   string
 	Tag     string

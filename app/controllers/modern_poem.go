@@ -47,3 +47,18 @@ func (mp *ModernPoem) PostAdd(modernPoem *models.ModernPoem) revel.Result {
 
 	return mp.Redirect((*App).Add)
 }
+
+func (mp *ModernPoem) Show(id string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		mp.Response.Status = 500
+		return mp.RenderError(err)
+	}
+	defer manager.Close()
+	modernPoem, _ := manager.GetModernPoemById(id)
+	// if err != nil {
+	// 	mp.Flash.Error(err.Error())
+	// 	//return mp.Redirect((*Essay).Add)
+	// }
+	return mp.Render(modernPoem)
+}

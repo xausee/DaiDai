@@ -1,0 +1,17 @@
+{{set . "title" .quotation.Author}}
+{{template "header.html" .}}
+{{template "navigate_bar.html" .}}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-1"></div> 
+    <div class="col-xs-10">
+      <pre class="text-center">{{.quotation.Author}}
+        <div class="text-center"><a hef="adf">{{.quotation.Author}}</a></div>
+        <div class="text-left">{{.quotation.Content}}</div>           
+      </pre>
+    </div>     
+  </div>   
+</div>
+
+{{template "footer.html" .}}

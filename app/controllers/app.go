@@ -35,6 +35,9 @@ func (c App) Index() revel.Result {
 	// 获取散文最新15条数据
 	c.RenderEssays(manager)
 
+	// 获取微小说最新15条数据
+	c.RenderHintFictions(manager)
+
 	return c.Render(email, nickName)
 }
 
@@ -48,11 +51,11 @@ func (c App) Add() revel.Result {
 func (c *App) RenderQuotations(manager *models.DbManager) error {
 	quotations, err := manager.GetAllQuotation()
 	count := len(quotations)
-	if count >= 4 {
+	if count >= 1 {
 		c.RenderArgs["quotation1"] = quotations[count-1]
-		c.RenderArgs["quotation2"] = quotations[count-2]
-		c.RenderArgs["quotation3"] = quotations[count-3]
-		c.RenderArgs["quotation4"] = quotations[count-4]
+		// c.RenderArgs["quotation2"] = quotations[count-2]
+		// c.RenderArgs["quotation3"] = quotations[count-3]
+		// c.RenderArgs["quotation4"] = quotations[count-4]
 	}
 	return err
 }
@@ -100,10 +103,24 @@ func (c *App) RenderEssays(manager *models.DbManager) error {
 	count := len(essays)
 	if count >= 1 {
 		c.RenderArgs["essay1"] = essays[count-1]
-		// c.RenderArgs["essay2"] = essays[count-2]
+		c.RenderArgs["essay2"] = essays[count-2]
 		// c.RenderArgs["essay3"] = essays[count-3]
 		// c.RenderArgs["essay4"] = essays[count-4]
 		// c.RenderArgs["essay5"] = essays[count-5]
+	}
+	return err
+}
+
+func (c *App) RenderHintFictions(manager *models.DbManager) error {
+	hintfictions, err := manager.GetAllHintFiction()
+	count := len(hintfictions)
+
+	if count >= 1 {
+		c.RenderArgs["hintFiction1"] = hintfictions[count-1]
+		//c.RenderArgs["hintFiction2"] = hintfictions[count-2]
+		// c.RenderArgs["hintFiction3"] = hintfictions[count-3]
+		// c.RenderArgs["hintFiction4"] = hintfictions[count-4]
+		// c.RenderArgs["hintFiction5"] = hintfictions[count-5]
 	}
 	return err
 }

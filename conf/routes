@@ -13,13 +13,19 @@ GET     /logout                                 Account.Logout
 GET     /add/                                   App.Add
 GET     /add/quotation                          Quotation.Add
 POST    /add/quotation                          Quotation.PostAdd
+GET     /quotation/show/:id                     Quotation.Show
 GET     /add/ancientpoem                        AncientPoem.Add
 POST    /add/ancientpoem                        AncientPoem.PostAdd
 GET     /add/modernPoem                         ModernPoem.Add
 POST    /add/modernPoem                         ModernPoem.PostAdd
+GET     /modernPoem/show/:id                    ModernPoem.Show
 GET     /add/essay                              Essay.Add
 POST    /add/essay                              Essay.PostAdd
 GET     /essay/show/:id                         Essay.Show
+GET     /add/hintFiction                        HintFiction.Add
+POST    /add/hintFiction                        HintFiction.PostAdd
+GET     /hintFiction/show/:id                   HintFiction.Show
+
 
 # Ignore favicon requests
 GET     /favicon.ico                            404

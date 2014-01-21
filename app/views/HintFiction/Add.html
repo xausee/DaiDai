@@ -1,0 +1,61 @@
+{{set . "title" "新增微小说"}}
+{{template "header.html" .}}
+
+<div class="container"> 
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div class="text-muted">新增微小说:</div>
+    <br>
+    <form role="form" action="{{url "HintFiction.PostAdd"}}" method="POST">  
+      <div class="input-group">
+        <span class="input-group-addon">标签</span>     
+        <select class="form-control input-sm" name="hintFiction.Tag">          
+          <option>中国微小说</option>
+          <option>国外微小说</option>                   
+        </select>
+      </div> 
+      <br>        
+
+      {{with $field := field "hintFiction.Title" .}} 
+      <div class="input-group {{$field.ErrorClass}}">         
+        <span class="input-group-addon">标题</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1"></textarea> 
+        {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+        {{end}}         
+      </div> 
+      {{end}} 
+      <br>           
+      
+      {{with $field := field "hintFiction.Content" .}} 
+      <div class="input-group {{$field.ErrorClass}}">         
+        <span class="input-group-addon">内容</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="20"></textarea> 
+        {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+        {{end}}         
+      </div> 
+      {{end}} 
+      <br>    
+
+      {{with $field := field "hintFiction.Author" .}} 
+      <div class="input-group {{$field.ErrorClass}}">            
+          <span class="input-group-addon">作者</span>    
+          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入作者" required> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}}        
+      </div> 
+      {{end}} 
+      <br>
+
+      <div class="input-group">                  
+        <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
+      </div>  
+      <br>        
+    </form> 
+  </div>
+  <div class="col-md-4"></div>
+</div> 
+
+{{template "footer.html" .}}

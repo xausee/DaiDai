@@ -1,0 +1,17 @@
+{{set . "title" .hintFiction.Title}}
+{{template "header.html" .}}
+{{template "navigate_bar.html" .}}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-1"></div> 
+    <div class="col-xs-10">
+      <pre class="text-center">{{.hintFiction.Title}}
+        <div class="text-center"><a hef="adf">{{.hintFiction.Author}}</a></div>
+        <div class="text-left">{{.hintFiction.Content}}</div>           
+      </pre>
+    </div>     
+  </div>   
+</div>
+
+{{template "footer.html" .}}

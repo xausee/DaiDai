@@ -49,3 +49,19 @@ func (q *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
 
 	return q.Redirect((*App).Add)
 }
+
+func (q *Quotation) Show(id string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		q.Response.Status = 500
+		return q.RenderError(err)
+	}
+	defer manager.Close()
+	quotation, _ := manager.GetQuotationById(id)
+	fmt.Println("作者： ", quotation)
+	// if err != nil {
+	// 	q.Flash.Error(err.Error())
+	// 	//return q.Redirect((*Essay).Add)
+	// }
+	return q.Render(quotation)
+}
