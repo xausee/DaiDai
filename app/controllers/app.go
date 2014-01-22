@@ -50,77 +50,42 @@ func (c App) Add() revel.Result {
 
 func (c *App) RenderQuotations(manager *models.DbManager) error {
 	quotations, err := manager.GetAllQuotation()
-	count := len(quotations)
-	if count >= 1 {
-		c.RenderArgs["quotation1"] = quotations[count-1]
-		// c.RenderArgs["quotation2"] = quotations[count-2]
-		// c.RenderArgs["quotation3"] = quotations[count-3]
-		// c.RenderArgs["quotation4"] = quotations[count-4]
-	}
+	c.RenderArgs["quotations"] = quotations
+
 	return err
 }
 
 func (c *App) RenderWitticismQuotation(manager *models.DbManager) error {
 	witticisms, err := manager.GetAllQuotation()
-	count := len(witticisms)
-	if count >= 4 {
-		c.RenderArgs["witticism1"] = witticisms[count-1]
-		c.RenderArgs["witticism2"] = witticisms[count-2]
-		c.RenderArgs["witticism3"] = witticisms[count-3]
-		c.RenderArgs["witticism4"] = witticisms[count-4]
-	}
+	c.RenderArgs["witticisms"] = witticisms
+
 	return err
 }
 
 func (c *App) RenderAncientPoems(manager *models.DbManager) error {
 	poems, err := manager.GetAllAncientPoem()
-	count := len(poems)
-	if count >= 4 {
-		c.RenderArgs["ancientPoem1"] = poems[count-1]
-		c.RenderArgs["ancientPoem2"] = poems[count-2]
-		c.RenderArgs["ancientPoem3"] = poems[count-3]
-		c.RenderArgs["ancientPoem4"] = poems[count-4]
-		c.RenderArgs["ancientPoem5"] = poems[count-5]
-	}
+	c.RenderArgs["ancientPoems"] = poems
+
 	return err
 }
 
 func (c *App) RenderModernPoems(manager *models.DbManager) error {
 	poems, err := manager.GetAllModernPoem()
-	count := len(poems)
-	if count >= 1 {
-		c.RenderArgs["modernPoem1"] = poems[count-1]
-		// c.RenderArgs["modernPoem2"] = poems[count-2]
-		// c.RenderArgs["modernPoem3"] = poems[count-3]
-		// c.RenderArgs["modernPoem4"] = poems[count-4]
-		// c.RenderArgs["modernPoem5"] = poems[count-5]
-	}
+	c.RenderArgs["modernPoems"] = poems
+
 	return err
 }
 
 func (c *App) RenderEssays(manager *models.DbManager) error {
 	essays, err := manager.GetAllEssay()
-	count := len(essays)
-	if count >= 1 {
-		c.RenderArgs["essay1"] = essays[count-1]
-		c.RenderArgs["essay2"] = essays[count-2]
-		// c.RenderArgs["essay3"] = essays[count-3]
-		// c.RenderArgs["essay4"] = essays[count-4]
-		// c.RenderArgs["essay5"] = essays[count-5]
-	}
+	c.RenderArgs["essays"] = essays
+
 	return err
 }
 
 func (c *App) RenderHintFictions(manager *models.DbManager) error {
-	hintfictions, err := manager.GetAllHintFiction()
-	count := len(hintfictions)
+	hintFictions, err := manager.GetAllHintFiction()
+	c.RenderArgs["hintFictions"] = hintFictions
 
-	if count >= 1 {
-		c.RenderArgs["hintFiction1"] = hintfictions[count-1]
-		//c.RenderArgs["hintFiction2"] = hintfictions[count-2]
-		// c.RenderArgs["hintFiction3"] = hintfictions[count-3]
-		// c.RenderArgs["hintFiction4"] = hintfictions[count-4]
-		// c.RenderArgs["hintFiction5"] = hintfictions[count-5]
-	}
 	return err
 }

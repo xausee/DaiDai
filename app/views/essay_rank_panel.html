@@ -1,66 +1,12 @@
 <div class="panel panel-success" style="height:400px">        
   <div class="panel-heading"><h3 class="panel-title">散文阅读排行榜</h3></div>
   <div class="panel-body">
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
-    <div class="row">
-      <div class="col-xs-10"><a href="#">{{.essay1.Title}}</a></div>    
-      <div class="col-xs-2"><span class="badge text-right">{{.essay1.Author}}</div>
-    </div> 
+    {{range .essays}}
+      <div class="row">
+        <div class="col-xs-10"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>    
+        <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>
+      </div>  
+    {{end}} 
     <div class="row text-center">
       <div class="col-xs-10 "><a href="#">更多内容>>></a></div>                
     </div>
