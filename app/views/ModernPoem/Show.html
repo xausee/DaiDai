@@ -4,14 +4,15 @@
 
 <div class="container">
   <div class="row">
-    <div class="col-xs-1"></div> 
-    <div class="col-xs-10">
-      <pre class="text-center">{{.modernPoem.Title}}
+    <div class="col-xs-1"></div>
+    <div class="col-xs-2"></div>  
+    <div class="col-xs-6">
+      <pre class="text-center" style="font-size:18px">{{.modernPoem.Title}}
         <div class="text-center"><a hef="adf">{{.modernPoem.Author}}</a></div>
-        <div class="text-left">{{.modernPoem.Content}}</div>           
+        <div class="text-left">{{.modernPoem.Content}}</div>                 
       </pre>
     </div>     
-  </div>   
+  </div>    
 </div>
 
 {{template "footer.html" .}}
