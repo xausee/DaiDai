@@ -1,6 +1,7 @@
 {{set . "title" "新增条目"}}
 {{template "header.html" .}}
 
+{{if eq .email "xausee@gmail.com"}}
 <div class="container"> 
   <div class="row">
     <div class="col-xs-1"></div>
@@ -16,5 +17,12 @@
     </div>    
   </div> 
 </div> 
+{{else}}
+<div class="row text-center text-warning">
+  <br><br><br><br>
+  抱歉，您没有访问该页面的权限，只有管理员才可查看该页面。
+  <br><br><br><br>
+</div>     
+{{end}}
 
 {{template "footer.html" .}}

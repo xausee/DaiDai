@@ -1,6 +1,7 @@
 {{set . "title" "新增微小说"}}
 {{template "header.html" .}}
 
+{{if eq .email "xausee@gmail.com"}}
 <div class="container"> 
   <div class="col-md-1"></div>
   <div class="col-md-10">
@@ -57,5 +58,12 @@
   </div>
   <div class="col-md-4"></div>
 </div> 
+{{else}}
+<div class="row text-center text-warning">
+  <br><br><br><br>
+  抱歉，您没有访问该页面的权限，只有管理员才可查看该页面。
+  <br><br><br><br>
+</div>     
+{{end}}
 
 {{template "footer.html" .}}
