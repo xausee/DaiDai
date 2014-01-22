@@ -49,6 +49,9 @@ func (mp *ModernPoem) PostAdd(modernPoem *models.ModernPoem) revel.Result {
 }
 
 func (mp *ModernPoem) Show(id string) revel.Result {
+	email := mp.Session["email"]
+	nickName := mp.Session["nickName"]
+
 	manager, err := models.NewDbManager()
 	if err != nil {
 		mp.Response.Status = 500
@@ -60,5 +63,5 @@ func (mp *ModernPoem) Show(id string) revel.Result {
 	// 	mp.Flash.Error(err.Error())
 	// 	//return mp.Redirect((*Essay).Add)
 	// }
-	return mp.Render(modernPoem)
+	return mp.Render(email, nickName, modernPoem)
 }

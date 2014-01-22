@@ -49,6 +49,9 @@ func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
 }
 
 func (e *Essay) Show(id string) revel.Result {
+	email := e.Session["email"]
+	nickName := e.Session["nickName"]
+
 	manager, err := models.NewDbManager()
 	if err != nil {
 		e.Response.Status = 500
@@ -60,5 +63,5 @@ func (e *Essay) Show(id string) revel.Result {
 	// 	e.Flash.Error(err.Error())
 	// 	//return e.Redirect((*Essay).Add)
 	// }
-	return e.Render(essay)
+	return e.Render(email, nickName, essay)
 }

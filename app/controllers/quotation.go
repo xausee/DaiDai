@@ -51,6 +51,9 @@ func (q *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
 }
 
 func (q *Quotation) Show(id string) revel.Result {
+	email := q.Session["email"]
+	nickName := q.Session["nickName"]
+
 	manager, err := models.NewDbManager()
 	if err != nil {
 		q.Response.Status = 500
@@ -63,5 +66,5 @@ func (q *Quotation) Show(id string) revel.Result {
 	// 	q.Flash.Error(err.Error())
 	// 	//return q.Redirect((*Essay).Add)
 	// }
-	return q.Render(quotation)
+	return q.Render(email, nickName, quotation)
 }

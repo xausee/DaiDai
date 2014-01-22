@@ -49,6 +49,9 @@ func (hf *HintFiction) PostAdd(hintFiction *models.HintFiction) revel.Result {
 }
 
 func (hf *HintFiction) Show(id string) revel.Result {
+	email := hf.Session["email"]
+	nickName := hf.Session["nickName"]
+
 	manager, err := models.NewDbManager()
 	if err != nil {
 		hf.Response.Status = 500
@@ -60,5 +63,5 @@ func (hf *HintFiction) Show(id string) revel.Result {
 	// 	hf.Flash.Error(err.Error())
 	// 	//return hf.Redirect((*Essay).Add)
 	// }
-	return hf.Render(hintFiction)
+	return hf.Render(email, nickName, hintFiction)
 }
