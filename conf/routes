@@ -11,6 +11,8 @@ GET     /login                                  Account.Login
 POST    /login                                  Account.PostLogin
 GET     /logout                                 Account.Logout
 GET     /add/                                   App.Add
+GET     /aboutus                                App.AboutUs 
+GET     /donate                                 App.Donate
 GET     /add/quotation                          Quotation.Add
 POST    /add/quotation                          Quotation.PostAdd
 GET     /quotation/show/:id                     Quotation.Show
