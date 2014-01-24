@@ -21,6 +21,8 @@ POST    /add/ancientpoem                        AncientPoem.PostAdd
 GET     /add/modernPoem                         ModernPoem.Add
 POST    /add/modernPoem                         ModernPoem.PostAdd
 GET     /modernPoem/show/:id                    ModernPoem.Show
+GET     /essay/minguo                           Essay.MinGuoEssay
+GET     /essay/xiandangdai                      Essay.XianDangDaiEssay
 GET     /add/essay                              Essay.Add
 POST    /add/essay                              Essay.PostAdd
 GET     /essay/show/:id                         Essay.Show

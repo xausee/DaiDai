@@ -16,6 +16,38 @@ func (e *Essay) Add() revel.Result {
 	return e.Render(email, nickName)
 }
 
+func (e *Essay) MinGuoEssay() revel.Result {
+	email := e.Session["email"]
+	nickName := e.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	essays, err := manager.GetAllEssay()
+	e.RenderArgs["essays"] = essays
+
+	return e.Render(email, nickName, essays)
+}
+
+func (e *Essay) XianDangDaiEssay() revel.Result {
+	email := e.Session["email"]
+	nickName := e.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	essays, err := manager.GetAllEssay()
+	e.RenderArgs["essays"] = essays
+
+	return e.Render(email, nickName, essays)
+}
+
 func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
 	e.Validation.Required(essay.Tag).Message("请选择一个标签")
 	e.Validation.Required(essay.Content).Message("摘录内容不能为空")
