@@ -1,5 +1,8 @@
 <div class="container"> 
-  {{template "carousel.html" .}}<br>
+  {{if .showWitticism}}
+    {{template "carousel.html" .}}<br>
+  {{end}}
+  
   <div class="row">
   	<div class="col-xs-1"></div>  
     <div class="col-xs-5">{{template "modern_poem_panel.html" .}}</div> 

@@ -83,7 +83,18 @@ func (c *App) RenderWitticismQuotation(manager *models.DbManager) error {
 		witticisms = ws
 	}
 
+	// 轮播4条慧语
+	show := false
+	if count >= 4 {
+		show = true
+		c.RenderArgs["witticism1"] = witticisms[count-1]
+		c.RenderArgs["witticism2"] = witticisms[count-2]
+		c.RenderArgs["witticism3"] = witticisms[count-3]
+		c.RenderArgs["witticism4"] = witticisms[count-4]
+	}
+
 	c.RenderArgs["witticisms"] = witticisms
+	c.RenderArgs["showWitticism"] = show
 	c.RenderArgs["moreMitticism"] = more
 	return err
 }
