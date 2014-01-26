@@ -53,14 +53,18 @@ func (c *App) RenderQuotations(manager *models.DbManager) error {
 
 	// 只取前15条摘录用于首页的显示
 	var quotations []models.Quotation
-	var capacity = cap(qs)
-	if capacity > 15 {
-		quotations = qs[(capacity - 16):]
+	var count = len(qs)
+	var more bool
+	if count > 15 {
+		more = true
+		quotations = qs[(count - 15):]
 	} else {
+		more = false
 		quotations = qs
 	}
 
 	c.RenderArgs["quotations"] = quotations
+	c.RenderArgs["moreQuotation"] = more
 	return err
 }
 
@@ -69,14 +73,18 @@ func (c *App) RenderWitticismQuotation(manager *models.DbManager) error {
 
 	// 只取前5条名人语录用于首页的显示
 	var witticisms []models.Quotation
-	var capacity = cap(ws)
-	if capacity > 5 {
-		witticisms = ws[(capacity - 6):]
+	var count = len(ws)
+	var more bool
+	if count > 5 {
+		more = true
+		witticisms = ws[(count - 5):]
 	} else {
+		more = false
 		witticisms = ws
 	}
 
 	c.RenderArgs["witticisms"] = witticisms
+	c.RenderArgs["moreMitticism"] = more
 	return err
 }
 
@@ -92,14 +100,18 @@ func (c *App) RenderModernPoems(manager *models.DbManager) error {
 
 	// 只取前15篇现代诗用于首页的显示
 	var poems []models.ModernPoem
-	var capacity = cap(ps)
-	if capacity > 15 {
-		poems = ps[(capacity - 16):]
+	var count = len(ps)
+	var more bool
+	if count > 15 {
+		more = true
+		poems = ps[(count - 15):]
 	} else {
+		more = false
 		poems = ps
 	}
 
 	c.RenderArgs["modernPoems"] = poems
+	c.RenderArgs["moreModernPoem"] = more
 	return err
 }
 
@@ -108,14 +120,18 @@ func (c *App) RenderEssays(manager *models.DbManager) error {
 
 	// 只取前15篇散文用于首页的显示
 	var essays []models.Essay
-	var capacity = cap(es)
-	if capacity > 15 {
-		essays = es[(capacity - 16):]
+	var count = len(es)
+	var more bool
+	if count > 15 {
+		more = true
+		essays = es[(count - 15):]
 	} else {
+		more = false
 		essays = es
 	}
 
 	c.RenderArgs["essays"] = essays
+	c.RenderArgs["moreEssay"] = more
 	return err
 }
 
@@ -124,14 +140,18 @@ func (c *App) RenderHintFictions(manager *models.DbManager) error {
 
 	// 只取前15篇现代诗用于首页的显示
 	var hintFictions []models.HintFiction
-	var capacity = cap(hs)
-	if capacity > 15 {
-		hintFictions = hs[(capacity - 16):]
+	var count = len(hs)
+	var more bool
+	if count > 15 {
+		more = true
+		hintFictions = hs[(count - 15):]
 	} else {
+		more = false
 		hintFictions = hs
 	}
 
 	c.RenderArgs["hintFictions"] = hintFictions
+	c.RenderArgs["moreHintFiction"] = more
 	return err
 }
 
