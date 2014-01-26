@@ -23,7 +23,7 @@ func (c App) Index() revel.Result {
 	// 获取摘抄最新15条数据
 	c.RenderQuotations(manager)
 
-	// 获取名人语录最新4条数据
+	// 获取名人语录最新5条数据
 	c.RenderWitticismQuotation(manager)
 
 	// 获取古诗词最新15条数据
@@ -49,16 +49,34 @@ func (c App) Add() revel.Result {
 }
 
 func (c *App) RenderQuotations(manager *models.DbManager) error {
-	quotations, err := manager.GetAllQuotation()
-	c.RenderArgs["quotations"] = quotations
+	qs, err := manager.GetAllQuotation()
 
+	// 只取前15条摘录用于首页的显示
+	var quotations []models.Quotation
+	var capacity = cap(qs)
+	if capacity > 15 {
+		quotations = qs[(capacity - 16):]
+	} else {
+		quotations = qs
+	}
+
+	c.RenderArgs["quotations"] = quotations
 	return err
 }
 
 func (c *App) RenderWitticismQuotation(manager *models.DbManager) error {
-	witticisms, err := manager.GetAllQuotation()
-	c.RenderArgs["witticisms"] = witticisms
+	ws, err := manager.GetAllQuotation()
 
+	// 只取前5条名人语录用于首页的显示
+	var witticisms []models.Quotation
+	var capacity = cap(ws)
+	if capacity > 5 {
+		witticisms = ws[(capacity - 6):]
+	} else {
+		witticisms = ws
+	}
+
+	c.RenderArgs["witticisms"] = witticisms
 	return err
 }
 
@@ -70,23 +88,50 @@ func (c *App) RenderAncientPoems(manager *models.DbManager) error {
 }
 
 func (c *App) RenderModernPoems(manager *models.DbManager) error {
-	poems, err := manager.GetAllModernPoem()
-	c.RenderArgs["modernPoems"] = poems
+	ps, err := manager.GetAllModernPoem()
 
+	// 只取前15篇现代诗用于首页的显示
+	var poems []models.ModernPoem
+	var capacity = cap(ps)
+	if capacity > 15 {
+		poems = ps[(capacity - 16):]
+	} else {
+		poems = ps
+	}
+
+	c.RenderArgs["modernPoems"] = poems
 	return err
 }
 
 func (c *App) RenderEssays(manager *models.DbManager) error {
-	essays, err := manager.GetAllEssay()
-	c.RenderArgs["essays"] = essays
+	es, err := manager.GetAllEssay()
 
+	// 只取前15篇散文用于首页的显示
+	var essays []models.Essay
+	var capacity = cap(es)
+	if capacity > 15 {
+		essays = es[(capacity - 16):]
+	} else {
+		essays = es
+	}
+
+	c.RenderArgs["essays"] = essays
 	return err
 }
 
 func (c *App) RenderHintFictions(manager *models.DbManager) error {
-	hintFictions, err := manager.GetAllHintFiction()
-	c.RenderArgs["hintFictions"] = hintFictions
+	hs, err := manager.GetAllHintFiction()
 
+	// 只取前15篇现代诗用于首页的显示
+	var hintFictions []models.HintFiction
+	var capacity = cap(hs)
+	if capacity > 15 {
+		hintFictions = hs[(capacity - 16):]
+	} else {
+		hintFictions = hs
+	}
+
+	c.RenderArgs["hintFictions"] = hintFictions
 	return err
 }
 
