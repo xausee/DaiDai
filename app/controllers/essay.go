@@ -32,7 +32,7 @@ func (e *Essay) MinGuoEssay() revel.Result {
 	return e.Render(email, nickName, essays)
 }
 
-func (e *Essay) XianDangDaiEssay() revel.Result {
+func (e *Essay) DangDaiEssay() revel.Result {
 	email := e.Session["email"]
 	nickName := e.Session["nickName"]
 
