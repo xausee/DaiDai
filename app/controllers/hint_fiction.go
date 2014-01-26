@@ -10,6 +10,21 @@ type HintFiction struct {
 	*revel.Controller
 }
 
+func (hf *HintFiction) Index() revel.Result {
+	email := hf.Session["email"]
+	nickName := hf.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	hintFictions, err := manager.GetAllHintFiction()
+
+	return hf.Render(email, nickName, hintFictions)
+}
+
 func (hf *HintFiction) Add() revel.Result {
 	email := hf.Session["email"]
 	nickName := hf.Session["nickName"]

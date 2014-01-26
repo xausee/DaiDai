@@ -18,14 +18,17 @@ POST    /add/quotation                          Quotation.PostAdd
 GET     /quotation/show/:id                     Quotation.Show
 GET     /add/ancientpoem                        AncientPoem.Add
 POST    /add/ancientpoem                        AncientPoem.PostAdd
+GET     /modernpoem                             ModernPoem.Index
 GET     /add/modernPoem                         ModernPoem.Add
 POST    /add/modernPoem                         ModernPoem.PostAdd
 GET     /modernPoem/show/:id                    ModernPoem.Show
+GET     /essay                                  Essay.Index
 GET     /essay/minguo                           Essay.MinGuoEssay
 GET     /essay/dangdai                          Essay.DangDaiEssay
 GET     /add/essay                              Essay.Add
 POST    /add/essay                              Essay.PostAdd
 GET     /essay/show/:id                         Essay.Show
+GET     /hintFiction                            HintFiction.Index
 GET     /add/hintFiction                        HintFiction.Add
 POST    /add/hintFiction                        HintFiction.PostAdd
 GET     /hintFiction/show/:id                   HintFiction.Show
