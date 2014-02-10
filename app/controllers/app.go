@@ -24,7 +24,7 @@ func (c App) Index() revel.Result {
 	c.RenderQuotations(manager)
 
 	// 获取名人语录最新5条数据
-	c.RenderWitticismQuotation(manager)
+	c.RenderWitticism(manager)
 
 	// 获取古诗词最新15条数据
 	c.RenderAncientPoems(manager)
@@ -68,11 +68,11 @@ func (c *App) RenderQuotations(manager *models.DbManager) error {
 	return err
 }
 
-func (c *App) RenderWitticismQuotation(manager *models.DbManager) error {
-	ws, err := manager.GetAllQuotation()
+func (c *App) RenderWitticism(manager *models.DbManager) error {
+	ws, err := manager.GetAllWitticism()
 
 	// 只取前5条名人语录用于首页的显示
-	var witticisms []models.Quotation
+	var witticisms []models.Witticism
 	var count = len(ws)
 	var more bool
 	if count > 5 {

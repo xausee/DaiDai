@@ -9,6 +9,7 @@ const (
 	DbName                = "SanWenJia"
 	UserCollection        = "user"
 	QuotationCollection   = "quotation"
+	WitticismCollection   = "witticism"
 	AncientPoemCollection = "ancientPoem"
 	ModernPoemCollection  = "modernPoem"
 	EssayCollection       = "essay"

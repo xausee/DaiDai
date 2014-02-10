@@ -30,6 +30,12 @@ type Quotation struct {
 	Author        string
 }
 
+type Witticism struct {
+	Id      string
+	Content string
+	Author  string
+}
+
 type AncientPoem struct {
 	Title   string
 	Style   string

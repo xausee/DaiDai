@@ -31,15 +31,6 @@ func (manager *DbManager) GetAllQuotation() ([]Quotation, error) {
 	return allquotation, err
 }
 
-func (manager *DbManager) GetAllWitticismQuotation() ([]Quotation, error) {
-	uc := manager.session.DB(DbName).C(QuotationCollection)
-
-	allquotation := []Quotation{}
-	err := uc.Find(bson.M{"tag": "名人语录"}).All(&allquotation)
-
-	return allquotation, err
-}
-
 func (manager *DbManager) GetQuotationById(id string) (q *Quotation, err error) {
 	uc := manager.session.DB(DbName).C(QuotationCollection)
 	err = uc.Find(bson.M{"id": id}).One(&q)
