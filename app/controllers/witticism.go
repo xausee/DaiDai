@@ -32,7 +32,7 @@ func (w *Witticism) Add() revel.Result {
 }
 
 func (w *Witticism) PostAdd(witticism *models.Witticism) revel.Result {
-	w.Validation.Required(witticism.Content).Message("摘录内容不能为空")
+	w.Validation.Required(witticism.Content).Message("慧语内容不能为空")
 	w.Validation.Required(witticism.Author).Message("作者不能为空")
 
 	fmt.Println("慧语被容： ", witticism.Content)
