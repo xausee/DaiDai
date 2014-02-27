@@ -25,6 +25,21 @@ func (e *Essay) Index() revel.Result {
 	return e.Render(email, nickName, essays)
 }
 
+func (e *Essay) TypeIndex(tag string) revel.Result {
+	email := e.Session["email"]
+	nickName := e.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	essays, err := manager.GetEssayByTag(tag)
+
+	return e.Render(email, nickName, essays)
+}
+
 func (e *Essay) Add() revel.Result {
 	email := e.Session["email"]
 	nickName := e.Session["nickName"]

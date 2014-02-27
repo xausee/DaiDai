@@ -34,8 +34,7 @@ POST    /add/modernPoem                         ModernPoem.PostAdd
 GET     /modernPoem/show/:id                    ModernPoem.Show
 
 GET     /essay                                  Essay.Index
-GET     /essay/minguo                           Essay.MinGuoEssay
-GET     /essay/dangdai                          Essay.DangDaiEssay
+GET     /essay/:tag                             Essay.TypeIndex
 GET     /add/essay                              Essay.Add
 POST    /add/essay                              Essay.PostAdd
 GET     /essay/show/:id                         Essay.Show

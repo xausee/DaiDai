@@ -91,7 +91,6 @@ func (q *Quotation) Show(id string) revel.Result {
 	}
 	defer manager.Close()
 	quotation, _ := manager.GetQuotationById(id)
-	fmt.Println("作者： ", quotation)
 	// if err != nil {
 	// 	q.Flash.Error(err.Error())
 	// 	//return q.Redirect((*Essay).Add)
