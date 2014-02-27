@@ -25,6 +25,22 @@ func (mp *ModernPoem) Index() revel.Result {
 	return mp.Render(email, nickName, modernPoems)
 }
 
+func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
+	email := mp.Session["email"]
+	nickName := mp.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	//modernPoems, err := manager.GetAllModernPoem()
+	modernPoems, err := manager.GetModernPoemByTag(tag)
+
+	return mp.Render(email, nickName, modernPoems)
+}
+
 func (mp *ModernPoem) Add() revel.Result {
 	email := mp.Session["email"]
 	nickName := mp.Session["nickName"]

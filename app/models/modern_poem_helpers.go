@@ -32,6 +32,13 @@ func (manager *DbManager) GetAllModernPoem() ([]ModernPoem, error) {
 	return poems, err
 }
 
+func (manager *DbManager) GetModernPoemByTag(tag string) ([]ModernPoem, error) {
+	uc := manager.session.DB(DbName).C(ModernPoemCollection)
+	poems := []ModernPoem{}
+	err := uc.Find(bson.M{"tag": tag}).All(&poems)
+	return poems, err
+}
+
 func (manager *DbManager) GetModernPoemById(id string) (mp *ModernPoem, err error) {
 	uc := manager.session.DB(DbName).C(ModernPoemCollection)
 	err = uc.Find(bson.M{"id": id}).One(&mp)
