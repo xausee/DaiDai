@@ -25,6 +25,21 @@ func (q *Quotation) Index() revel.Result {
 	return q.Render(email, nickName, quotations)
 }
 
+func (q *Quotation) TypeIndex(tag string) revel.Result {
+	email := q.Session["email"]
+	nickName := q.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	quotations, err := manager.GetQuotationByTag(tag)
+
+	return q.Render(email, nickName, quotations)
+}
+
 func (q *Quotation) Add() revel.Result {
 	email := q.Session["email"]
 	nickName := q.Session["nickName"]

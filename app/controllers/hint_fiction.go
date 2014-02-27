@@ -25,6 +25,21 @@ func (hf *HintFiction) Index() revel.Result {
 	return hf.Render(email, nickName, hintFictions)
 }
 
+func (hf *HintFiction) TypeIndex(tag string) revel.Result {
+	email := hf.Session["email"]
+	nickName := hf.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	hintFictions, err := manager.GetHintFictionByTag(tag)
+
+	return hf.Render(email, nickName, hintFictions)
+}
+
 func (hf *HintFiction) Add() revel.Result {
 	email := hf.Session["email"]
 	nickName := hf.Session["nickName"]

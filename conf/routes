@@ -16,6 +16,7 @@ GET     /aboutus                                App.AboutUs
 GET     /donate                                 App.Donate
 
 GET     /add/quotation                          Quotation.Add
+GET     /quotation/:tag                         Quotation.TypeIndex
 POST    /add/quotation                          Quotation.PostAdd
 GET     /quotation/show/:id                     Quotation.Show
 
@@ -40,6 +41,7 @@ POST    /add/essay                              Essay.PostAdd
 GET     /essay/show/:id                         Essay.Show
 
 GET     /hintFiction                            HintFiction.Index
+GET     /hintFiction/:tag                       HintFiction.TypeIndex
 GET     /add/hintFiction                        HintFiction.Add
 POST    /add/hintFiction                        HintFiction.PostAdd
 GET     /hintFiction/show/:id                   HintFiction.Show

@@ -32,6 +32,15 @@ func (manager *DbManager) GetAllHintFiction() ([]HintFiction, error) {
 	return hfs, err
 }
 
+func (manager *DbManager) GetHintFictionByTag(tag string) ([]HintFiction, error) {
+	uc := manager.session.DB(DbName).C(HintFictionCollection)
+
+	hfs := []HintFiction{}
+	err := uc.Find(bson.M{"tag": tag}).All(&hfs)
+
+	return hfs, err
+}
+
 func (manager *DbManager) GetHintFictionById(id string) (hf *HintFiction, err error) {
 	uc := manager.session.DB(DbName).C(HintFictionCollection)
 	err = uc.Find(bson.M{"id": id}).One(&hf)
