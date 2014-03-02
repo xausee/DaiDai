@@ -97,3 +97,19 @@ func (q *Quotation) Show(id string) revel.Result {
 	// }
 	return q.Render(email, nickName, quotation)
 }
+
+func (q *Quotation) Delete(id string) revel.Result {
+	email := q.Session["email"]
+	nickName := q.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		q.Response.Status = 500
+		return q.RenderError(err)
+	}
+	defer manager.Close()
+	err = manager.DeleteQuotationById(id)
+
+	q.Render(email, nickName)
+	return q.Redirect((*Quotation).Index)
+}

@@ -1,4 +1,6 @@
+{{if .quotation}}
 {{set . "title" .quotation.Author}}
+{{end}}
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
@@ -6,10 +8,12 @@
   <div class="row">
     <div class="col-xs-1"></div> 
     <div class="col-xs-10">
+    {{if .quotation}}
       <pre class="text-center">{{.quotation.OriginalTitle}}
         <div class="text-center"><a hef="adf">{{.quotation.Author}}</a></div>
         <div class="text-left">{{.quotation.Content}}</div>           
       </pre>
+      {{end}}
     </div>     
   </div> 
   {{if eq .email "xausee@gmail.com"}}
@@ -18,7 +22,7 @@
     <div class="col-xs-10">
   	  <ul class="nav navbar-nav navbar-right">
         <li><a hef="adf">编辑</a></li> 
-        <li><a hef="adf">删除</a></li>  
+        <li><a id="delete" href="{{url "Quotation.Delete" .quotation.Id}}">删除</a></li>  
       </ul>
     </div> 
   </div>

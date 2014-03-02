@@ -45,3 +45,9 @@ func (manager *DbManager) GetQuotationById(id string) (q *Quotation, err error) 
 	err = uc.Find(bson.M{"id": id}).One(&q)
 	return
 }
+
+func (manager *DbManager) DeleteQuotationById(id string) (err error) {
+	uc := manager.session.DB(DbName).C(QuotationCollection)
+	err = uc.Remove(bson.M{"id": id})
+	return err
+}

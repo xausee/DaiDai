@@ -15,8 +15,9 @@ GET     /add/                                   App.Add
 GET     /aboutus                                App.AboutUs 
 GET     /donate                                 App.Donate
 
-GET     /add/quotation                          Quotation.Add
+GET     /quotation                              Quotation.Index
 GET     /quotation/:tag                         Quotation.TypeIndex
+GET     /add/quotation                          Quotation.Add
 POST    /add/quotation                          Quotation.PostAdd
 GET     /quotation/show/:id                     Quotation.Show
 
