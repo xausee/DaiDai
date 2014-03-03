@@ -95,3 +95,19 @@ func (hf *HintFiction) Show(id string) revel.Result {
 	// }
 	return hf.Render(email, nickName, hintFiction)
 }
+
+func (hf *HintFiction) Delete(id string) revel.Result {
+	email := hf.Session["email"]
+	nickName := hf.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		hf.Response.Status = 500
+		return hf.RenderError(err)
+	}
+	defer manager.Close()
+	err = manager.DeleteHintFictionById(id)
+
+	hf.Render(email, nickName)
+	return hf.Redirect((*HintFiction).Index)
+}

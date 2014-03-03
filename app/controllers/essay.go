@@ -125,3 +125,19 @@ func (e *Essay) Show(id string) revel.Result {
 	// }
 	return e.Render(email, nickName, essay)
 }
+
+func (e *Essay) Delete(id string) revel.Result {
+	email := e.Session["email"]
+	nickName := e.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		e.Response.Status = 500
+		return e.RenderError(err)
+	}
+	defer manager.Close()
+	err = manager.DeleteEssayById(id)
+
+	e.Render(email, nickName)
+	return e.Redirect((*Essay).Index)
+}

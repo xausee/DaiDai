@@ -44,3 +44,9 @@ func (manager *DbManager) GetModernPoemById(id string) (mp *ModernPoem, err erro
 	err = uc.Find(bson.M{"id": id}).One(&mp)
 	return
 }
+
+func (manager *DbManager) DeleteModernPoemById(id string) (err error) {
+	uc := manager.session.DB(DbName).C(ModernPoemCollection)
+	err = uc.Remove(bson.M{"id": id})
+	return err
+}

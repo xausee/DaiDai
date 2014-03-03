@@ -46,3 +46,9 @@ func (manager *DbManager) GetHintFictionById(id string) (hf *HintFiction, err er
 	err = uc.Find(bson.M{"id": id}).One(&hf)
 	return
 }
+
+func (manager *DbManager) DeleteHintFictionById(id string) (err error) {
+	uc := manager.session.DB(DbName).C(HintFictionCollection)
+	err = uc.Remove(bson.M{"id": id})
+	return err
+}

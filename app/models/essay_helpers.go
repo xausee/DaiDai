@@ -64,3 +64,9 @@ func (manager *DbManager) GetEssayById(id string) (e *Essay, err error) {
 	err = uc.Find(bson.M{"id": id}).One(&e)
 	return
 }
+
+func (manager *DbManager) DeleteEssayById(id string) (err error) {
+	uc := manager.session.DB(DbName).C(EssayCollection)
+	err = uc.Remove(bson.M{"id": id})
+	return err
+}

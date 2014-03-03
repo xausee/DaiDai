@@ -96,3 +96,19 @@ func (mp *ModernPoem) Show(id string) revel.Result {
 	// }
 	return mp.Render(email, nickName, modernPoem)
 }
+
+func (mp *ModernPoem) Delete(id string) revel.Result {
+	email := mp.Session["email"]
+	nickName := mp.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		mp.Response.Status = 500
+		return mp.RenderError(err)
+	}
+	defer manager.Close()
+	err = manager.DeleteModernPoemById(id)
+
+	mp.Render(email, nickName)
+	return mp.Redirect((*ModernPoem).Index)
+}
