@@ -23,6 +23,21 @@ func (manager *DbManager) AddEssay(e *Essay) error {
 	return err
 }
 
+func (manager *DbManager) EditEssay(originalEssayId string, newEssay *Essay) error {
+	uc := manager.session.DB(DbName).C(EssayCollection)	
+	
+	var originalEssay *Essay
+	newEssay.Id = originalEssayId
+
+	err := uc.Find(bson.M{"id": originalEssayId}).One(&originalEssay)	
+	err = uc.Update(originalEssay, newEssay)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	return err
+}
+
 func (manager *DbManager) GetAllEssay() ([]Essay, error) {
 	uc := manager.session.DB(DbName).C(EssayCollection)
 

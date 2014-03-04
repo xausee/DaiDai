@@ -38,6 +38,8 @@ GET     /essay                                  Essay.Index
 GET     /essay/:tag                             Essay.TypeIndex
 GET     /add/essay                              Essay.Add
 POST    /add/essay                              Essay.PostAdd
+GET     /essay/edit/:id                         Essay.Edit
+POST    /essay/edit/:id                         Essay.PostEdit
 GET     /essay/show/:id                         Essay.Show
 
 GET     /hintFiction                            HintFiction.Index
