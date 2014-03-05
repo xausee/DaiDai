@@ -11,7 +11,7 @@
       <ul class="nav navbar-nav navbar-right">
       {{if .nickName}}     
         <li><a>您好，{{.nickName}}</a></li> 
-        <li><a id="logout" href="logout" action="Account.Logout">退出</a></li>             
+        <li><a id="logout" href="{{url "Account.Logout" }}">退出</a></li>             
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">我的散文<b class="caret"></b></a>
           <ul class="dropdown-menu">
