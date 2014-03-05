@@ -1,33 +1,39 @@
-{{set . "title" .oringinalHintFiction.Title}}
+{{set . "title" "新增现代诗"}}
 {{template "header.html" .}}
 
 {{if eq .email "xausee@gmail.com"}}
 <div class="container"> 
   <div class="col-md-1"></div>
   <div class="col-md-10">
-    <div class="text-muted">编辑微小说:</div>
+    <div class="text-muted">新增现代诗:</div>
     <br>
-    <form role="form" action="{{url "HintFiction.PostEdit" .oringinalHintFiction.Id}}" method="POST">  
+    <form role="form" action="{{url "ModernPoem.PostEdit" .oringinalModernPoem.Id}}" method="POST">  
       <div class="input-group">
         <span class="input-group-addon">标签</span>     
-        <select class="form-control input-sm" name="newHintFiction.Tag">
-          {{if eq "中国微小说" .oringinalHintFiction.Tag}}           
-          <option selected>{{.oringinalHintFiction.Tag}}</option>
-          <option>国外微小说</option> 
-          {{else if eq "国外微小说" .oringinalHintFiction.Tag}}    
-          <option selected>{{.oringinalHintFiction.Tag}}</option>
-          <option>中国微小说</option>  
-          {{else}}
-          <option selected>{{.oringinalHintFiction.Tag}}</option>
-          <option>中国微小说</option>  
-          <option>国外微小说</option> 
-          {{end}} 
+        <select class="form-control input-sm" name="newModernPoem.Tag">  
+          <option selected>{{.oringinalModernPoem.Tag}}</option>      
+          <option>尝试诗派</option>
+          <option>文学研究会</option>  
+          <option>创造社</option>
+          <option>湖畔诗派</option>
+          <option>新月派</option>
+          <option>象征诗派</option>
+          <option>现代派</option>
+          <option>七月派</option>
+          <option>新现代诗派</option>
+          <option>蓝星诗社</option>
+          <option>创世纪诗社</option>
+          <option>朦胧诗派</option>  
+          <option>新现实主义</option>
+          <option>大学生诗派</option>
+          <option>新生代</option>
+          <option>其它流派</option>                     
         </select>
       </div> 
       <br>        
 
-      {{$title := .oringinalHintFiction.Title}}
-      {{with $field := field "newHintFiction.Title" .}} 
+      {{$title := .oringinalModernPoem.Title}}
+      {{with $field := field "newModernPoem.Title" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">标题</span>      
         <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">{{$title}}</textarea> 
@@ -38,11 +44,11 @@
       {{end}} 
       <br>           
       
-      {{$content := .oringinalHintFiction.Content}}
-      {{with $field := field "newHintFiction.Content" .}} 
+      {{$content := .oringinalModernPoem.Content}}
+      {{with $field := field "newModernPoem.Content" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">内容</span>      
-        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="20">{{$content}}</textarea> 
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="15">{{$content}}</textarea> 
         {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
         {{end}}         
@@ -50,8 +56,8 @@
       {{end}} 
       <br>    
 
-      {{$author := .oringinalHintFiction.Author}}
-      {{with $field := field "newHintFiction.Author" .}} 
+      {{$author := .oringinalModernPoem.Author}}
+      {{with $field := field "newModernPoem.Author" .}} 
       <div class="input-group {{$field.ErrorClass}}">            
           <span class="input-group-addon">作者</span>    
           <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$author}}" placeholder="请输入作者" required> 
@@ -69,7 +75,7 @@
     </form> 
   </div>
   <div class="col-md-4"></div>
-</div> 
+</div>
 {{else}}
 <div class="row text-center text-warning">
   <br><br><br><br>

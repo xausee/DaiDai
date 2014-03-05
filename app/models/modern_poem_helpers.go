@@ -20,6 +20,21 @@ func (manager *DbManager) AddModernPeom(pm *ModernPoem) error {
 	return err
 }
 
+func (manager *DbManager) UpdateModernPeom(originalModernPoemID string, newModernPoem *ModernPoem) error {
+	uc := manager.session.DB(DbName).C(ModernPoemCollection)
+
+	var originalModernPoem *Essay
+	newModernPoem.Id = originalModernPoemID
+
+	err := uc.Find(bson.M{"id": originalModernPoemID}).One(&originalModernPoem)	
+	err = uc.Update(originalModernPoem, newModernPoem)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	return err
+}
+
 func (manager *DbManager) GetAllModernPoem() ([]ModernPoem, error) {
 	uc := manager.session.DB(DbName).C(ModernPoemCollection)
 
