@@ -1,0 +1,35 @@
+{{set . "title" "智慧语录"}}
+{{template "header.html" .}}
+{{template "navigate_bar.html" .}}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-1"></div> 
+    <div class="col-xs-10"> 
+      <div class="panel panel-success">      
+        <div class="panel-body">
+          {{range .witticisms}}
+          <div class="row">
+            <div class="col-xs-10"><a href="{{url "Witticism.Show" .Id}}">{{.Content}}</a></div>    
+            <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>
+          </div>  
+          {{end}}    
+          </div>
+          <div class="text-center">                  
+            <ul class="pagination pagination-centered">
+              <li><a href="#">&laquo;</a></li>
+              <li><a href="#">1</a></li>
+              <li><a href="#">2</a></li>
+              <li><a href="#">3</a></li>
+              <li><a href="#">4</a></li>
+              <li><a href="#">5</a></li>
+              <li><a href="#">&raquo;</a></li>
+            </ul>
+          </div>     
+        </div>            
+      </div>      
+    </div>     
+  </div>   
+</div>
+
+{{template "footer.html" .}}

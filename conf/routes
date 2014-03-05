@@ -23,8 +23,11 @@ GET     /quotation/edit/:id                     Quotation.Edit
 POST    /quotation/edit/:id                     Quotation.PostEdit
 GET     /quotation/show/:id                     Quotation.Show
 
+GET     /witticism                              Witticism.Index
 GET     /add/witticism                          Witticism.Add
 POST    /add/witticism                          Witticism.PostAdd
+GET     /witticism/Edit/:id                     Witticism.Edit
+POST    /witticism/Edit/:id                     Witticism.PostEdit
 GET     /witticism/show/:id                     Witticism.Show
 
 GET     /add/ancientpoem                        AncientPoem.Add

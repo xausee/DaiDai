@@ -20,6 +20,21 @@ func (manager *DbManager) AddWitticism(w *Witticism) error {
 	return err
 }
 
+func (manager *DbManager) UpdateWitticism(originalWitticismID string, newWitticism *Witticism) error {
+	uc := manager.session.DB(DbName).C(WitticismCollection)
+
+	var originalWitticism *Witticism
+	newWitticism.Id = originalWitticismID
+
+	err := uc.Find(bson.M{"id": originalWitticismID}).One(&originalWitticism)	
+	err = uc.Update(originalWitticism, newWitticism)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	return err
+}
+
 func (manager *DbManager) GetAllWitticism() ([]Witticism, error) {
 	uc := manager.session.DB(DbName).C(WitticismCollection)
 
@@ -35,4 +50,10 @@ func (manager *DbManager) GetWitticismById(id string) (w *Witticism, err error) 
 	uc := manager.session.DB(DbName).C(WitticismCollection)
 	err = uc.Find(bson.M{"id": id}).One(&w)
 	return
+}
+
+func (manager *DbManager) DeleteWitticismById(id string) (err error) {
+	uc := manager.session.DB(DbName).C(WitticismCollection)
+	err = uc.Remove(bson.M{"id": id})
+	return err
 }

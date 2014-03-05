@@ -1,4 +1,4 @@
-{{set . "title" .quotation.OriginalTitle}}
+{{set . "title" .witticism.Author}}
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
@@ -6,9 +6,9 @@
   <div class="row">
     <div class="col-xs-1"></div> 
     <div class="col-xs-10">    
-      <pre class="text-center">{{.quotation.OriginalTitle}}
-        <div class="text-center"><a hef="adf">{{.quotation.Author}}</a></div>
-        <div class="text-left">{{.quotation.Content}}</div>           
+      <pre class="text-center">{{.witticism.Content}}
+        <div class="text-center"><a hef="adf">{{.witticism.Author}}</a></div>
+        <div class="text-left">{{.witticism.Content}}</div>           
       </pre>      
     </div>     
   </div> 
@@ -17,8 +17,8 @@
     <div class="col-xs-1"></div>
     <div class="col-xs-10">
   	  <ul class="nav navbar-nav navbar-right">
-        <li><a id="edit" href="{{url "Quotation.Edit" .quotation.Id}}">编辑</a></li>  
-        <li><a id="delete" href="{{url "Quotation.Delete" .quotation.Id}}">删除</a></li>  
+        <li><a id="edit" href="{{url "Witticism.Edit" .witticism.Id}}">编辑</a></li>  
+        <li><a id="delete" href="{{url "Witticism.Delete" .witticism.Id}}">删除</a></li>  
       </ul>
     </div> 
   </div>
