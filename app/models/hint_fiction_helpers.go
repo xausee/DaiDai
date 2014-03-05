@@ -20,6 +20,21 @@ func (manager *DbManager) AddHintFiction(hf *HintFiction) error {
 	return err
 }
 
+func (manager *DbManager) UpdateHintFiction(originalHintFictionID string, newHintFiction *HintFiction) error {
+	uc := manager.session.DB(DbName).C(HintFictionCollection)
+
+    var originalHintFiction *Essay
+	newHintFiction.Id = originalHintFictionID
+
+	err := uc.Find(bson.M{"id": originalHintFictionID}).One(&originalHintFiction)	
+	err = uc.Update(originalHintFiction, newHintFiction)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	return err
+}
+
 func (manager *DbManager) GetAllHintFiction() ([]HintFiction, error) {
 	uc := manager.session.DB(DbName).C(HintFictionCollection)
 

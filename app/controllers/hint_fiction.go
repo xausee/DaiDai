@@ -46,6 +46,21 @@ func (hf *HintFiction) Add() revel.Result {
 	return hf.Render(email, nickName)
 }
 
+func (hf *HintFiction) Edit(id string) revel.Result {
+	email := hf.Session["email"]
+	nickName := hf.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		hf.Response.Status = 500
+		return hf.RenderError(err)
+	}
+	defer manager.Close()
+	oringinalHintFiction, _ := manager.GetHintFictionById(id)
+
+	return hf.Render(email, nickName, oringinalHintFiction)
+}
+
 func (hf *HintFiction) PostAdd(hintFiction *models.HintFiction) revel.Result {
 	hf.Validation.Required(hintFiction.Tag).Message("请选择一个标签")
 	hf.Validation.Required(hintFiction.Content).Message("内容不能为空")
@@ -76,6 +91,38 @@ func (hf *HintFiction) PostAdd(hintFiction *models.HintFiction) revel.Result {
 	}
 
 	return hf.Redirect((*App).Add)
+}
+
+func (hf *HintFiction) PostEdit(originalHintFictionID string, newHintFiction *models.HintFiction) revel.Result {
+	hf.Validation.Required(newHintFiction.Tag).Message("请选择一个标签")
+	hf.Validation.Required(newHintFiction.Content).Message("内容不能为空")
+	hf.Validation.Required(newHintFiction.Author).Message("作者不能为空")
+
+	fmt.Println("微小说标签： ", newHintFiction.Tag)
+	fmt.Println("微小说标题： ", newHintFiction.Title)
+	fmt.Println("微小说内容： ", newHintFiction.Content)
+	fmt.Println("微小说作者： ", newHintFiction.Author)
+
+	if hf.Validation.HasErrors() {
+		hf.Validation.Keep()
+		hf.FlashParams()
+		return hf.Redirect((*HintFiction).Edit)
+	}
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		hf.Response.Status = 500
+		return hf.RenderError(err)
+	}
+	defer manager.Close()
+
+	err = manager.UpdateHintFiction(originalHintFictionID, newHintFiction)
+	if err != nil {
+		hf.Flash.Error(err.Error())
+		return hf.Redirect((*HintFiction).Edit)
+	}
+
+	return hf.Redirect((*HintFiction).Index)
 }
 
 func (hf *HintFiction) Show(id string) revel.Result {

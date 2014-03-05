@@ -1,41 +1,33 @@
-{{set . "title" .oringinalEssay.Title}}
+{{set . "title" "编辑微小说"}}
 {{template "header.html" .}}
 
 {{if eq .email "xausee@gmail.com"}}
 <div class="container"> 
   <div class="col-md-1"></div>
   <div class="col-md-10">
-    <div class="text-muted">编辑散文:</div>
-    <br>    
-    <form role="form" action="{{url "Essay.PostEdit" .oringinalEssay.Id}}" method="POST">  
+    <div class="text-muted">编辑微小说:</div>
+    <br>
+    <form role="form" action="{{url "HintFiction.PostEdit" .oringinalHintFiction.Id}}" method="POST">  
       <div class="input-group">
         <span class="input-group-addon">标签</span>     
-        <select class="form-control input-sm" name="newEssay.Tag">
-          {{if eq "民国散文" .oringinalEssay.Tag}}          
-          <option selected>{{.oringinalEssay.Tag}}</option>
-          <option>当代散文</option>  
-          <option>国外散文</option>          
-          {{else if eq "当代散文" .oringinalEssay.Tag}}          
-          <option selected>{{.oringinalEssay.Tag}}</option>
-          <option>民国散文</option>  
-          <option>国外散文</option>          
-          {{else if eq "国外散文" .oringinalEssay.Tag}}          
-          <option selected>{{.oringinalEssay.Tag}}</option>
-          <option>民国散文</option>  
-          <option>当代散文</option>
+        <select class="form-control input-sm" name="newHintFiction.Tag">
+          {{if eq "中国微小说" .oringinalHintFiction.Tag}}           
+          <option selected>{{.oringinalHintFiction.Tag}}</option>
+          <option>国外微小说</option> 
+          {{else if eq "国外微小说" .oringinalHintFiction.Tag}}    
+          <option selected>{{.oringinalHintFiction.Tag}}</option>
+          <option>中国微小说</option>  
           {{else}}
-          <option selected>{{.oringinalEssay.Tag}}</option>
-          <option>民国散文</option>  
-          <option>当代散文</option>
-          <option>国外散文</option>
-          {{end}}
-                           
+          <option selected>{{.oringinalHintFiction.Tag}}</option>
+          <option>中国微小说</option>  
+          <option>国外微小说</option> 
+          {{end}} 
         </select>
       </div> 
-      <br>       
+      <br>        
 
-      {{$title := .oringinalEssay.Title}}
-      {{with $field := field "newEssay.Title" .}} 
+      {{$title := .oringinalHintFiction.Title}}
+      {{with $field := field "newHintFiction.Title" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">标题</span>      
         <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">{{$title}}</textarea> 
@@ -46,8 +38,8 @@
       {{end}} 
       <br>           
       
-      {{$content := .oringinalEssay.Content}}
-      {{with $field := field "newEssay.Content" .}} 
+      {{$content := .oringinalHintFiction.Content}}
+      {{with $field := field "newHintFiction.Content" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">内容</span>      
         <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="20">{{$content}}</textarea> 
@@ -58,11 +50,11 @@
       {{end}} 
       <br>    
 
-      {{$author := .oringinalEssay.Author}}
-      {{with $field := field "newEssay.Author" .}} 
+      {{$author := .oringinalHintFiction.Author}}
+      {{with $field := field "newHintFiction.Author" .}} 
       <div class="input-group {{$field.ErrorClass}}">            
           <span class="input-group-addon">作者</span>    
-          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$author}}" placeholder="{{$author}}" required>
+          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$author}}" placeholder="请输入作者" required> 
           {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
           {{end}}        

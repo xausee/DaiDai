@@ -123,7 +123,7 @@ func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
 	return e.Redirect((*App).Add)
 }
 
-func (e *Essay) PostEdit(originalEssayId string, newEssay *models.Essay) revel.Result {
+func (e *Essay) PostEdit(originalEssayID string, newEssay *models.Essay) revel.Result {
 	e.Validation.Required(newEssay.Tag).Message("请选择一个标签")
 	e.Validation.Required(newEssay.Content).Message("摘录内容不能为空")
 	e.Validation.Required(newEssay.Author).Message("作者不能为空")
@@ -136,7 +136,7 @@ func (e *Essay) PostEdit(originalEssayId string, newEssay *models.Essay) revel.R
 	if e.Validation.HasErrors() {
 		e.Validation.Keep()
 		e.FlashParams()
-		return e.Redirect((*Essay).Add)
+		return e.Redirect((*Essay).Edit)
 	}
 
 	manager, err := models.NewDbManager()
@@ -146,7 +146,7 @@ func (e *Essay) PostEdit(originalEssayId string, newEssay *models.Essay) revel.R
 	}
 	defer manager.Close()
 
-	err = manager.EditEssay(originalEssayId, newEssay)
+	err = manager.UpdateEssay(originalEssayID, newEssay)
 	if err != nil {
 		e.Flash.Error(err.Error())
 		return e.Redirect((*Essay).Edit)
