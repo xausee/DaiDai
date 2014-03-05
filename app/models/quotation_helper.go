@@ -20,6 +20,21 @@ func (manager *DbManager) AddQuotation(q *Quotation) error {
 	return err
 }
 
+func (manager *DbManager) UpdateQuotation(originalQuotationID string, newQuotation *Quotation) error {
+	uc := manager.session.DB(DbName).C(QuotationCollection)
+
+	var originalQuotation *Quotation
+	newQuotation.Id = originalQuotationID
+
+	err := uc.Find(bson.M{"id": originalQuotationID}).One(&originalQuotation)	
+	err = uc.Update(originalQuotation, newQuotation)
+
+	if err != nil {
+		fmt.Println(err)
+	}
+	return err
+}
+
 func (manager *DbManager) GetAllQuotation() ([]Quotation, error) {
 	uc := manager.session.DB(DbName).C(QuotationCollection)
 

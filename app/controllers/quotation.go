@@ -46,6 +46,21 @@ func (q *Quotation) Add() revel.Result {
 	return q.Render(email, nickName)
 }
 
+func (q *Quotation) Edit(id string) revel.Result {
+	email := q.Session["email"]
+	nickName := q.Session["nickName"]
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		q.Response.Status = 500
+		return q.RenderError(err)
+	}
+	defer manager.Close()
+	originalQuotation, _ := manager.GetQuotationById(id)
+
+	return q.Render(email, nickName, originalQuotation)
+}
+
 func (q *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
 	q.Validation.Required(quotation.Tag).Message("请选择一个标签")
 	q.Validation.Required(quotation.Content).Message("摘录内容不能为空")
@@ -78,6 +93,42 @@ func (q *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
 	}
 
 	return q.Redirect((*App).Add)
+}
+
+func (q *Quotation) PostEdit(originalQuotationID string, newQuotation *models.Quotation) revel.Result {
+	q.Validation.Required(newQuotation.Tag).Message("请选择一个标签")
+	q.Validation.Required(newQuotation.Content).Message("摘录内容不能为空")
+	q.Validation.Required(newQuotation.Author).Message("作者不能为空")
+
+	fmt.Println("摘录标签： ", newQuotation.Tag)
+	fmt.Println("摘录被容： ", newQuotation.Content)
+	fmt.Println("原文： ", newQuotation.Original)
+	fmt.Println("作者： ", newQuotation.Author)
+
+	if q.Validation.HasErrors() {
+		q.Validation.Keep()
+		q.FlashParams()
+        fmt.Println("error in validation ")
+		return q.Redirect((*Quotation).Edit)
+	}
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		q.Response.Status = 500
+		return q.RenderError(err)
+	}
+	defer manager.Close()
+
+	err = manager.UpdateQuotation(originalQuotationID, newQuotation)
+	if err != nil {
+		// q.Validation.Keep()
+		// q.FlashParams()
+		q.Flash.Error(err.Error())
+		fmt.Println("error in update quotation ")
+		return q.Redirect((*Quotation).Edit)
+	}
+
+	return q.Redirect((*Quotation).Index)
 }
 
 func (q *Quotation) Show(id string) revel.Result {

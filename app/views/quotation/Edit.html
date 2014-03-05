@@ -1,0 +1,85 @@
+{{set . "title" .originalQuotation.OriginalTitle}}}
+{{template "header.html" .}}
+
+{{if eq .email "xausee@gmail.com"}}
+<div class="container"> 
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div class="text-muted">编辑摘录:</div>
+    <br>
+    <form role="form" action="{{url "Quotation.PostEdit" .originalQuotation.Id}}" method="POST">  
+        <div class="input-group">
+        <span class="input-group-addon">标签</span>     
+        <select class="form-control input-sm" name="newQuotation.Tag">
+          <option selected>{{.originalQuotation.Tag}}</option>
+          <option>小说节选</option>
+          <option>散文截选</option>                            
+        </select>
+      </div> 
+      <br>      
+      
+      {{$content := .originalQuotation.Content}}
+      {{with $field := field "newQuotation.Content" .}} 
+      <div class="input-group {{$field.ErrorClass}}">         
+        <span class="input-group-addon">内容</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5">{{$content}}</textarea> 
+        {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+        {{end}}         
+      </div> 
+      {{end}} 
+      <br>
+
+      {{$title := .originalQuotation.OriginalTitle}}
+      {{with $field := field "newQuotation.OriginalTitle" .}} 
+      <div class="input-group {{$field.ErrorClass}}">         
+        <span class="input-group-addon">原文标题</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">{{$title }}</textarea> 
+        {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+        {{end}}         
+      </div> 
+      {{end}} 
+      <br>
+
+      {{$originalText := .originalQuotation.Original}}
+      {{with $field := field "newQuotation.Original" .}} 
+      <div class="input-group {{$field.ErrorClass}}">            
+        <span class="input-group-addon">原文</span>    
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="8">{{$originalText}}</textarea> 
+        {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+        {{end}}         
+      </div> 
+      {{end}}  
+      <br>  
+
+      {{$author := .originalQuotation.Author}}
+      {{with $field := field "newQuotation.Author" .}} 
+      <div class="input-group {{$field.ErrorClass}}">            
+          <span class="input-group-addon">作者</span>    
+          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$author}}" placeholder="请输入作者" required> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}}        
+      </div> 
+      {{end}} 
+      <br>
+
+      <div class="input-group">                  
+        <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
+      </div>  
+      <br>        
+    </form> 
+  </div>
+  <div class="col-md-4"></div>
+</div> 
+{{else}}
+<div class="row text-center text-warning">
+  <br><br><br><br>
+  抱歉，您没有访问该页面的权限，只有管理员才可查看该页面。
+  <br><br><br><br>
+</div>     
+{{end}}
+
+{{template "footer.html" .}}
