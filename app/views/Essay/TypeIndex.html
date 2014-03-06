@@ -8,7 +8,7 @@
     <div class="col-xs-10"> 
       <div class="panel panel-success">      
         <div class="panel-body">
-          {{range .essays}}
+          {{range .allEssays}}
           <div class="row">
             <div class="col-xs-10"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>    
             <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>
@@ -17,13 +17,13 @@
           </div>
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
-              <li><a href="#">&laquo;</a></li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li><a href="#">&raquo;</a></li>
+              <li><a href="{{url "Essay.Index" }}">&laquo;</a></li>
+              <li><a href="{{url "Essay.Index" }}">1</a></li>
+              <li><a href="{{url "Essay.Index" }}">2</a></li>
+              <li><a href="{{url "Essay.Index" }}">3</a></li>
+              <li><a href="{{url "Essay.Index" }}">4</a></li>
+              <li><a href="{{url "Essay.Index" }}">5</a></li>
+              <li><a href="{{url "Essay.Index" }}">&raquo;</a></li>
             </ul>
           </div>     
         </div>            
