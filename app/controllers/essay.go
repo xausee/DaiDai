@@ -22,11 +22,11 @@ func (e *Essay) Index() revel.Result {
 
 	var pageCount int
 	if (count % 30) == 0 {
-	   pageCount = count / 30 
-	 } else {
-	   pageCount = count / 30 + 1
+		pageCount = count / 30
+	} else {
+		pageCount = count/30 + 1
 	}
-	
+
 	// var more bool
 	// if count > 30 {
 	// 	more = true
@@ -36,9 +36,9 @@ func (e *Essay) Index() revel.Result {
 	// 	essaysOnOnePage := allEssays
 	// }
 
-	e.RenderArgs["email"] = e.Session["email"]	
+	e.RenderArgs["email"] = e.Session["email"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
-	e.RenderArgs["allEssays"] = allEssays	
+	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["pageCount"] = pageCount
 
 	return e.Render()
@@ -59,14 +59,14 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 
 	var pageCount int
 	if (count % 30) == 0 {
-	   pageCount = count / 30 
-	 } else {
-	   pageCount = count / 30 + 1
+		pageCount = count / 30
+	} else {
+		pageCount = count/30 + 1
 	}
 
-    e.RenderArgs["email"] = e.Session["email"]	
+	e.RenderArgs["email"] = e.Session["email"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
-	e.RenderArgs["allEssays"] = allEssays	
+	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["pageCount"] = pageCount
 
 	return e.Render(email, nickName, allEssays)
@@ -203,6 +203,30 @@ func (e *Essay) Show(id string) revel.Result {
 	// 	//return e.Redirect((*Essay).Add)
 	// }
 	return e.Render(email, nickName, essay)
+}
+
+func (e *Essay) PageList(pageNumber string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	allEssays, err := manager.GetAllEssay()
+	count := len(allEssays)
+
+	var pageCount int
+	if (count % 30) == 0 {
+		pageCount = count / 30
+	} else {
+		pageCount = count/30 + 1
+	}
+
+	e.RenderArgs["allEssays"] = allEssays
+	e.RenderArgs["pageCount"] = pageCount
+	e.RenderArgs["pageNumber"] = pageNumber
+
+	return e.Render()
 }
 
 func (e *Essay) Delete(id string) revel.Result {
