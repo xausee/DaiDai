@@ -2,10 +2,10 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 <script>
-function updateEssayList(str)
+function updateEssayList(pageNumber)
 {
 var xmlhttp;    
-if (str=="")
+if (pageNumber=="")
   {
   document.getElementById("essaylist").innerHTML="";
   return;
@@ -22,11 +22,11 @@ xmlhttp.onreadystatechange=function()
   {    
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
-    document.getElementById("essaylistTest").innerHTML=xmlhttp.responseText+str;
+    document.getElementById("essaylistTest").innerHTML=xmlhttp.responseText;
     }
   }  
-xmlhttp.open("GET","essaylistmodule/"+str,true);
-//xmlhttp.open("GET","PageList(str)",true);
+  // try this for more times!!!! success!!!
+xmlhttp.open("GET","{{url "Essay.PageList" ""}}"+pageNumber,true);
 xmlhttp.send();
 }
 </script> 
@@ -49,13 +49,13 @@ xmlhttp.send();
 
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
-              <li value="1" onclick="updateEssayList(this.value)"><a value="1" >&laquo;</a></li>
-              <li value="1" onclick="updateEssayList(this.value)"><a value="1">1</a></li>
-              <li value="2" onclick="updateEssayList(this.value)"><a value="1">2</a></li>
-              <li value="3" onclick="updateEssayList(this.value)"><a value="1">3</a></li>
-              <li value="4" onclick="updateEssayList(this.value)"><a value="1">4</a></li>
-              <li value="5" onclick="updateEssayList(this.value)"><a value="1">5</a></li>
-              <li value="15" onclick="updateEssayList(this.value)"><a >&raquo;</a></li>
+              <li value="010" onclick="updateEssayList(this.value)"><a>&laquo;</a></li>
+              <li value="1" onclick="updateEssayList(this.value)"><a>1</a></li>
+              <li value="2" onclick="updateEssayList(this.value)"><a>2</a></li>
+              <li value="3" onclick="updateEssayList(this.value)"><a>3</a></li>
+              <li value="4" onclick="updateEssayList(this.value)"><a>4</a></li>
+              <li value="5" onclick="updateEssayList(this.value)"><a>5</a></li>
+              <li value="10" onclick="updateEssayList(this.value)"><a>&raquo;</a></li>
             </ul>
           </div>     
         </div>            

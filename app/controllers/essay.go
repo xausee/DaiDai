@@ -222,6 +222,8 @@ func (e *Essay) PageList(pageNumber string) revel.Result {
 		pageCount = count/30 + 1
 	}
 
+	fmt.Println("pageNumber:", pageNumber)
+
 	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["pageCount"] = pageCount
 	e.RenderArgs["pageNumber"] = pageNumber
