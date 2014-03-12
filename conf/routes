@@ -58,9 +58,10 @@ GET     /hintFiction/Edit/:id                   HintFiction.Edit
 POST    /hintFiction/Edit/:id                   HintFiction.PostEdit
 GET     /hintFiction/show/:id                   HintFiction.Show
 
+GET     /favicon.ico                            Static.Serve("public","img/red-book.png")
 
 # Ignore favicon requests
-GET     /favicon.ico                            404
+#GET     /favicon.ico                            404
 
 # Map static resources from the /app/public folder to the /public path
 GET     /public/*filepath                       Static.Serve("public")
