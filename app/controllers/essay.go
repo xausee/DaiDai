@@ -226,7 +226,7 @@ func (e *Essay) PageList(pageNumber string) revel.Result {
 	return e.Render()
 }
 
-func (e *Essay) PageListWithTag(tag string, pageNumber string) revel.Result {
+func (e *Essay) PageListWithTag(uPageNumber string, tag string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -244,7 +244,7 @@ func (e *Essay) PageListWithTag(tag string, pageNumber string) revel.Result {
 	}
 
 	var iPageNumber int
-	iPageNumber, err = strconv.Atoi(pageNumber)
+	iPageNumber, err = strconv.Atoi(uPageNumber)
 	if err != nil {
 		fmt.Println(err)
 	}
@@ -258,12 +258,12 @@ func (e *Essay) PageListWithTag(tag string, pageNumber string) revel.Result {
 		fmt.Println("已超过最大页码")
 	}
 	fmt.Println("pageCount:", pageCount)
-	fmt.Println("pageNumber:", pageNumber)
+	fmt.Println("uPageNumber:", uPageNumber)
 
 	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
 	e.RenderArgs["pageCount"] = pageCount
-	e.RenderArgs["pageNumber"] = pageNumber
+	e.RenderArgs["uPageNumber"] = uPageNumber
 
 	return e.Render()
 }

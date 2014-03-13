@@ -48,8 +48,8 @@ POST    /add/essay                              Essay.PostAdd
 GET     /essay/edit/:id                         Essay.Edit
 POST    /essay/edit/:id                         Essay.PostEdit
 GET     /essay/show/:id                         Essay.Show
-GET     /essaylistmodule/:page                  Essay.PageList
-GET     /essaytypelistmodulet/:type/:page       Essay.PageListWithTag
+GET     /essaylistmodule                        Essay.PageList
+GET     /essaytypelistmodulet                   Essay.PageListWithTag
 
 GET     /hintFiction                            HintFiction.Index
 GET     /hintFiction/:tag                       HintFiction.TypeIndex

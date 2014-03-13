@@ -1,0 +1,70 @@
+{{set . "title" "新增散文"}}
+{{template "header.html" .}}
+
+{{if eq .email "xausee@gmail.com"}}
+<div class="container"> 
+  <div class="col-md-1"></div>
+  <div class="col-md-10">
+    <div class="text-muted">新增散文:</div>
+    <br>
+    <form role="form" action="{{url "Essay.PostAdd"}}" method="POST">  
+      <div class="input-group">
+        <span class="input-group-addon">标签</span>     
+        <select class="form-control input-sm" name="essay.Tag">          
+          <option>民国散文</option>
+          <option>当代散文</option>  
+          <option>国外散文</option>                 
+        </select>
+      </div> 
+      <br>        
+
+      {{with $field := field "essay.Title" .}} 
+      <div class="input-group {{$field.ErrorClass}}">         
+        <span class="input-group-addon">标题</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1"></textarea> 
+        {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+        {{end}}         
+      </div> 
+      {{end}} 
+      <br>           
+      
+      {{with $field := field "essay.Content" .}} 
+      <div class="input-group {{$field.ErrorClass}}">         
+        <span class="input-group-addon">内容</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="20"></textarea> 
+        {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+        {{end}}         
+      </div> 
+      {{end}} 
+      <br>    
+
+      {{with $field := field "essay.Author" .}} 
+      <div class="input-group {{$field.ErrorClass}}">            
+          <span class="input-group-addon">作者</span>    
+          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入作者" required> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}}        
+      </div> 
+      {{end}} 
+      <br>
+
+      <div class="input-group">                  
+        <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
+      </div>  
+      <br>        
+    </form> 
+  </div>
+  <div class="col-md-4"></div>
+</div> 
+{{else}}
+<div class="row text-center text-warning">
+  <br><br><br><br>
+  抱歉，您没有访问该页面的权限，只有管理员才可查看该页面。
+  <br><br><br><br>
+</div>     
+{{end}}
+
+{{template "footer.html" .}}

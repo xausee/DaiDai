@@ -26,7 +26,7 @@ xmlhttp.onreadystatechange=function()
     }
   } 
 
-xmlhttp.open("GET","{{url "Essay.PageListWithTag"  "type" "pageNumber"}}", true);
+xmlhttp.open("GET","{{url "Essay.PageListWithTag" "" .type}}" + pageNumber, true);
 xmlhttp.send();
 }
 </script>
@@ -47,8 +47,7 @@ xmlhttp.send();
             </div> 
           </div>    
           </div>
-          <div class="text-center">  
-          {{.type}}                
+          <div class="text-center">                          
             <ul class="pagination pagination-centered">
               <li value="-1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>&laquo;</a></li>
               <li value="1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>1</a></li>
