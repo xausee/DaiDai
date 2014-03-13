@@ -4,6 +4,7 @@ import (
 	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
+	"strconv"
 )
 
 type Essay struct {
@@ -222,9 +223,25 @@ func (e *Essay) PageList(pageNumber string) revel.Result {
 		pageCount = count/30 + 1
 	}
 
+	var iPageNumber int
+	iPageNumber, err = strconv.Atoi(pageNumber)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	essaysOnOnePage := []models.Essay{}
+	if count >= iPageNumber*30 {
+		essaysOnOnePage = allEssays[(iPageNumber-1)*30 : iPageNumber*30]
+	} else if (iPageNumber-1)*30 < count && count < iPageNumber*30 {
+		essaysOnOnePage = allEssays[(iPageNumber-1)*30:]
+	} else if (iPageNumber-1)*30 > count {
+		fmt.Println("已超过最大页码")
+	}
+	fmt.Println("pageCount:", pageCount)
 	fmt.Println("pageNumber:", pageNumber)
 
 	e.RenderArgs["allEssays"] = allEssays
+	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
 	e.RenderArgs["pageCount"] = pageCount
 	e.RenderArgs["pageNumber"] = pageNumber
 

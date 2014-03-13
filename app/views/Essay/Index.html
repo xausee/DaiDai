@@ -26,7 +26,7 @@ xmlhttp.onreadystatechange=function()
     }
   }  
   // try this for more times!!!! success!!!
-xmlhttp.open("GET","{{url "Essay.PageList" ""}}"+pageNumber,true);
+xmlhttp.open("GET","{{url "Essay.PageList" ""}}"+pageNumber, true);
 xmlhttp.send();
 }
 </script> 
@@ -49,13 +49,13 @@ xmlhttp.send();
 
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
-              <li value="010" onclick="updateEssayList(this.value)"><a>&laquo;</a></li>
+              <li value="-1" onclick="updateEssayList(this.value)"><a>&laquo;</a></li>
               <li value="1" onclick="updateEssayList(this.value)"><a>1</a></li>
               <li value="2" onclick="updateEssayList(this.value)"><a>2</a></li>
               <li value="3" onclick="updateEssayList(this.value)"><a>3</a></li>
               <li value="4" onclick="updateEssayList(this.value)"><a>4</a></li>
               <li value="5" onclick="updateEssayList(this.value)"><a>5</a></li>
-              <li value="10" onclick="updateEssayList(this.value)"><a>&raquo;</a></li>
+              <li value="-2" onclick="updateEssayList(this.value)"><a>&raquo;</a></li>
             </ul>
           </div>     
         </div>            
