@@ -22,7 +22,7 @@ xmlhttp.onreadystatechange=function()
   {    
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
-    document.getElementById("essaylistTest").innerHTML=xmlhttp.responseText;
+    document.getElementById("essaylist").innerHTML=xmlhttp.responseText;
     }
   }  
   // try this for more times!!!! success!!!
@@ -37,7 +37,7 @@ xmlhttp.send();
     <div class="col-xs-10"> 
       <div class="panel panel-success">      
         <div class="panel-body">          
-          <div id="essaylistTest">
+          <div id="essaylist">
             {{range .essaysOnOnePage}}
             <div class="row">
               <div class="col-xs-10"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>    

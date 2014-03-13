@@ -1,6 +1,35 @@
 {{set . "title" "散文"}}
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
+<script>
+function updateEssayTypeList(type, pageNumber)
+{
+var xmlhttp;    
+if (type=="" || pageNumber=="")
+  {
+  document.getElementById("essaylist").innerHTML="";
+  return;
+  }
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {    
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    {
+    document.getElementById("essaylist").innerHTML=xmlhttp.responseText;
+    }
+  } 
+
+xmlhttp.open("GET","{{url "Essay.PageListWithTag"  "type" "pageNumber"}}", true);
+xmlhttp.send();
+}
+</script>
 
 <div class="container">
   <div class="row">
@@ -8,22 +37,26 @@
     <div class="col-xs-10"> 
       <div class="panel panel-success">      
         <div class="panel-body">
-          {{range .allEssays}}
-          <div class="row">
-            <div class="col-xs-10"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>    
-            <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>
-          </div>  
-          {{end}}    
+          <div id="essaylist">
+            {{range .essaysOnOnePage}}
+            <div class="row">
+              <div class="col-xs-10"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>    
+              <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>
+            </div>  
+            {{end}}  
+            </div> 
+          </div>    
           </div>
-          <div class="text-center">                  
+          <div class="text-center">  
+          {{.type}}                
             <ul class="pagination pagination-centered">
-              <li><a href="{{url "Essay.Index" }}">&laquo;</a></li>
-              <li><a href="{{url "Essay.Index" }}">1</a></li>
-              <li><a href="{{url "Essay.Index" }}">2</a></li>
-              <li><a href="{{url "Essay.Index" }}">3</a></li>
-              <li><a href="{{url "Essay.Index" }}">4</a></li>
-              <li><a href="{{url "Essay.Index" }}">5</a></li>
-              <li><a href="{{url "Essay.Index" }}">&raquo;</a></li>
+              <li value="-1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>&laquo;</a></li>
+              <li value="1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>1</a></li>
+              <li value="2" onclick="updateEssayTypeList({{.type}}, this.value)"><a>2</a></li>
+              <li value="3" onclick="updateEssayTypeList({{.type}}, this.value)"><a>3</a></li>
+              <li value="4" onclick="updateEssayTypeList({{.type}}, this.value)"><a>4</a></li>
+              <li value="5" onclick="updateEssayTypeList({{.type}}, this.value)"><a>5</a></li>
+              <li value="-2" onclick="updateEssayTypeList({{.type}}, this.value)"><a>&raquo;</a></li>
             </ul>
           </div>     
         </div>            

@@ -64,10 +64,19 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 		pageCount = count/30 + 1
 	}
 
+	essaysOnOnePage := []models.Essay{}
+	if count > 30 {
+		essaysOnOnePage = allEssays[(count - 30):]
+	} else {
+		essaysOnOnePage = allEssays
+	}
+
 	e.RenderArgs["email"] = e.Session["email"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
 	e.RenderArgs["allEssays"] = allEssays
+	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
 	e.RenderArgs["pageCount"] = pageCount
+	e.RenderArgs["type"] = tag
 
 	return e.Render(email, nickName, allEssays)
 }
@@ -95,7 +104,7 @@ func (e *Essay) Edit(id string) revel.Result {
 
 func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
 	e.Validation.Required(essay.Tag).Message("请选择一个标签")
-	e.Validation.Required(essay.Content).Message("摘录内容不能为空")
+	e.Validation.Required(essay.Content).Message("散文内容不能为空")
 	e.Validation.Required(essay.Author).Message("作者不能为空")
 
 	fmt.Println("散文标签： ", essay.Tag)
@@ -183,6 +192,48 @@ func (e *Essay) PageList(pageNumber string) revel.Result {
 	defer manager.Close()
 
 	allEssays, err := manager.GetAllEssay()
+	count := len(allEssays)
+
+	var pageCount int
+	if (count % 30) == 0 {
+		pageCount = count / 30
+	} else {
+		pageCount = count/30 + 1
+	}
+
+	var iPageNumber int
+	iPageNumber, err = strconv.Atoi(pageNumber)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	essaysOnOnePage := []models.Essay{}
+	if count >= iPageNumber*30 {
+		essaysOnOnePage = allEssays[(iPageNumber-1)*30 : iPageNumber*30]
+	} else if (iPageNumber-1)*30 < count && count < iPageNumber*30 {
+		essaysOnOnePage = allEssays[(iPageNumber-1)*30:]
+	} else if (iPageNumber-1)*30 > count {
+		fmt.Println("已超过最大页码")
+	}
+	fmt.Println("pageCount:", pageCount)
+	fmt.Println("pageNumber:", pageNumber)
+
+	e.RenderArgs["allEssays"] = allEssays
+	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
+	e.RenderArgs["pageCount"] = pageCount
+	e.RenderArgs["pageNumber"] = pageNumber
+
+	return e.Render()
+}
+
+func (e *Essay) PageListWithTag(tag string, pageNumber string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	allEssays, err := manager.GetEssayByTag(tag)
 	count := len(allEssays)
 
 	var pageCount int
