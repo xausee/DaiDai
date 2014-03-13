@@ -38,7 +38,7 @@ xmlhttp.send();
       <div class="panel panel-success">      
         <div class="panel-body">          
           <div id="essaylistTest">
-            {{range .allEssays}}
+            {{range .essaysOnOnePage}}
             <div class="row">
               <div class="col-xs-10"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>    
               <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>

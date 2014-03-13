@@ -28,18 +28,17 @@ func (e *Essay) Index() revel.Result {
 		pageCount = count/30 + 1
 	}
 
-	// var more bool
-	// if count > 30 {
-	// 	more = true
-	// 	essaysOnOnePage := allEssays[(count - 30):]
-	// } else {
-	// 	more = false
-	// 	essaysOnOnePage := allEssays
-	// }
+	essaysOnOnePage := []models.Essay{}
+	if count > 30 {
+		essaysOnOnePage = allEssays[(count - 30):]
+	} else {
+		essaysOnOnePage = allEssays
+	}
 
 	e.RenderArgs["email"] = e.Session["email"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
 	e.RenderArgs["allEssays"] = allEssays
+	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
 	e.RenderArgs["pageCount"] = pageCount
 
 	return e.Render()
