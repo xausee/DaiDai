@@ -21,8 +21,14 @@ else
 xmlhttp.onreadystatechange=function()
   {    
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    {
-    document.getElementById("essaylist").innerHTML=xmlhttp.responseText;
+    { 
+      // remove all pagination active class first    
+      $('.pagination>li').removeClass('active'); 
+      // add active class to the clicked item
+      var id = "#"+"page_"+pageNumber
+      $(id).addClass('active');
+      // return result
+      document.getElementById("essaylist").innerHTML=xmlhttp.responseText;
     }
   } 
 
@@ -52,7 +58,7 @@ xmlhttp.send();
               <li value="-1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>前一页</a></li>
               {{$type := .type}}
               {{range .pageSlice}}
-                <li value={{.}} onclick="updateEssayTypeList({{$type}}, this.value)"><a>{{.}}</a></li>
+                <li value={{.}} id=page_{{.}} onclick="updateEssayTypeList({{$type}}, this.value)"><a>{{.}}</a></li>
               {{end}}              
               <li value="-2" onclick="updateEssayTypeList({{.type}}, this.value)"><a>下一页</a></li>
             </ul>
