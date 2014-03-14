@@ -55,9 +55,9 @@ func (c *App) RenderQuotations(manager *models.DbManager) error {
 	var quotations []models.Quotation
 	var count = len(qs)
 	var more bool
-	if count > 15 {
+	if count > models.ArticlesInHomePanel {
 		more = true
-		quotations = qs[(count - 15):]
+		quotations = qs[(count - models.ArticlesInHomePanel):]
 	} else {
 		more = false
 		quotations = qs
@@ -113,9 +113,9 @@ func (c *App) RenderModernPoems(manager *models.DbManager) error {
 	var poems []models.ModernPoem
 	var count = len(ps)
 	var more bool
-	if count > 15 {
+	if count > models.ArticlesInHomePanel {
 		more = true
-		poems = ps[(count - 15):]
+		poems = ps[(count - models.ArticlesInHomePanel):]
 	} else {
 		more = false
 		poems = ps
@@ -133,9 +133,9 @@ func (c *App) RenderEssays(manager *models.DbManager) error {
 	var essays []models.Essay
 	var count = len(es)
 	var more bool
-	if count > 15 {
+	if count > models.ArticlesInHomePanel {
 		more = true
-		essays = es[(count - 15):]
+		essays = es[(count - models.ArticlesInHomePanel):]
 	} else {
 		more = false
 		essays = es
@@ -153,9 +153,9 @@ func (c *App) RenderHintFictions(manager *models.DbManager) error {
 	var hintFictions []models.HintFiction
 	var count = len(hs)
 	var more bool
-	if count > 15 {
+	if count > models.ArticlesInHomePanel {
 		more = true
-		hintFictions = hs[(count - 15):]
+		hintFictions = hs[(count - models.ArticlesInHomePanel):]
 	} else {
 		more = false
 		hintFictions = hs

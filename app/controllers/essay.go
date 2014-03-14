@@ -22,15 +22,15 @@ func (e *Essay) Index() revel.Result {
 	count := len(allEssays)
 
 	var pageCount int
-	if (count % 30) == 0 {
-		pageCount = count / 30
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
 	} else {
-		pageCount = count/30 + 1
+		pageCount = count/models.ArticlesInSinglePage + 1
 	}
 
 	essaysOnOnePage := []models.Essay{}
-	if count > 30 {
-		essaysOnOnePage = allEssays[(count - 30):]
+	if count > models.ArticlesInSinglePage {
+		essaysOnOnePage = allEssays[(count - models.ArticlesInSinglePage):]
 	} else {
 		essaysOnOnePage = allEssays
 	}
@@ -58,10 +58,10 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 	count := len(allEssays)
 
 	var pageCount int
-	if (count % 30) == 0 {
-		pageCount = count / 30
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
 	} else {
-		pageCount = count/30 + 1
+		pageCount = count/models.ArticlesInSinglePage + 1
 	}
 
 	pageSlice := make([]int, 0)
@@ -70,8 +70,8 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 	}
 
 	essaysOnOnePage := []models.Essay{}
-	if count > 30 {
-		essaysOnOnePage = allEssays[(count - 30):]
+	if count > models.ArticlesInSinglePage {
+		essaysOnOnePage = allEssays[(count - models.ArticlesInSinglePage):]
 	} else {
 		essaysOnOnePage = allEssays
 	}
@@ -201,10 +201,10 @@ func (e *Essay) PageList(pageNumber string) revel.Result {
 	count := len(allEssays)
 
 	var pageCount int
-	if (count % 30) == 0 {
-		pageCount = count / 30
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
 	} else {
-		pageCount = count/30 + 1
+		pageCount = count/models.ArticlesInSinglePage + 1
 	}
 
 	var iPageNumber int
@@ -214,11 +214,11 @@ func (e *Essay) PageList(pageNumber string) revel.Result {
 	}
 
 	essaysOnOnePage := []models.Essay{}
-	if count >= iPageNumber*30 {
-		essaysOnOnePage = allEssays[(iPageNumber-1)*30 : iPageNumber*30]
-	} else if (iPageNumber-1)*30 < count && count < iPageNumber*30 {
-		essaysOnOnePage = allEssays[(iPageNumber-1)*30:]
-	} else if (iPageNumber-1)*30 > count {
+	if count >= iPageNumber*models.ArticlesInSinglePage {
+		essaysOnOnePage = allEssays[(iPageNumber-1)*models.ArticlesInSinglePage : iPageNumber*models.ArticlesInSinglePage]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage < count && count < iPageNumber*models.ArticlesInSinglePage {
+		essaysOnOnePage = allEssays[(iPageNumber-1)*models.ArticlesInSinglePage:]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage > count {
 		fmt.Println("已超过最大页码")
 	}
 	fmt.Println("pageCount:", pageCount)
@@ -243,10 +243,10 @@ func (e *Essay) PageListWithTag(uPageNumber string, tag string) revel.Result {
 	count := len(allEssays)
 
 	var pageCount int
-	if (count % 30) == 0 {
-		pageCount = count / 30
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
 	} else {
-		pageCount = count/30 + 1
+		pageCount = count/models.ArticlesInSinglePage + 1
 	}
 
 	var iPageNumber int
@@ -256,11 +256,11 @@ func (e *Essay) PageListWithTag(uPageNumber string, tag string) revel.Result {
 	}
 
 	essaysOnOnePage := []models.Essay{}
-	if count >= iPageNumber*30 {
-		essaysOnOnePage = allEssays[(iPageNumber-1)*30 : iPageNumber*30]
-	} else if (iPageNumber-1)*30 < count && count < iPageNumber*30 {
-		essaysOnOnePage = allEssays[(iPageNumber-1)*30:]
-	} else if (iPageNumber-1)*30 > count {
+	if count >= iPageNumber*models.ArticlesInSinglePage {
+		essaysOnOnePage = allEssays[(iPageNumber-1)*models.ArticlesInSinglePage : iPageNumber*models.ArticlesInSinglePage]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage < count && count < iPageNumber*models.ArticlesInSinglePage {
+		essaysOnOnePage = allEssays[(iPageNumber-1)*models.ArticlesInSinglePage:]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage > count {
 		fmt.Println("已超过最大页码")
 	}
 	fmt.Println("pageCount:", pageCount)
