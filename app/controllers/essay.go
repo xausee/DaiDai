@@ -64,6 +64,11 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 		pageCount = count/30 + 1
 	}
 
+	pageSlice := make([]int, 0)
+	for i := 1; i <= pageCount; i++ {
+		pageSlice = append(pageSlice, i)
+	}
+
 	essaysOnOnePage := []models.Essay{}
 	if count > 30 {
 		essaysOnOnePage = allEssays[(count - 30):]
@@ -77,8 +82,9 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
 	e.RenderArgs["pageCount"] = pageCount
 	e.RenderArgs["type"] = tag
+	e.RenderArgs["pageSlice"] = pageSlice
 
-	return e.Render(email, nickName, allEssays)
+	return e.Render(email, nickName)
 }
 
 func (e *Essay) Add() revel.Result {

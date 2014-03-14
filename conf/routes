@@ -49,7 +49,7 @@ GET     /essay/edit/:id                         Essay.Edit
 POST    /essay/edit/:id                         Essay.PostEdit
 GET     /essay/show/:id                         Essay.Show
 GET     /essaylistmodule                        Essay.PageList
-GET     /essaytypelistmodulet                   Essay.PageListWithTag
+GET     /essaytypelistmodule                    Essay.PageListWithTag
 
 GET     /hintFiction                            HintFiction.Index
 GET     /hintFiction/:tag                       HintFiction.TypeIndex

@@ -48,14 +48,13 @@ xmlhttp.send();
           </div>    
           </div>
           <div class="text-center">                          
-            <ul class="pagination pagination-centered">
-              <li value="-1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>&laquo;</a></li>
-              <li value="1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>1</a></li>
-              <li value="2" onclick="updateEssayTypeList({{.type}}, this.value)"><a>2</a></li>
-              <li value="3" onclick="updateEssayTypeList({{.type}}, this.value)"><a>3</a></li>
-              <li value="4" onclick="updateEssayTypeList({{.type}}, this.value)"><a>4</a></li>
-              <li value="5" onclick="updateEssayTypeList({{.type}}, this.value)"><a>5</a></li>
-              <li value="-2" onclick="updateEssayTypeList({{.type}}, this.value)"><a>&raquo;</a></li>
+            <ul class="pagination pagination-centered">              
+              <li value="-1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>前一页</a></li>
+              {{$type := .type}}
+              {{range .pageSlice}}
+                <li value={{.}} onclick="updateEssayTypeList({{$type}}, this.value)"><a>{{.}}</a></li>
+              {{end}}              
+              <li value="-2" onclick="updateEssayTypeList({{.type}}, this.value)"><a>下一页</a></li>
             </ul>
           </div>     
         </div>            
