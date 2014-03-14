@@ -1,23 +1,37 @@
+<script type="text/javascript"> 
+onload =function(){ 
+  // check thru all <a> elements inside <li> inside .navbar-nav
+  $('#navigation_bar>li>a').each(function(){ 
+    // get current path name
+    var path = window.location.pathname  //.split('/').pop(); 
+    // get last path name of <li>
+    var part_path = $(this).prop("href").split('/').pop()
+    if (part_path == ""){
+      $("#home").addClass("active");
+    }else{ 
+      // include part_path?        
+      var i = path.lastIndexOf(part_path)       
+      if(i>0){
+        // remove all active class
+        $('#navigation_bar>li').removeClass("active"); 
+        // put active in parent of <a> which is <li>   
+        $(this).parent("li").addClass("active"); 
+      }     
+    }    
+  });
+ } 
+</script> 
+
 <div class="container">   
   <div class="row">
     <div class="col-xs-1"></div>
     <div class="col-xs-10">
       <nav class="navbar navbar-inverse" role="navigation">
-          <!-- Brand and toggle get grouped for better mobile display -->
-        <div class="navbar-header">
-          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
-            <span class="sr-only">Toggle navigation</span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-            <span class="icon-bar"></span>
-          </button>
-          <a class="navbar-brand" href="{{url "App.Index" }}">首页</a>
-        </div>
-
         <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-         <ul class="nav navbar-nav">           
+         <ul id="navigation_bar" class="nav navbar-nav"> 
+            <li id="home"><a href="{{url "App.Index" }}">首页</a></li>           
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">散文<b class="caret"></b></a>
+              <a href="essay" class="dropdown-toggle" data-toggle="dropdown">散文<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="/essay/民国散文">民国散文</a></li>
                 <li><a href="/essay/当代散文">当代散文</a></li>   
@@ -25,7 +39,7 @@
               </ul>
             </li>
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">现代诗歌<b class="caret"></b></a>
+              <a href="/modernpoem" class="dropdown-toggle" data-toggle="dropdown">现代诗歌<b class="caret"></b></a>
               <ul class="dropdown-menu">                
                 <li><a href="/modernpoem/尝试诗派">尝试诗派</a></li>              
                 <li><a href="/modernpoem/文学研究会">文学研究会</a></li>
@@ -48,7 +62,7 @@
               </ul>
             </li> 
             <li class="dropdown">
-              <a href="#" class="dropdown-toggle" data-toggle="dropdown">片段摘录<b class="caret"></b></a>
+              <a href="/quotation" class="dropdown-toggle" data-toggle="dropdown">片段摘录<b class="caret"></b></a>
               <ul class="dropdown-menu">
                 <li><a href="/quotation/小说节选">小说节选</a></li>
                 <li><a href="/quotation/散文截选">散文截选</a></li>                
@@ -56,7 +70,7 @@
             </li>            
             <li><a href="/hintFiction">微小说</a></li>
             <li><a href="/aboutus">关于我们</a></li>
-            <li class="active"><a href="/donate">捐赠</a></li>
+            <li><a href="/donate">捐赠</a></li>
             {{if eq .email "xausee@gmail.com"}}
             <li><a href="/add">新增</a></li>
             {{end}}
