@@ -55,8 +55,7 @@ xmlhttp.send();
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
               <li value="-1" onclick="updateModernPoemPageList(this.value)"><a>上一页</a></li>
-              {{$type := .type}}
-              {{range .pageSlice}}
+              {{range .pages}}
                 <li value={{.}} id=page_{{.}} onclick="updateModernPoemPageList(this.value)"><a>{{.}}</a></li>
               {{end}}              
               <li value="-2" onclick="updateModernPoemPageList(this.value)"><a>下一页</a></li>

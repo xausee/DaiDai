@@ -4,6 +4,7 @@ import (
 	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
+	"strconv"
 )
 
 type Quotation struct {
@@ -11,9 +12,6 @@ type Quotation struct {
 }
 
 func (q *Quotation) Index() revel.Result {
-	email := q.Session["email"]
-	nickName := q.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -21,14 +19,38 @@ func (q *Quotation) Index() revel.Result {
 	defer manager.Close()
 
 	quotations, err := manager.GetAllQuotation()
+	count := len(quotations)
 
-	return q.Render(email, nickName, quotations)
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	pages := make([]int, 0)
+	for i := 1; i <= pageCount; i++ {
+		pages = append(pages, i)
+	}
+
+	quotationsOnOnePage := []models.Quotation{}
+	if count > models.ArticlesInSinglePage {
+		quotationsOnOnePage = quotations[(count - models.ArticlesInSinglePage):]
+	} else {
+		quotationsOnOnePage = quotations
+	}
+
+	q.RenderArgs["email"] = q.Session["email"]
+	q.RenderArgs["nickName"] = q.Session["nickName"]
+	q.RenderArgs["allQuotations"] = quotations
+	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
+	q.RenderArgs["pageCount"] = pageCount
+	q.RenderArgs["pages"] = pages
+
+	return q.Render()
 }
 
 func (q *Quotation) TypeIndex(tag string) revel.Result {
-	email := q.Session["email"]
-	nickName := q.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -36,8 +58,36 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 	defer manager.Close()
 
 	quotations, err := manager.GetQuotationByTag(tag)
+	count := len(quotations)
 
-	return q.Render(email, nickName, quotations)
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	pages := make([]int, 0)
+	for i := 1; i <= pageCount; i++ {
+		pages = append(pages, i)
+	}
+
+	quotationsOnOnePage := []models.Quotation{}
+	if count > models.ArticlesInSinglePage {
+		quotationsOnOnePage = quotations[(count - models.ArticlesInSinglePage):]
+	} else {
+		quotationsOnOnePage = quotations
+	}
+
+	q.RenderArgs["email"] = q.Session["email"]
+	q.RenderArgs["nickName"] = q.Session["nickName"]
+	q.RenderArgs["allQuotations"] = quotations
+	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
+	q.RenderArgs["pageCount"] = pageCount
+	q.RenderArgs["type"] = tag
+	q.RenderArgs["pages"] = pages
+
+	return q.Render()
 }
 
 func (q *Quotation) Add() revel.Result {
@@ -108,7 +158,7 @@ func (q *Quotation) PostEdit(originalQuotationID string, newQuotation *models.Qu
 	if q.Validation.HasErrors() {
 		q.Validation.Keep()
 		q.FlashParams()
-        fmt.Println("error in validation ")
+		fmt.Println("error in validation ")
 		return q.Redirect((*Quotation).Edit)
 	}
 
@@ -147,6 +197,90 @@ func (q *Quotation) Show(id string) revel.Result {
 	// 	//return q.Redirect((*Essay).Add)
 	// }
 	return q.Render(email, nickName, quotation)
+}
+
+func (q *Quotation) PageList(pageNumber string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	allQuotations, err := manager.GetAllQuotation()
+	count := len(allQuotations)
+
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	var iPageNumber int
+	iPageNumber, err = strconv.Atoi(pageNumber)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	quotationsOnOnePage := []models.Quotation{}
+	if count >= iPageNumber*models.ArticlesInSinglePage {
+		quotationsOnOnePage = allQuotations[(iPageNumber-1)*models.ArticlesInSinglePage : iPageNumber*models.ArticlesInSinglePage]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage < count && count < iPageNumber*models.ArticlesInSinglePage {
+		quotationsOnOnePage = allQuotations[(iPageNumber-1)*models.ArticlesInSinglePage:]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage > count {
+		fmt.Println("已超过最大页码")
+	}
+	fmt.Println("pageCount:", pageCount)
+	fmt.Println("pageNumber:", pageNumber)
+
+	q.RenderArgs["allQuotations"] = allQuotations
+	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
+	q.RenderArgs["pageCount"] = pageCount
+	q.RenderArgs["pageNumber"] = pageNumber
+
+	return q.Render()
+}
+
+func (q *Quotation) PageListWithTag(uPageNumber string, tag string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	allQuotations, err := manager.GetQuotationByTag(tag)
+	count := len(allQuotations)
+
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	var iPageNumber int
+	iPageNumber, err = strconv.Atoi(uPageNumber)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	quotationsOnOnePage := []models.Quotation{}
+	if count >= iPageNumber*models.ArticlesInSinglePage {
+		quotationsOnOnePage = allQuotations[(iPageNumber-1)*models.ArticlesInSinglePage : iPageNumber*models.ArticlesInSinglePage]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage < count && count < iPageNumber*models.ArticlesInSinglePage {
+		quotationsOnOnePage = allQuotations[(iPageNumber-1)*models.ArticlesInSinglePage:]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage > count {
+		fmt.Println("已超过最大页码")
+	}
+	fmt.Println("pageCount:", pageCount)
+	fmt.Println("uPageNumber:", uPageNumber)
+
+	q.RenderArgs["allQuotations"] = allQuotations
+	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
+	q.RenderArgs["pageCount"] = pageCount
+	q.RenderArgs["uPageNumber"] = uPageNumber
+
+	return q.Render()
 }
 
 func (q *Quotation) Delete(id string) revel.Result {

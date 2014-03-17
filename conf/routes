@@ -22,6 +22,8 @@ POST    /add/quotation                          Quotation.PostAdd
 GET     /quotation/edit/:id                     Quotation.Edit
 POST    /quotation/edit/:id                     Quotation.PostEdit
 GET     /quotation/show/:id                     Quotation.Show
+GET     /quotationlistmodule                    Quotation.PageList
+GET     /quotationtypelistmodule                Quotation.PageListWithTag
 
 GET     /witticism                              Witticism.Index
 GET     /add/witticism                          Witticism.Add
