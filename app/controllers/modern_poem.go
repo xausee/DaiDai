@@ -28,9 +28,9 @@ func (mp *ModernPoem) Index() revel.Result {
 		pageCount = count/models.ArticlesInSinglePage + 1
 	}
 
-	pageSlice := make([]int, 0)
+	pages := make([]int, 0)
 	for i := 1; i <= pageCount; i++ {
-		pageSlice = append(pageSlice, i)
+		pages = append(pages, i)
 	}
 
 	poemsOnOnePage := []models.ModernPoem{}
@@ -45,7 +45,7 @@ func (mp *ModernPoem) Index() revel.Result {
 	mp.RenderArgs["allPoems"] = allPoems
 	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
 	mp.RenderArgs["pageCount"] = pageCount
-	mp.RenderArgs["pageSlice"] = pageSlice
+	mp.RenderArgs["pages"] = pages
 
 	return mp.Render()
 }
