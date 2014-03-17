@@ -28,6 +28,11 @@ func (e *Essay) Index() revel.Result {
 		pageCount = count/models.ArticlesInSinglePage + 1
 	}
 
+	pageSlice := make([]int, 0)
+	for i := 1; i <= pageCount; i++ {
+		pageSlice = append(pageSlice, i)
+	}
+
 	essaysOnOnePage := []models.Essay{}
 	if count > models.ArticlesInSinglePage {
 		essaysOnOnePage = allEssays[(count - models.ArticlesInSinglePage):]
@@ -40,14 +45,12 @@ func (e *Essay) Index() revel.Result {
 	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
 	e.RenderArgs["pageCount"] = pageCount
+	e.RenderArgs["pageSlice"] = pageSlice
 
 	return e.Render()
 }
 
 func (e *Essay) TypeIndex(tag string) revel.Result {
-	email := e.Session["email"]
-	nickName := e.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -84,7 +87,7 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 	e.RenderArgs["type"] = tag
 	e.RenderArgs["pageSlice"] = pageSlice
 
-	return e.Render(email, nickName)
+	return e.Render()
 }
 
 func (e *Essay) Add() revel.Result {

@@ -55,7 +55,7 @@ xmlhttp.send();
           </div>
           <div class="text-center">                          
             <ul class="pagination pagination-centered">              
-              <li value="-1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>前一页</a></li>
+              <li value="-1" onclick="updateEssayTypeList({{.type}}, this.value)"><a>上一页</a></li>
               {{$type := .type}}
               {{range .pageSlice}}
                 <li value={{.}} id=page_{{.}} onclick="updateEssayTypeList({{$type}}, this.value)"><a>{{.}}</a></li>

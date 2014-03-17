@@ -22,7 +22,13 @@ xmlhttp.onreadystatechange=function()
   {    
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
     {
-    document.getElementById("essaylist").innerHTML=xmlhttp.responseText;
+      // remove all pagination active class first    
+      $('.pagination>li').removeClass('active'); 
+      // add active class to the clicked item
+      var id = "#"+"page_"+pageNumber
+      $(id).addClass('active');
+      // return result
+      document.getElementById("essaylist").innerHTML=xmlhttp.responseText;
     }
   }  
   // try this for more times!!!! success!!!
@@ -49,13 +55,11 @@ xmlhttp.send();
 
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
-              <li value="-1" onclick="updateEssayList(this.value)"><a>&laquo;</a></li>
-              <li value="1" onclick="updateEssayList(this.value)"><a>1</a></li>
-              <li value="2" onclick="updateEssayList(this.value)"><a>2</a></li>
-              <li value="3" onclick="updateEssayList(this.value)"><a>3</a></li>
-              <li value="4" onclick="updateEssayList(this.value)"><a>4</a></li>
-              <li value="5" onclick="updateEssayList(this.value)"><a>5</a></li>
-              <li value="-2" onclick="updateEssayList(this.value)"><a>&raquo;</a></li>
+              <li value="-1" onclick="updateEssayList(this.value)"><a>上一页</a></li>              
+              {{range .pageSlice}}
+                <li value={{.}} id=page_{{.}} onclick="updateEssayList(this.value)"><a>{{.}}</a></li>
+              {{end}}              
+              <li value="-2" onclick="updateEssayList(this.value)"><a>下一页</a></li>
             </ul>
           </div>     
         </div>            
