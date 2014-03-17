@@ -33,13 +33,15 @@ GET     /witticism/show/:id                     Witticism.Show
 GET     /add/ancientpoem                        AncientPoem.Add
 POST    /add/ancientpoem                        AncientPoem.PostAdd
 
-GET     /modernpoem                             ModernPoem.Index
-GET     /modernpoem/:tag                        ModernPoem.TypeIndex
+GET     /modernPoem                             ModernPoem.Index
+GET     /modernPoem/:tag                        ModernPoem.TypeIndex
 GET     /add/modernPoem                         ModernPoem.Add
 POST    /add/modernPoem                         ModernPoem.PostAdd
 GET     /modernPoem/Edit/:id                    ModernPoem.Edit
 POST    /modernPoem/Edit/:id                    ModernPoem.PostEdit
 GET     /modernPoem/show/:id                    ModernPoem.Show
+GET     /modernpoemlistmodule                   ModernPoem.PageList
+GET     /modernpoemtypelistmodule               ModernPoem.PageListWithTag
 
 GET     /essay                                  Essay.Index
 GET     /essay/:tag                             Essay.TypeIndex
