@@ -62,6 +62,7 @@ POST    /add/hintFiction                        HintFiction.PostAdd
 GET     /hintFiction/Edit/:id                   HintFiction.Edit
 POST    /hintFiction/Edit/:id                   HintFiction.PostEdit
 GET     /hintFiction/show/:id                   HintFiction.Show
+GET     /hintfictionlistmodule                  HintFiction.PageList
 
 GET     /favicon.ico                            Static.Serve("public","img/red-book.png")
 

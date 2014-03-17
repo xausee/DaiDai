@@ -1,6 +1,41 @@
 {{set . "title" "微小说"}}
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
+<script>
+function updateHintFictionPageList(pageNumber)
+{
+var xmlhttp;    
+if (pageNumber=="")
+  {
+  document.getElementById("hintFictionlist").innerHTML="";
+  return;
+  }
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {    
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    { 
+      // remove all pagination active class first    
+      $('.pagination>li').removeClass('active'); 
+      // add active class to the clicked item
+      var id = "#"+"page_"+pageNumber
+      $(id).addClass('active');
+      // return result
+      document.getElementById("hintFictionlist").innerHTML=xmlhttp.responseText;
+    }
+  } 
+
+xmlhttp.open("GET","{{url "HintFiction.PageList" ""}}" + pageNumber, true);
+xmlhttp.send();
+}
+</script>
 
 <div class="container">
   <div class="row">
@@ -8,22 +43,21 @@
     <div class="col-xs-10"> 
       <div class="panel panel-success">      
         <div class="panel-body">
-          {{range .hintFictions}}
-          <div class="row">
-            <div class="col-xs-10"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
-            <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>
-          </div>  
-          {{end}}    
+          <div id="hintFictionlist">
+            {{range .hintFictionsOnOnePage}}
+            <div class="row">
+              <div class="col-xs-10"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
+              <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>
+            </div>  
+            {{end}}    
           </div>
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
-              <li><a href="#">&laquo;</a></li>
-              <li><a href="#">1</a></li>
-              <li><a href="#">2</a></li>
-              <li><a href="#">3</a></li>
-              <li><a href="#">4</a></li>
-              <li><a href="#">5</a></li>
-              <li><a href="#">&raquo;</a></li>
+              <li value="-1" onclick="updateHintFictionPageList(this.value)"><a>上一页</a></li>
+              {{range .pages}}
+                <li value={{.}} id=page_{{.}} onclick="updateHintFictionPageList(this.value)"><a>{{.}}</a></li>
+              {{end}}              
+              <li value="-2" onclick="updateHintFictionPageList(this.value)"><a>下一页</a></li>
             </ul>
           </div>     
         </div>            

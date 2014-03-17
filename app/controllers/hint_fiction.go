@@ -4,6 +4,7 @@ import (
 	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
+	"strconv"
 )
 
 type HintFiction struct {
@@ -11,9 +12,6 @@ type HintFiction struct {
 }
 
 func (hf *HintFiction) Index() revel.Result {
-	email := hf.Session["email"]
-	nickName := hf.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -21,8 +19,35 @@ func (hf *HintFiction) Index() revel.Result {
 	defer manager.Close()
 
 	hintFictions, err := manager.GetAllHintFiction()
+	count := len(hintFictions)
 
-	return hf.Render(email, nickName, hintFictions)
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	pages := make([]int, 0)
+	for i := 1; i <= pageCount; i++ {
+		pages = append(pages, i)
+	}
+
+	hintFictionsOnOnePage := []models.HintFiction{}
+	if count > models.ArticlesInSinglePage {
+		hintFictionsOnOnePage = hintFictions[(count - models.ArticlesInSinglePage):]
+	} else {
+		hintFictionsOnOnePage = hintFictions
+	}
+
+	hf.RenderArgs["email"] = hf.Session["email"]
+	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["allHintFinctions"] = hintFictions
+	hf.RenderArgs["hintFictionsOnOnePage"] = hintFictionsOnOnePage
+	hf.RenderArgs["pageCount"] = pageCount
+	hf.RenderArgs["pages"] = pages
+
+	return hf.Render()
 }
 
 func (hf *HintFiction) TypeIndex(tag string) revel.Result {
@@ -141,6 +166,48 @@ func (hf *HintFiction) Show(id string) revel.Result {
 	// 	//return hf.Redirect((*Essay).Add)
 	// }
 	return hf.Render(email, nickName, hintFiction)
+}
+
+func (hf *HintFiction) PageList(pageNumber string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	allHintfictions, err := manager.GetAllHintFiction()
+	count := len(allHintfictions)
+
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	var iPageNumber int
+	iPageNumber, err = strconv.Atoi(pageNumber)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	hintFictionsOnOnePage := []models.HintFiction{}
+	if count >= iPageNumber*models.ArticlesInSinglePage {
+		hintFictionsOnOnePage = allHintfictions[(iPageNumber-1)*models.ArticlesInSinglePage : iPageNumber*models.ArticlesInSinglePage]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage < count && count < iPageNumber*models.ArticlesInSinglePage {
+		hintFictionsOnOnePage = allHintfictions[(iPageNumber-1)*models.ArticlesInSinglePage:]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage > count {
+		fmt.Println("已超过最大页码")
+	}
+	fmt.Println("pageCount:", pageCount)
+	fmt.Println("pageNumber:", pageNumber)
+
+	hf.RenderArgs["allHintfictions"] = allHintfictions
+	hf.RenderArgs["hintFictionsOnOnePage"] = hintFictionsOnOnePage
+	hf.RenderArgs["pageCount"] = pageCount
+	hf.RenderArgs["pageNumber"] = pageNumber
+
+	return hf.Render()
 }
 
 func (hf *HintFiction) Delete(id string) revel.Result {
