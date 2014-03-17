@@ -7,7 +7,7 @@ function updateEssayList(pageNumber)
 var xmlhttp;    
 if (pageNumber=="")
   {
-  document.getElementById("hintFinctionlist").innerHTML="";
+  document.getElementById("essaylist").innerHTML="";
   return;
   }
 if (window.XMLHttpRequest)
@@ -28,11 +28,11 @@ xmlhttp.onreadystatechange=function()
       var id = "#"+"page_"+pageNumber
       $(id).addClass('active');
       // return result
-      document.getElementById("hintFinctionlist").innerHTML=xmlhttp.responseText;
+      document.getElementById("essaylist").innerHTML=xmlhttp.responseText;
     }
   }  
   // try this for more times!!!! success!!!
-xmlhttp.open("GET","{{url "HintFiction.PageList" ""}}"+pageNumber, true);
+xmlhttp.open("GET","{{url "Essay.PageList" ""}}"+pageNumber, true);
 xmlhttp.send();
 }
 </script> 
@@ -43,7 +43,7 @@ xmlhttp.send();
     <div class="col-xs-10"> 
       <div class="panel panel-success">      
         <div class="panel-body">          
-          <div id="hintFinctionlist">
+          <div id="essaylist">
             {{range .essaysOnOnePage}}
             <div class="row">
               <div class="col-xs-10"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>    
