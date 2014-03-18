@@ -2,6 +2,68 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
-首页
+<div class="container">
+  <div class="row">
+  	<div class="col-xs-1"></div>
+  	<div class="col-xs-2">
+  	  <div class="panel panel-success" style="height:400px">
+        <div class="panel-heading"><h3 class="panel-title">我的关注</h3></div>
+        <div class="panel-body"> 
+          {{range .articles}}
+          <div class="row">
+            <div class="col-xs-10"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
+            <div class="col-xs-2"><span class="badge text-right">{{.Date}}</div>
+          </div>  
+          {{end}} 
+        </div>                        
+      </div> 
+    </div> 
+
+  	<div class="col-xs-8">
+  	  <div class="panel panel-success" style="height:400px">
+        <div class="panel-heading"><h3 class="panel-title">我的文章</h3></div>
+        <div class="panel-body"> 
+          {{range .articles}}
+          <div class="row">
+            <div class="col-xs-10"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
+            <div class="col-xs-2"><span class="badge text-right">{{.Date}}</div>
+          </div>  
+          {{end}} 
+        </div>                       
+       </div>  
+    </div>
+  </div>
+
+  <div class="row">
+  	<div class="col-xs-1"></div>
+  	<div class="col-xs-2">
+  	  <div class="panel panel-success" style="height:400px">
+        <div class="panel-heading"><h3 class="panel-title">私信</h3></div>
+        <div class="panel-body"> 
+          {{range .articles}}
+          <div class="row">
+            <div class="col-xs-10"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
+            <div class="col-xs-2"><span class="badge text-right">{{.Date}}</div>
+          </div>  
+          {{end}} 
+        </div>                        
+      </div> 
+    </div> 
+
+  	<div class="col-xs-8">
+  	  <div class="panel panel-success" style="height:400px">
+        <div class="panel-heading"><h3 class="panel-title">朋友们</h3></div>
+        <div class="panel-body"> 
+          {{range .articles}}
+          <div class="row">
+            <div class="col-xs-10"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
+            <div class="col-xs-2"><span class="badge text-right">{{.Date}}</div>
+          </div>  
+          {{end}} 
+        </div>                       
+       </div>  
+    </div>
+  </div>  
+</div>
 
 {{template "footer.html" .}}
