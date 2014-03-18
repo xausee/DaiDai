@@ -11,6 +11,16 @@ GET     /login                                  Account.Login
 POST    /login                                  Account.PostLogin
 GET     /logout                                 Account.Logout
 
+GET     /user                                   User.Index
+GET     /user/info                              User.Info
+GET     /user/info/edit/:id                     User.EditInfo
+Post    /user/info/edit/:id                     User.PostEditInfo
+GET     /user/article/add                       User.AddArticle
+GET     /user/article/edit/:id                  User.EditArticle
+Post    /user/article/edit/:id                  User.PostEditArticle
+GET     /user/message                           User.Message
+GET     /user/friend                            User.Friend
+
 GET     /add/                                   App.Add
 GET     /aboutus                                App.AboutUs 
 GET     /donate                                 App.Donate
