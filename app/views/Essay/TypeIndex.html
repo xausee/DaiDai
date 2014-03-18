@@ -17,8 +17,7 @@ if (pageNumber==-1|| pageNumber==-2)
   {  
     var status = $(this).prop("class")    
     if (status == "active")
-    {      
-      $(this).removeClass("active")
+    { 
       var IdNumber = parseInt($(this).prop("id").substr(5)) 
       if (pageNumber == -1)
       {        
@@ -33,6 +32,8 @@ if (pageNumber==-1|| pageNumber==-2)
 } 
 // no li which class is active exist when click preious of next page link, just return. 
 if (pageNumber==-1|| pageNumber==-2){return}
+// reach the first page or last page, return.
+if (pageNumber==0|| pageNumber>{{.pageCount}}){return}
 
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
