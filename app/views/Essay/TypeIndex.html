@@ -3,13 +3,37 @@
 {{template "navigate_bar.html" .}}
 <script>
 function updateEssayTypeList(type, pageNumber)
-{
+{  
 var xmlhttp;    
 if (type=="" || pageNumber=="")
-  {
+{
   document.getElementById("essaylist").innerHTML="";
   return;
-  }
+}
+
+if (pageNumber==-1|| pageNumber==-2)
+{
+  $('.pagination>li').each(function()
+  {  
+    var status = $(this).prop("class")    
+    if (status == "active")
+    {      
+      $(this).removeClass("active")
+      var IdNumber = parseInt($(this).prop("id").substr(5)) 
+      if (pageNumber == -1)
+      {        
+        pageNumber = IdNumber -1                   
+      }
+      else
+      {        
+        pageNumber = IdNumber + 1 
+      }      
+    }
+  });
+} 
+// no li which class is active exist when click preious of next page link, just return. 
+if (pageNumber==-1|| pageNumber==-2){return}
+
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
   xmlhttp=new XMLHttpRequest();
@@ -21,12 +45,12 @@ else
 xmlhttp.onreadystatechange=function()
   {    
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    { 
+    {  
       // remove all pagination active class first    
       $('.pagination>li').removeClass('active'); 
       // add active class to the clicked item
-      var id = "#"+"page_"+pageNumber
-      $(id).addClass('active');
+      var id = "#"+"page_"+ pageNumber
+      $(id).addClass('active');            
       // return result
       document.getElementById("essaylist").innerHTML=xmlhttp.responseText;
     }

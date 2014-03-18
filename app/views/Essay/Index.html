@@ -10,6 +10,29 @@ if (pageNumber=="")
   document.getElementById("essaylist").innerHTML="";
   return;
   }
+if (pageNumber==-1|| pageNumber==-2)
+{
+  $('.pagination>li').each(function()
+  {  
+    var status = $(this).prop("class")    
+    if (status == "active")
+    {      
+      $(this).removeClass("active")
+      var IdNumber = parseInt($(this).prop("id").substr(5)) 
+      if (pageNumber == -1)
+      {        
+        pageNumber = IdNumber -1                   
+      }
+      else
+      {        
+        pageNumber = IdNumber + 1 
+      }      
+    }
+  });
+} 
+// no li which class is active exist when click preious of next page link, just return. 
+if (pageNumber==-1|| pageNumber==-2){return}
+  
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
   xmlhttp=new XMLHttpRequest();
