@@ -32,9 +32,7 @@ if (pageNumber==-1|| pageNumber==-2)
 } 
 // no li which class is active exist when click preious of next page link, just return. 
 if (pageNumber==-1|| pageNumber==-2){return}
-// reach the first page or last page, return.
-if (pageNumber==0|| pageNumber>{{.pageCount}}){return}
-
+  
 if (window.XMLHttpRequest)
   {// code for IE7+, Firefox, Chrome, Opera, Safari
   xmlhttp=new XMLHttpRequest();
@@ -49,9 +47,21 @@ xmlhttp.onreadystatechange=function()
     { 
       // remove all pagination active class first    
       $('.pagination>li').removeClass('active'); 
+      // remove disable regardless of exist
+      $('#previous').removeClass('disabled');
+      $('#next').removeClass('disabled'); 
+      // reach first or last page
+      if (pageNumber == 1)
+      {
+        $('#previous').addClass('disabled');            
+      }
+      if (pageNumber == {{.pageCount}})
+      {       
+        $('#next').addClass('disabled');      
+      }
       // add active class to the clicked item
       var id = "#"+"page_"+pageNumber
-      $(id).addClass('active');
+      $(id).addClass('active');      
       // return result
       document.getElementById("quotationlist").innerHTML=xmlhttp.responseText;
     }
@@ -78,12 +88,12 @@ xmlhttp.send();
           </div>
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
-              <li value="-1" onclick="updateQuotationPageList({{.type}}, this.value)"><a>上一页</a></li>
+              <li value="-1" id="previous" onclick="updateQuotationPageList({{.type}}, this.value)"><a>上一页</a></li>
               {{$type := .type}}
               {{range .pages}}
                 <li value={{.}} id=page_{{.}} onclick="updateQuotationPageList({{$type}}, this.value)"><a>{{.}}</a></li>
               {{end}}              
-              <li value="-2" onclick="updateQuotationPageList({{.type}}, this.value)"><a>下一页</a></li>
+              <li value="-2" id="next" onclick="updateQuotationPageList({{.type}}, this.value)"><a>下一页</a></li>
             </ul>
           </div>     
         </div>            
