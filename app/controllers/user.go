@@ -75,6 +75,27 @@ func (user *User) AddArticle() revel.Result {
 	return user.Render()
 }
 
+func (user *User) PostAddArticle(article *models.UserArticle) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	err = manager.AddUserArticle(article)
+	if err != nil {
+		user.Validation.Keep()
+		user.FlashParams()
+		user.Flash.Error(err.Error())
+		return user.Redirect((*User).AddArticle)
+	}
+
+	user.RenderArgs["email"] = user.Session["email"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Redirect((*User).AddArticle)
+}
+
 func (user *User) EditArticle() revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {

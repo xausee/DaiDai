@@ -4,6 +4,10 @@
 
 module:testrunner
 GET     /                                       App.Index
+GET     /add/                                   App.Add
+GET     /aboutus                                App.AboutUs 
+GET     /donate                                 App.Donate
+
 GET     /register                               Account.Register
 POST    /register                               Account.PostRegister
 GET     /registersuccessful                     Account.RegisterSuccessful
@@ -15,16 +19,13 @@ GET     /user                                   User.Index
 GET     /user/info                              User.Info
 GET     /user/info/edit/:id                     User.EditInfo
 Post    /user/info/edit/:id                     User.PostEditInfo
-GET     /user/article/add                       User.AddArticle
+GET     /user/article/add                       User.AddArticle 
+POST    /user/article/add                       User.PostAddArticle
 GET     /user/article/show/:id                  User.ShowArticle
 GET     /user/article/edit/:id                  User.EditArticle
 Post    /user/article/edit/:id                  User.PostEditArticle
 GET     /user/message                           User.Message
 GET     /user/friend                            User.Friend
-
-GET     /add/                                   App.Add
-GET     /aboutus                                App.AboutUs 
-GET     /donate                                 App.Donate
 
 GET     /quotation                              Quotation.Index
 GET     /quotation/:tag                         Quotation.TypeIndex

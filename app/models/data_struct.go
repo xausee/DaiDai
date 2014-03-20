@@ -34,8 +34,10 @@ type UserArticle struct {
 }
 
 type CommonUser struct {
+	Id                string
 	Email             string
 	Nickname          string
+	AvatarUrl         string
 	Password          []byte
 	PenName           string
 	Birth             time.Time
