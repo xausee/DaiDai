@@ -1,5 +1,9 @@
 package models
 
+import (
+	"time"
+)
+
 type User struct {
 	Email    string
 	Nickname string
@@ -19,6 +23,25 @@ type LoginUser struct {
 	Email    string
 	Nickname string
 	Password string
+}
+
+type CommonUser struct {
+	Email             string
+	Nickname          string
+	Password          []byte
+	PenName           string
+	Birth             time.Time
+	Gender            string
+	FavoriteAuthor    string
+	FavoriteBook      string
+	Intrest           string
+	Introduction      string
+	Fans              string
+	Watch             string
+	Message           string
+	ArticleCollection string
+	Article           string
+	Comment           string
 }
 
 type Quotation struct {

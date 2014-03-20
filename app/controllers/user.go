@@ -88,6 +88,19 @@ func (user *User) EditArticle() revel.Result {
 	return user.Render()
 }
 
+func (user *User) ShowArticle(id string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	user.RenderArgs["email"] = user.Session["email"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Render()
+}
+
 func (user *User) PostEditArticle() revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {

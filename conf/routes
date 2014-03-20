@@ -16,11 +16,11 @@ GET     /user/info                              User.Info
 GET     /user/info/edit/:id                     User.EditInfo
 Post    /user/info/edit/:id                     User.PostEditInfo
 GET     /user/article/add                       User.AddArticle
+GET     /user/article/show/:id                  User.ShowArticle
 GET     /user/article/edit/:id                  User.EditArticle
 Post    /user/article/edit/:id                  User.PostEditArticle
 GET     /user/message                           User.Message
 GET     /user/friend                            User.Friend
-GET     /user/writing                           User.AddArticle
 
 GET     /add/                                   App.Add
 GET     /aboutus                                App.AboutUs 
