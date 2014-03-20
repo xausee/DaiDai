@@ -25,6 +25,14 @@ type LoginUser struct {
 	Password string
 }
 
+type UserArticle struct {
+	Id      string
+	Title   string
+	Tag     string
+	Content string
+	Author  string
+}
+
 type CommonUser struct {
 	Email             string
 	Nickname          string
@@ -40,7 +48,7 @@ type CommonUser struct {
 	Watch             string
 	Message           string
 	ArticleCollection string
-	Article           string
+	Article           UserArticle
 	Comment           string
 }
 

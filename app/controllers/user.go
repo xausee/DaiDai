@@ -101,7 +101,7 @@ func (user *User) ShowArticle(id string) revel.Result {
 	return user.Render()
 }
 
-func (user *User) PostEditArticle() revel.Result {
+func (user *User) PostEditArticle(article *models.UserArticle) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")

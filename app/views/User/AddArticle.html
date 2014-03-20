@@ -3,24 +3,28 @@
 {{template "navigate_bar.html" .}}
 <div class="container"> 
   <div class="col-md-1"></div>
-  <div class="col-md-10">
-    <div class="text-muted">新增散文:</div>
-    <br>
-    <form role="form" action="{{url "Essay.PostAdd"}}" method="POST">  
-      <div class="input-group">
-        <span class="input-group-addon">标签</span>     
-        <select class="form-control input-sm" name="essay.Tag">          
-          <option>民国散文</option>
-          <option>当代散文</option>  
-          <option>国外散文</option>                 
-        </select>
+  <div class="col-md-10">  
+    <form role="form" action="{{url "User.AddArticle"}}" method="POST">       
+      <div class="form-group">
+        <label class="col-sm-1 control-label text-success">标签</label>  
+        <div class="col-sm-10 text-success">        
+          <label class="radio-inline">
+            <input type="radio" name="article.Tag" value="male" checked> 散文
+          </label>
+          <label class="radio-inline"> 
+            <input type="radio" name="article.Tag" value="female"> 诗歌
+          </label>  
+          <label class="radio-inline"> 
+            <input type="radio" name="article.Tag" value="female"> 微小说
+          </label>
+        </div>            
       </div> 
-      <br>        
+      </br> </br> </br>   
 
-      {{with $field := field "essay.Title" .}} 
+      {{with $field := field "article.Title" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">标题</span>      
-        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1"></textarea> 
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1" placeholder="标题" required></textarea> 
         {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
         {{end}}         
@@ -28,10 +32,10 @@
       {{end}} 
       <br>           
       
-      {{with $field := field "essay.Content" .}} 
+      {{with $field := field "article.Content" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">内容</span>      
-        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="20"></textarea> 
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="20" placeholder="内容" required></textarea> 
         {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
         {{end}}         
@@ -39,7 +43,7 @@
       {{end}} 
       <br>    
 
-      {{with $field := field "essay.Author" .}} 
+      {{with $field := field "article.Author" .}} 
       <div class="input-group {{$field.ErrorClass}}">            
           <span class="input-group-addon">作者</span>    
           <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入作者" required> 
