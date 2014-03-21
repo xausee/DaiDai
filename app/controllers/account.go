@@ -4,6 +4,7 @@ import (
 	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
+	"strconv"
 )
 
 type Account struct {
@@ -87,6 +88,8 @@ func (c *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 		c.Flash.Error(err.Error())
 		return c.Redirect((*Account).Login)
 	}
+	c.Session["id"] = strconv.Itoa(u.Id)
+	c.Session["nickName"] = u.Nickname
 	c.Session["email"] = u.Email
 	c.Session["nickName"] = u.Nickname
 	fmt.Println("Login successful with email: ", loginUser.Email)

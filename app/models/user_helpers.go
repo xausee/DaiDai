@@ -2,6 +2,7 @@ package models
 
 import (
 	"labix.org/v2/mgo/bson"
+	"time"
 )
 
 func (manager *DbManager) AddUserArticle(article *UserArticle) error {
@@ -19,8 +20,11 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	commonuser.Article.Content = "aaaaaaaaaaaaaaaa"
 	commonuser.Id = "1111111111"
 	commonuser.Email = "asd@asd.com"
+	commonuser.Article.Comments.Author.Nickname = "Phiso"
+	commonuser.Article.Comments.Author.Email = "Phiso"
+	commonuser.Article.Comments.Time = time.Now()
+	commonuser.Article.Comments.Score = 10
 	uc.Insert(commonuser)
-	uc.Insert("{ _id: 10, type: \"misc\", item: \"card\", qty: 15 }")
 
 	return err
 }

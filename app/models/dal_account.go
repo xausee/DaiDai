@@ -20,7 +20,11 @@ func (manager *DbManager) RegisterUser(mu *MockUser) error {
 		return errors.New("邮件地址已经被使用")
 	}
 
+	count, _ := uc.Count()
+
 	var u User
+	// Id start from 10000
+	u.Id = 10000 + count
 	u.Email = mu.Email
 	u.Nickname = mu.Nickname
 	u.Gender = mu.Gender

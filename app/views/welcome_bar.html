@@ -14,12 +14,12 @@
         <li><a id="logout" href="{{url "Account.Logout" }}">退出</a></li>             
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">我的散文<b class="caret"></b></a>
-          <ul class="dropdown-menu">
-            <li><a href="{{url "User.Index"}}">主页</a></li> 
-            <li><a href="{{url "User.Info"}}">个人信息</a></li>              
+          <ul class="dropdown-menu">           
+            <li><a href="{{url "User.Index" .id}}">主页</a></li> 
+            <li><a href="{{url "User.Info" .id}}">个人信息</a></li>              
             <li class="divider"></li>
-            <li><a href="{{url "User.Message"}}">私信</a></li> 
-            <li><a href="{{url "User.Friend"}}">朋友圈</a></li>
+            <li><a href="{{url "User.Message" .id}}">私信</a></li> 
+            <li><a href="{{url "User.Friend" .id}}">朋友圈</a></li>
           </ul>
         </li>
       {{else}}

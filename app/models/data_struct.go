@@ -5,6 +5,7 @@ import (
 )
 
 type User struct {
+	Id       int
 	Email    string
 	Nickname string
 	Gender   string
@@ -25,12 +26,27 @@ type LoginUser struct {
 	Password string
 }
 
+type Commenter struct {
+	Email     string
+	Nickname  string
+	AvatarUrl string
+}
+
+type Comment struct {
+	Id     string
+	Author Commenter
+	Time   time.Time
+	Score  int
+	Cotent string
+}
+
 type UserArticle struct {
-	Id      string
-	Title   string
-	Tag     string
-	Content string
-	Author  string
+	Id       string
+	Title    string
+	Tag      string
+	Content  string
+	Author   string
+	Comments Comment
 }
 
 type CommonUser struct {
@@ -51,7 +67,6 @@ type CommonUser struct {
 	Message           string
 	ArticleCollection string
 	Article           UserArticle
-	Comment           string
 }
 
 type Quotation struct {

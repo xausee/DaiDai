@@ -11,6 +11,7 @@ type App struct {
 }
 
 func (c App) Index() revel.Result {
+	id := c.Session["id"]
 	email := c.Session["email"]
 	nickName := c.Session["nickName"]
 
@@ -38,7 +39,7 @@ func (c App) Index() revel.Result {
 	// 获取微小说最新15条数据
 	c.RenderHintFictions(manager)
 
-	return c.Render(email, nickName)
+	return c.Render(id, email, nickName)
 }
 
 func (c App) Add() revel.Result {
