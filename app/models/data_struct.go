@@ -4,13 +4,13 @@ import (
 	"time"
 )
 
-type User struct {
-	Id       int
-	Email    string
-	Nickname string
-	Gender   string
-	Password []byte
-}
+// type User struct {
+// 	Id       int
+// 	Email    string
+// 	Nickname string
+// 	Gender   string
+// 	Password []byte
+// }
 
 type MockUser struct {
 	Email           string
@@ -49,8 +49,8 @@ type UserArticle struct {
 	Comments Comment
 }
 
-type CommonUser struct {
-	Id                string
+type User struct {
+	Id                int
 	Email             string
 	Nickname          string
 	AvatarUrl         string

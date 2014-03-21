@@ -15,10 +15,10 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 
 	article.Id = bson.NewObjectId().Hex()
 	err := uc.Insert(article)
-	var commonuser CommonUser
+	var commonuser User
 	commonuser.Article.Author = "author"
 	commonuser.Article.Content = "aaaaaaaaaaaaaaaa"
-	commonuser.Id = "1111111111"
+	commonuser.Id = 1111111111
 	commonuser.Email = "asd@asd.com"
 	commonuser.Article.Comments.Author.Nickname = "Phiso"
 	commonuser.Article.Comments.Author.Email = "Phiso"
