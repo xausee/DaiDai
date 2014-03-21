@@ -170,11 +170,13 @@ func (c *App) RenderHintFictions(manager *models.DbManager) error {
 func (c App) AboutUs() revel.Result {
 	email := c.Session["email"]
 	nickName := c.Session["nickName"]
-	return c.Render(email, nickName)
+	id := c.Session["id"]
+	return c.Render(id, email, nickName)
 }
 
 func (c App) Donate() revel.Result {
 	email := c.Session["email"]
 	nickName := c.Session["nickName"]
-	return c.Render(email, nickName)
+	id := c.Session["id"]
+	return c.Render(id, email, nickName)
 }

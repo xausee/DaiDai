@@ -40,6 +40,7 @@ func (hf *HintFiction) Index() revel.Result {
 		hintFictionsOnOnePage = hintFictions
 	}
 
+	hf.RenderArgs["id"] = hf.Session["id"]
 	hf.RenderArgs["email"] = hf.Session["email"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
 	hf.RenderArgs["allHintFinctions"] = hintFictions

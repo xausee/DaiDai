@@ -40,6 +40,7 @@ func (mp *ModernPoem) Index() revel.Result {
 		poemsOnOnePage = allPoems
 	}
 
+	mp.RenderArgs["id"] = mp.Session["id"]
 	mp.RenderArgs["email"] = mp.Session["email"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
 	mp.RenderArgs["allPoems"] = allPoems
@@ -79,6 +80,7 @@ func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
 		poemsOnOnePage = allPoems
 	}
 
+	mp.RenderArgs["id"] = mp.Session["id"]
 	mp.RenderArgs["email"] = mp.Session["email"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
 	mp.RenderArgs["allPoems"] = allPoems

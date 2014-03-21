@@ -40,6 +40,7 @@ func (q *Quotation) Index() revel.Result {
 		quotationsOnOnePage = quotations
 	}
 
+	q.RenderArgs["id"] = q.Session["id"]
 	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 	q.RenderArgs["allQuotations"] = quotations
@@ -79,6 +80,7 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 		quotationsOnOnePage = quotations
 	}
 
+	q.RenderArgs["id"] = q.Session["id"]
 	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 	q.RenderArgs["allQuotations"] = quotations
