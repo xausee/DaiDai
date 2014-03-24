@@ -11,7 +11,7 @@ type App struct {
 }
 
 func (c App) Index() revel.Result {
-	id := c.Session["id"]
+	userid := c.Session["userid"]
 	email := c.Session["email"]
 	nickName := c.Session["nickName"]
 
@@ -39,14 +39,15 @@ func (c App) Index() revel.Result {
 	// 获取微小说最新15条数据
 	c.RenderHintFictions(manager)
 
-	return c.Render(id, email, nickName)
+	return c.Render(userid, email, nickName)
 }
 
 func (c App) Add() revel.Result {
+	userid := c.Session["userid"]
 	email := c.Session["email"]
 	nickName := c.Session["nickName"]
 
-	return c.Render(email, nickName)
+	return c.Render(userid, email, nickName)
 }
 
 func (c *App) RenderQuotations(manager *models.DbManager) error {
@@ -168,15 +169,17 @@ func (c *App) RenderHintFictions(manager *models.DbManager) error {
 }
 
 func (c App) AboutUs() revel.Result {
+	userid := c.Session["userid"]
 	email := c.Session["email"]
 	nickName := c.Session["nickName"]
-	id := c.Session["id"]
-	return c.Render(id, email, nickName)
+
+	return c.Render(userid, email, nickName)
 }
 
 func (c App) Donate() revel.Result {
+	userid := c.Session["userid"]
 	email := c.Session["email"]
 	nickName := c.Session["nickName"]
-	id := c.Session["id"]
-	return c.Render(id, email, nickName)
+
+	return c.Render(userid, email, nickName)
 }

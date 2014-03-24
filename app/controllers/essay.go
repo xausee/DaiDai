@@ -40,7 +40,7 @@ func (e *Essay) Index() revel.Result {
 		essaysOnOnePage = allEssays
 	}
 
-	e.RenderArgs["id"] = e.Session["id"]
+	e.RenderArgs["userid"] = e.Session["userid"]
 	e.RenderArgs["email"] = e.Session["email"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
 	e.RenderArgs["allEssays"] = allEssays
@@ -80,7 +80,7 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 		essaysOnOnePage = allEssays
 	}
 
-	e.RenderArgs["id"] = e.Session["id"]
+	e.RenderArgs["userid"] = e.Session["userid"]
 	e.RenderArgs["email"] = e.Session["email"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
 	e.RenderArgs["allEssays"] = allEssays

@@ -40,7 +40,7 @@ func (mp *ModernPoem) Index() revel.Result {
 		poemsOnOnePage = allPoems
 	}
 
-	mp.RenderArgs["id"] = mp.Session["id"]
+	mp.RenderArgs["userid"] = mp.Session["userid"]
 	mp.RenderArgs["email"] = mp.Session["email"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
 	mp.RenderArgs["allPoems"] = allPoems
@@ -80,7 +80,7 @@ func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
 		poemsOnOnePage = allPoems
 	}
 
-	mp.RenderArgs["id"] = mp.Session["id"]
+	mp.RenderArgs["userid"] = mp.Session["userid"]
 	mp.RenderArgs["email"] = mp.Session["email"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
 	mp.RenderArgs["allPoems"] = allPoems
@@ -99,9 +99,6 @@ func (mp *ModernPoem) Add() revel.Result {
 }
 
 func (mp *ModernPoem) Edit(id string) revel.Result {
-	email := mp.Session["email"]
-	nickName := mp.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		mp.Response.Status = 500
@@ -110,7 +107,12 @@ func (mp *ModernPoem) Edit(id string) revel.Result {
 	defer manager.Close()
 	oringinalModernPoem, _ := manager.GetModernPoemById(id)
 
-	return mp.Render(email, nickName, oringinalModernPoem)
+	mp.RenderArgs["userid"] = mp.Session["userid"]
+	mp.RenderArgs["email"] = mp.Session["email"]
+	mp.RenderArgs["nickName"] = mp.Session["nickName"]
+	mp.RenderArgs["oringinalModernPoem"] = oringinalModernPoem
+
+	return mp.Render()
 }
 
 func (mp *ModernPoem) PostAdd(modernPoem *models.ModernPoem) revel.Result {
@@ -178,9 +180,6 @@ func (mp *ModernPoem) PostEdit(originalModernPoemID string, newModernPoem *model
 }
 
 func (mp *ModernPoem) Show(id string) revel.Result {
-	email := mp.Session["email"]
-	nickName := mp.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		mp.Response.Status = 500
@@ -192,7 +191,13 @@ func (mp *ModernPoem) Show(id string) revel.Result {
 	// 	mp.Flash.Error(err.Error())
 	// 	//return mp.Redirect((*Essay).Add)
 	// }
-	return mp.Render(email, nickName, modernPoem)
+
+	mp.RenderArgs["userid"] = mp.Session["userid"]
+	mp.RenderArgs["email"] = mp.Session["email"]
+	mp.RenderArgs["nickName"] = mp.Session["nickName"]
+	mp.RenderArgs["modernPoem"] = modernPoem
+
+	return mp.Render()
 }
 
 func (mp *ModernPoem) PageList(pageNumber string) revel.Result {

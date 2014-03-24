@@ -40,7 +40,7 @@ func (q *Quotation) Index() revel.Result {
 		quotationsOnOnePage = quotations
 	}
 
-	q.RenderArgs["id"] = q.Session["id"]
+	q.RenderArgs["userid"] = q.Session["userid"]
 	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 	q.RenderArgs["allQuotations"] = quotations
@@ -80,7 +80,7 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 		quotationsOnOnePage = quotations
 	}
 
-	q.RenderArgs["id"] = q.Session["id"]
+	q.RenderArgs["userid"] = q.Session["userid"]
 	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 	q.RenderArgs["allQuotations"] = quotations
@@ -93,15 +93,14 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 }
 
 func (q *Quotation) Add() revel.Result {
-	email := q.Session["email"]
-	nickName := q.Session["nickName"]
-	return q.Render(email, nickName)
+	q.RenderArgs["userid"] = q.Session["userid"]
+	q.RenderArgs["email"] = q.Session["email"]
+	q.RenderArgs["nickName"] = q.Session["nickName"]
+
+	return q.Render()
 }
 
 func (q *Quotation) Edit(id string) revel.Result {
-	email := q.Session["email"]
-	nickName := q.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		q.Response.Status = 500
@@ -110,7 +109,12 @@ func (q *Quotation) Edit(id string) revel.Result {
 	defer manager.Close()
 	originalQuotation, _ := manager.GetQuotationById(id)
 
-	return q.Render(email, nickName, originalQuotation)
+	q.RenderArgs["userid"] = q.Session["userid"]
+	q.RenderArgs["email"] = q.Session["email"]
+	q.RenderArgs["nickName"] = q.Session["nickName"]
+	q.RenderArgs["originalQuotation"] = originalQuotation
+
+	return q.Render()
 }
 
 func (q *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
@@ -184,9 +188,6 @@ func (q *Quotation) PostEdit(originalQuotationID string, newQuotation *models.Qu
 }
 
 func (q *Quotation) Show(id string) revel.Result {
-	email := q.Session["email"]
-	nickName := q.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		q.Response.Status = 500
@@ -198,7 +199,13 @@ func (q *Quotation) Show(id string) revel.Result {
 	// 	q.Flash.Error(err.Error())
 	// 	//return q.Redirect((*Essay).Add)
 	// }
-	return q.Render(email, nickName, quotation)
+
+	q.RenderArgs["userid"] = q.Session["userid"]
+	q.RenderArgs["email"] = q.Session["email"]
+	q.RenderArgs["nickName"] = q.Session["nickName"]
+	q.RenderArgs["quotation"] = quotation
+
+	return q.Render()
 }
 
 func (q *Quotation) PageList(pageNumber string) revel.Result {

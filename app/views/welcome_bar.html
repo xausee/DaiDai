@@ -8,19 +8,19 @@
     </div>  
     <div class="col-xs-4">  
       <br> 
-      <ul class="nav navbar-nav navbar-right">         
+      <ul class="nav navbar-nav navbar-right">            
       {{if .nickName}} 
-        {{if .id}}    
+        {{if .userid}}    
         <li><a>您好，{{.nickName}}</a></li> 
         <li><a id="logout" href="{{url "Account.Logout" }}">退出</a></li>             
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">我的散文<b class="caret"></b></a>
           <ul class="dropdown-menu">           
-            <li><a href="{{url "User.Index" .id}}">主页</a></li> 
-            <li><a href="{{url "User.Info" .id}}">个人信息</a></li>              
+            <li><a href="{{url "User.Index" .userid}}">主页</a></li> 
+            <li><a href="{{url "User.Info" .userid}}">个人信息</a></li>              
             <li class="divider"></li>
-            <li><a href="{{url "User.Message" .id}}">私信</a></li> 
-            <li><a href="{{url "User.Friend" .id}}">朋友圈</a></li>
+            <li><a href="{{url "User.Message" .userid}}">私信</a></li> 
+            <li><a href="{{url "User.Friend" .userid}}">朋友圈</a></li>
           </ul>
         </li>
         {{end}}

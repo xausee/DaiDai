@@ -5,11 +5,14 @@ import (
 )
 
 // type User struct {
-// 	Id       int
-// 	Email    string
-// 	Nickname string
-// 	Gender   string
-// 	Password []byte
+// 	Id        int
+// 	Email     string
+// 	Nickname  string
+// 	Gender    string
+// 	Password  []byte
+// 	AvatarUrl string
+// 	PenName   string
+// 	Birth     time.Time
 // }
 
 type MockUser struct {
@@ -45,7 +48,7 @@ type UserArticle struct {
 	Title    string
 	Tag      string
 	Content  string
-	Author   string
+	AuthorId int
 	Comments Comment
 }
 

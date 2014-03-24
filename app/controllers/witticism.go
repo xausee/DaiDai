@@ -11,9 +11,6 @@ type Witticism struct {
 }
 
 func (w *Witticism) Index() revel.Result {
-	email := w.Session["email"]
-	nickName := w.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -22,19 +19,23 @@ func (w *Witticism) Index() revel.Result {
 
 	witticisms, err := manager.GetAllWitticism()
 
-	return w.Render(email, nickName, witticisms)
+	w.RenderArgs["userid"] = w.Session["userid"]
+	w.RenderArgs["email"] = w.Session["email"]
+	w.RenderArgs["nickName"] = w.Session["nickName"]
+	w.RenderArgs["witticisms"] = witticisms
+
+	return w.Render()
 }
 
 func (w *Witticism) Add() revel.Result {
-	email := w.Session["email"]
-	nickName := w.Session["nickName"]
-	return w.Render(email, nickName)
+	w.RenderArgs["userid"] = w.Session["userid"]
+	w.RenderArgs["email"] = w.Session["email"]
+	w.RenderArgs["nickName"] = w.Session["nickName"]
+
+	return w.Render()
 }
 
 func (w *Witticism) Edit(id string) revel.Result {
-	email := w.Session["email"]
-	nickName := w.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		w.Response.Status = 500
@@ -43,9 +44,13 @@ func (w *Witticism) Edit(id string) revel.Result {
 	defer manager.Close()
 	originalWitticism, _ := manager.GetWitticismById(id)
 
-	return w.Render(email, nickName, originalWitticism)
-}
+	w.RenderArgs["userid"] = w.Session["userid"]
+	w.RenderArgs["email"] = w.Session["email"]
+	w.RenderArgs["nickName"] = w.Session["nickName"]
+	w.RenderArgs["originalWitticism"] = originalWitticism
 
+	return w.Render()
+}
 
 func (w *Witticism) PostAdd(witticism *models.Witticism) revel.Result {
 	w.Validation.Required(witticism.Content).Message("慧语内容不能为空")
@@ -78,17 +83,17 @@ func (w *Witticism) PostAdd(witticism *models.Witticism) revel.Result {
 	return w.Redirect((*App).Add)
 }
 
-func (w *Witticism) PostEdit(originalWitticismID string, newWitticism *models.Witticism) revel.Result {	
+func (w *Witticism) PostEdit(originalWitticismID string, newWitticism *models.Witticism) revel.Result {
 	w.Validation.Required(newWitticism.Content).Message("内容不能为空")
 	w.Validation.Required(newWitticism.Author).Message("作者不能为空")
-	
-	fmt.Println("内容： ", newWitticism.Content)	
+
+	fmt.Println("内容： ", newWitticism.Content)
 	fmt.Println("作者： ", newWitticism.Author)
 
 	if w.Validation.HasErrors() {
 		w.Validation.Keep()
 		w.FlashParams()
-        fmt.Println("error in validation ")
+		fmt.Println("error in validation ")
 		return w.Redirect((*Witticism).Edit)
 	}
 
@@ -112,9 +117,6 @@ func (w *Witticism) PostEdit(originalWitticismID string, newWitticism *models.Wi
 }
 
 func (w *Witticism) Show(id string) revel.Result {
-	email := w.Session["email"]
-	nickName := w.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		w.Response.Status = 500
@@ -127,13 +129,16 @@ func (w *Witticism) Show(id string) revel.Result {
 	// 	w.Flash.Error(err.Error())
 	// 	//return w.Redirect((*Essay).Add)
 	// }
-	return w.Render(email, nickName, witticism)
+
+	w.RenderArgs["userid"] = w.Session["userid"]
+	w.RenderArgs["email"] = w.Session["email"]
+	w.RenderArgs["nickName"] = w.Session["nickName"]
+	w.RenderArgs["witticism"] = witticism
+
+	return w.Render()
 }
 
 func (w *Witticism) Delete(id string) revel.Result {
-	email := w.Session["email"]
-	nickName := w.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		w.Response.Status = 500
@@ -142,6 +147,9 @@ func (w *Witticism) Delete(id string) revel.Result {
 	defer manager.Close()
 	err = manager.DeleteWitticismById(id)
 
-	w.Render(email, nickName)
+	w.RenderArgs["userid"] = w.Session["userid"]
+	w.RenderArgs["email"] = w.Session["email"]
+	w.RenderArgs["nickName"] = w.Session["nickName"]
+
 	return w.Redirect((*Witticism).Index)
 }

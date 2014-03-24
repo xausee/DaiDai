@@ -88,7 +88,7 @@ func (c *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 		c.Flash.Error(err.Error())
 		return c.Redirect((*Account).Login)
 	}
-	c.Session["id"] = strconv.Itoa(u.Id)
+	c.Session["userid"] = strconv.Itoa(u.Id)
 	c.Session["nickName"] = u.Nickname
 	c.Session["email"] = u.Email
 	c.Session["nickName"] = u.Nickname

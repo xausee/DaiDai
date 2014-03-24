@@ -40,7 +40,7 @@ func (hf *HintFiction) Index() revel.Result {
 		hintFictionsOnOnePage = hintFictions
 	}
 
-	hf.RenderArgs["id"] = hf.Session["id"]
+	hf.RenderArgs["userid"] = hf.Session["userid"]
 	hf.RenderArgs["email"] = hf.Session["email"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
 	hf.RenderArgs["allHintFinctions"] = hintFictions
@@ -52,9 +52,6 @@ func (hf *HintFiction) Index() revel.Result {
 }
 
 func (hf *HintFiction) TypeIndex(tag string) revel.Result {
-	email := hf.Session["email"]
-	nickName := hf.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -63,19 +60,23 @@ func (hf *HintFiction) TypeIndex(tag string) revel.Result {
 
 	hintFictions, err := manager.GetHintFictionByTag(tag)
 
-	return hf.Render(email, nickName, hintFictions)
+	hf.RenderArgs["userid"] = hf.Session["userid"]
+	hf.RenderArgs["email"] = hf.Session["email"]
+	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["hintFictions"] = hintFictions
+
+	return hf.Render()
 }
 
 func (hf *HintFiction) Add() revel.Result {
-	email := hf.Session["email"]
-	nickName := hf.Session["nickName"]
-	return hf.Render(email, nickName)
+	hf.RenderArgs["userid"] = hf.Session["userid"]
+	hf.RenderArgs["email"] = hf.Session["email"]
+	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+
+	return hf.Render()
 }
 
 func (hf *HintFiction) Edit(id string) revel.Result {
-	email := hf.Session["email"]
-	nickName := hf.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		hf.Response.Status = 500
@@ -84,7 +85,12 @@ func (hf *HintFiction) Edit(id string) revel.Result {
 	defer manager.Close()
 	oringinalHintFiction, _ := manager.GetHintFictionById(id)
 
-	return hf.Render(email, nickName, oringinalHintFiction)
+	hf.RenderArgs["userid"] = hf.Session["userid"]
+	hf.RenderArgs["email"] = hf.Session["email"]
+	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["oringinalHintFiction"] = oringinalHintFiction
+
+	return hf.Render()
 }
 
 func (hf *HintFiction) PostAdd(hintFiction *models.HintFiction) revel.Result {
@@ -152,9 +158,6 @@ func (hf *HintFiction) PostEdit(originalHintFictionID string, newHintFiction *mo
 }
 
 func (hf *HintFiction) Show(id string) revel.Result {
-	email := hf.Session["email"]
-	nickName := hf.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		hf.Response.Status = 500
@@ -166,7 +169,13 @@ func (hf *HintFiction) Show(id string) revel.Result {
 	// 	hf.Flash.Error(err.Error())
 	// 	//return hf.Redirect((*Essay).Add)
 	// }
-	return hf.Render(email, nickName, hintFiction)
+
+	hf.RenderArgs["userid"] = hf.Session["userid"]
+	hf.RenderArgs["email"] = hf.Session["email"]
+	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["hintFiction"] = hintFiction
+
+	return hf.Render()
 }
 
 func (hf *HintFiction) PageList(pageNumber string) revel.Result {
