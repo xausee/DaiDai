@@ -4,6 +4,7 @@ import (
 	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
+	"strconv"
 )
 
 type User struct {
@@ -86,6 +87,12 @@ func (user *User) PostAddArticle(article *models.UserArticle) revel.Result {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
+
+	article.AuthorId, err = strconv.Atoi(user.Session["userid"])
+	if err != nil {
+		fmt.Println("转换用户id失败")
+		return user.Redirect((*User).AddArticle)
+	}
 
 	err = manager.AddUserArticle(article)
 	if err != nil {
