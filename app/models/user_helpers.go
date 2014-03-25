@@ -11,21 +11,18 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 
 	var userBefore, userAfter User
 	err := uc.Find(bson.M{"id": article.AuthorId}).One(&userBefore)
-
-	fmt.Println(userBefore)
-	//fmt.Println(article)
+	err = uc.Find(bson.M{"id": article.AuthorId}).One(&userAfter)
 
 	article.Id = bson.NewObjectId().Hex()
 	article.CreateTime = time.Now()
 
-	userBefore = userAfter
-	fmt.Println("ddddddddddddddddddddddddddddddddddddddddddddddddd")
+	//userBefore = userAfter
+	as := userAfter.Articles
+	as = append(as, *article)
+	userAfter.Articles = as
 
-	userAfter.Article = *article
-	//fmt.Println(userAfter)
-	fmt.Println(userAfter.Article)
+	fmt.Println(userAfter.Articles)
 	err = uc.Update(userBefore, userAfter)
-	err = uc.Insert(userAfter)
 
 	return err
 }

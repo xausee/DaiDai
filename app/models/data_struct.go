@@ -50,7 +50,7 @@ type UserArticle struct {
 	Content    string
 	CreateTime time.Time
 	AuthorId   int
-	Comments   Comment
+	Comments   []Comment
 }
 
 type User struct {
@@ -69,8 +69,8 @@ type User struct {
 	Fans              string
 	Watch             string
 	Message           string
-	ArticleCollection string
-	Article           UserArticle
+	ArticleCollection []UserArticle
+	Articles          []UserArticle
 }
 
 type Quotation struct {
