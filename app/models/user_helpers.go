@@ -14,7 +14,7 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	err = uc.Find(bson.M{"id": article.AuthorId}).One(&userAfter)
 
 	article.Id = bson.NewObjectId().Hex()
-	article.CreateTime = time.Now()
+	article.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 
 	//userBefore = userAfter
 	as := userAfter.Articles
@@ -25,4 +25,17 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	err = uc.Update(userBefore, userAfter)
 
 	return err
+}
+
+func (manager *DbManager) GetAllArticlesByUserId(userid int) (articles []UserArticle, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	var userInfo User
+	err = uc.Find(bson.M{"id": userid}).One(&userInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+	articles = userInfo.Articles
+
+	return articles, err
 }

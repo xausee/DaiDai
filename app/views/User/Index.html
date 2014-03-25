@@ -28,12 +28,22 @@
   	  <div class="panel panel-success" style="height:400px">
         <div class="panel-heading"><h3 class="panel-title">我的文章</h3></div>
         <div class="panel-body"> 
-          {{range .articles}}
+          {{range .allArticles}}
           <div class="row">
-            <div class="col-xs-10"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
-            <div class="col-xs-2"><span class="badge text-right">{{.Date}}</div>
+            <div class="col-xs-9"><a href="{{url "User.ShowArticle" .Id}}"><small>{{.Title}}</small></a></div>    
+            <div class="col-xs-3"><span class="badge text-right"><small>{{.CreateTime}}</small></div>
           </div>  
-          {{end}} 
+          {{end}}
+
+          <div class="text-center">                  
+            <ul class="pagination pagination-centered">
+              <li value="-1" id="previous" onclick="updateEssayList(this.value)"><a>上一页</a></li>
+              {{range .pageSlice}}
+                <li value={{.}} id=page_{{.}} onclick="updateEssayList(this.value)"><a>{{.}}</a></li>
+              {{end}}              
+              <li value="-2" id="next" onclick="updateEssayList(this.value)"><a>下一页</a></li>
+            </ul>
+          </div>      
         </div>                       
        </div>  
     </div>

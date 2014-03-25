@@ -18,9 +18,36 @@ func (user *User) Index(id string) revel.Result {
 	}
 	defer manager.Close()
 
+	userid, _ := strconv.Atoi(id)
+	articles, _ := manager.GetAllArticlesByUserId(userid)
+	count := len(articles)
+
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	pageSlice := make([]int, 0)
+	for i := 1; i <= pageCount; i++ {
+		pageSlice = append(pageSlice, i)
+	}
+
+	articlesOnOnePage := []models.UserArticle{}
+	if count > models.ArticlesInSinglePage {
+		articlesOnOnePage = articles[(count - models.ArticlesInSinglePage):]
+	} else {
+		articlesOnOnePage = articles
+	}
+
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["allArticles"] = articles
+	user.RenderArgs["articlesOnOnePage"] = articlesOnOnePage
+	user.RenderArgs["pageCount"] = pageCount
+	user.RenderArgs["pageSlice"] = pageSlice
 
 	return user.Render()
 }

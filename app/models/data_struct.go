@@ -48,7 +48,7 @@ type UserArticle struct {
 	Title      string
 	Tag        string
 	Content    string
-	CreateTime time.Time
+	CreateTime string
 	AuthorId   int
 	Comments   []Comment
 }
