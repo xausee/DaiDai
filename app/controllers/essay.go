@@ -192,6 +192,7 @@ func (e *Essay) Show(id string) revel.Result {
 	// 	e.Flash.Error(err.Error())
 	// 	//return e.Redirect((*Essay).Add)
 	// }
+	e.RenderArgs["userid"] = e.Session["userid"]
 	return e.Render(email, nickName, essay)
 }
 

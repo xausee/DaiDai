@@ -150,16 +150,18 @@ func (user *User) EditArticle() revel.Result {
 	return user.Render()
 }
 
-func (user *User) ShowArticle(id string) revel.Result {
+func (user *User) ShowArticle(userid int, articleid string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
+	article, _ := manager.GetArticleByUserIdAndArticleId(userid, articleid)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["article"] = article
 
 	return user.Render()
 }

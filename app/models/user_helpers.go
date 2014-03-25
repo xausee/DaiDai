@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"fmt"
 	"labix.org/v2/mgo/bson"
 	"time"
@@ -38,4 +39,22 @@ func (manager *DbManager) GetAllArticlesByUserId(userid int) (articles []UserArt
 	articles = userInfo.Articles
 
 	return articles, err
+}
+
+func (manager *DbManager) GetArticleByUserIdAndArticleId(userid int, articleid string) (article UserArticle, err error) {
+	articles, _ := manager.GetAllArticlesByUserId(userid)
+
+	for _, art := range articles {
+		fmt.Println(art)
+		if art.Id == articleid {
+			article = art
+			fmt.Println("找到指定的文章")
+			return article, err
+		} else {
+			errors.New("查找文章失败")
+			fmt.Println("找不到指定的文章")
+		}
+	}
+
+	return article, err
 }

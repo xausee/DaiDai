@@ -2,6 +2,27 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
-
+<div class="container">
+  <div class="row">
+    <div class="col-xs-1"></div> 
+    <div class="col-xs-10">
+      <pre class="text-center">{{.article.Title}}   	
+        <div class="text-left">{{.article.Content}}</div> 
+        <div class="text-right">{{.article.CreateTime}}</div>          
+      </pre>
+    </div>      
+  </div> 
+  {{if eq .email "xausee@gmail.com"}}
+  <div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10">
+  	  <ul class="nav navbar-nav navbar-right">
+        <li><a id="edit" href="{{url "Essay.Edit" .article.Id}}">编辑</a></li> 
+        <li><a id="delete" href="{{url "Essay.Delete" .article.Id}}">删除</a></li> 
+      </ul>
+    </div> 
+  </div>
+  {{end}}
+</div>
 
 {{template "footer.html" .}}

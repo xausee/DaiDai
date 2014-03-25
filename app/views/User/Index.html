@@ -19,7 +19,7 @@
           <a href="#">原创 <span class="badge">42</span></a> 
           <a href="#">评论 <span class="badge">42</span></a>           
           </br></br></br></br></br>
-          <a href="{{url "User.AddArticle"}}"><strong>创作<strong></a>         
+          <a href="{{url "User.AddArticle"}}">写点东东</a>         
         </div>                        
       </div> 
     </div> 
@@ -30,8 +30,8 @@
         <div class="panel-body"> 
           {{range .allArticles}}
           <div class="row">
-            <div class="col-xs-9"><a href="{{url "User.ShowArticle" .Id}}"><small>{{.Title}}</small></a></div>    
-            <div class="col-xs-3"><span class="badge text-right"><small>{{.CreateTime}}</small></div>
+            <div class="col-xs-9"><a href="{{url "User.ShowArticle" .AuthorId .Id}}">{{.Title}}</a></div>
+            <div class="col-xs-3"><span class="badge text-right">{{.CreateTime}}</div>
           </div>  
           {{end}}
 
