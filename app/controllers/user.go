@@ -59,6 +59,7 @@ func (user *User) Info(id string) revel.Result {
 	}
 	defer manager.Close()
 
+	user.RenderArgs["authorId"] = id
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
