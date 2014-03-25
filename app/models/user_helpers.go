@@ -7,6 +7,17 @@ import (
 	"time"
 )
 
+func (manager *DbManager) GetUserById(userid int) (userInfo User, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	err = uc.Find(bson.M{"id": userid}).One(&userInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+
+	return userInfo, err
+}
+
 func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 

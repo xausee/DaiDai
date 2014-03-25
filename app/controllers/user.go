@@ -183,13 +183,16 @@ func (user *User) PostEditArticle(article *models.UserArticle) revel.Result {
 	return user.Render()
 }
 
-func (user *User) EditInfo() revel.Result {
+func (user *User) EditInfo(userid int) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 
+	userInfo, _ := manager.GetUserById(userid)
+
+	user.RenderArgs["user"] = userInfo
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
@@ -197,7 +200,7 @@ func (user *User) EditInfo() revel.Result {
 	return user.Render()
 }
 
-func (user *User) PostEditInfo() revel.Result {
+func (user *User) PostEditInfo(userInfo *models.User) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")

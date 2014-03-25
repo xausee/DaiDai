@@ -8,14 +8,15 @@
   	  <div class="panel panel-success">
         <div class="panel-heading"><h3 class="panel-title">个人资料</h3></div>
         <div class="panel-body"> 
-        <form role="form-horizontal" action="{{url "Quotation.PostEdit"}}" method="POST">          
+        <form role="form-horizontal" action="{{url "User.PostEditInfo"}}" method="POST">          
           <dl class="dl-horizontal text-success">
           	<dt>头像</dt> <dd><img src="/public/img/cow.jpg" class="img-thumbnail" alt="Responsive image"></dd></br>
             <dt>昵称</dt> 
             <dd>
-            	{{with $field := field "newQuotation.Content" .}}
+              {{$nickName := .user.Nickname}}
+            	{{with $field := field "userInfo.Nickname" .}}
                 <div class="input-group {{$field.ErrorClass}}">
-                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">手指在燃烧</textarea> 
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">{{$nickName}}</textarea> 
                   {{if $field.Error}} 
                   <span class="help-inline">{{$field.Error}}</span> 
                   {{end}}
@@ -23,9 +24,10 @@
             </dd></br>
             <dt>笔名</dt>
             <dd>
-            	{{with $field := field "newQuotation.Content" .}}
+              {{$penName := .user.PenName}}
+            	{{with $field := field "userInfo.PenName" .}}
                 <div class="input-group {{$field.ErrorClass}}">
-                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">手指在燃烧</textarea> 
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">{{$penName}}</textarea> 
                   {{if $field.Error}} 
                   <span class="help-inline">{{$field.Error}}</span> 
                   {{end}}
@@ -46,10 +48,11 @@
             </dd></br>
             <dt>邮箱</dt> 
             <dd>
-            	{{with $field := field "user.Email" .}} 
+              {{$email := .user.Email}}
+            	{{with $field := field "userInfo.Email" .}} 
                 <div class="form-group {{$field.ErrorClass}}">                    
                   <div class="col-sm-10"> 
-                    <input type="email" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="电子邮件" required> 
+                    <input type="email" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" value="{{$email}}" placeholder="电子邮件" required> 
                     {{if $field.Error}} 
                     <span class="help-inline">{{$field.Error}}</span> 
                     {{end}} 
@@ -59,9 +62,10 @@
             </dd></br>
             <dt>生日</dt> 
             <dd> 
-            	{{with $field := field "newQuotation.Content" .}}
+              {{$birth := .user.Birth}}
+            	{{with $field := field "userInfo.Birth" .}}
                 <div class="form-group {{$field.ErrorClass}}">
-                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">手指在燃烧</textarea> 
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">{{$birth}}</textarea> 
                   {{if $field.Error}} 
                   <span class="help-inline">{{$field.Error}}</span> 
                   {{end}}
@@ -69,9 +73,10 @@
             </dd></br>
             <dt>喜欢的作者</dt> 
             <dd>
-            	{{with $field := field "newQuotation.Content" .}}
+              {{$FavoriteAuthor := .user.FavoriteAuthor}}
+            	{{with $field := field "userInfo.FavoriteAuthor" .}}
                 <div class="form-group {{$field.ErrorClass}}">
-                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="4">手指在燃烧</textarea> 
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="4">{{$FavoriteAuthor}}</textarea> 
                   {{if $field.Error}} 
                   <span class="help-inline">{{$field.Error}}</span> 
                   {{end}}
@@ -79,27 +84,30 @@
             </dd></br>
             <dt>酷爱的书籍</dt> 
              <dd>
-            	{{with $field := field "newQuotation.Content" .}}
+              {{$FavoriteBook := .user.FavoriteBook}}
+            	{{with $field := field "userInfo.FavoriteBook" .}}
                 <div class="form-group {{$field.ErrorClass}}">
-                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="4">手指在燃烧</textarea> 
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="4">{{$FavoriteBook}}</textarea> 
                   {{if $field.Error}} 
                   <span class="help-inline">{{$field.Error}}</span> 
                   {{end}}
                 {{end}} 
             </dd></br>
             <dt>兴趣爱好</dt>  <dd>
-            	{{with $field := field "newQuotation.Content" .}}
+              {{$Intrest := .user.Intrest}}
+            	{{with $field := field "userInfo.Intrest" .}}
                 <div class="form-group {{$field.ErrorClass}}">
-                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5">手指在燃烧</textarea> 
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5">{{$Intrest}}</textarea> 
                   {{if $field.Error}} 
                   <span class="help-inline">{{$field.Error}}</span> 
                   {{end}}
                 {{end}} 
             </dd></br>
             <dt>个人简介</dt>  <dd>
-            	{{with $field := field "newQuotation.Content" .}}
+              {{$Introduction := .user.Introduction}}
+            	{{with $field := field "userInfo.Introduction" .}}
                 <div class="form-group {{$field.ErrorClass}}">
-                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5">手指在燃烧</textarea> 
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5">{{$Introduction}}</textarea> 
                   {{if $field.Error}} 
                   <span class="help-inline">{{$field.Error}}</span> 
                   {{end}}
