@@ -47,12 +47,12 @@
                 </div> 
             </dd></br>
             <dt>邮箱</dt> 
-            <dd>
+            <dd>              
               {{$email := .user.Email}}
             	{{with $field := field "userInfo.Email" .}} 
                 <div class="form-group {{$field.ErrorClass}}">                    
                   <div class="col-sm-10"> 
-                    <input type="email" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" value="{{$email}}" placeholder="电子邮件" required> 
+                    <input type="email" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" value="{{$email}}" placeholder="{{$email}}" required> 
                     {{if $field.Error}} 
                     <span class="help-inline">{{$field.Error}}</span> 
                     {{end}} 

@@ -200,18 +200,19 @@ func (user *User) EditInfo(userid int) revel.Result {
 	return user.Render()
 }
 
-func (user *User) PostEditInfo(userInfo *models.User) revel.Result {
+func (user *User) PostEditInfo(userInfo models.User) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
+	err = manager.UpdateUserInfo(userInfo.Id, userInfo)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Render()
+	return user.Redirect((*App).Index)
 }
 
 func (user *User) DeleteArticle(articleid string) revel.Result {

@@ -18,6 +18,24 @@ func (manager *DbManager) GetUserById(userid int) (userInfo User, err error) {
 	return userInfo, err
 }
 
+func (manager *DbManager) UpdateUserInfo(userid int, userinfo User) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// err = uc.Find(bson.M{"id": userid}).One(&userInfo)
+	// if err != nil {
+	// 	fmt.Println("查询用户信息失败")
+	// }
+
+	var userBefore, userAfter User
+	err = uc.Find(bson.M{"id": userid}).One(&userBefore)
+	err = uc.Find(bson.M{"id": userid}).One(&userAfter)
+	userAfter.FavoriteAuthor = userinfo.FavoriteAuthor
+
+	err = uc.Update(userBefore, userAfter)
+
+	return err
+}
+
 func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
