@@ -22,7 +22,6 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	as = append(as, *article)
 	userAfter.Articles = as
 
-	fmt.Println(userAfter.Articles)
 	err = uc.Update(userBefore, userAfter)
 
 	return err
