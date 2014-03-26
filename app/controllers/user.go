@@ -229,7 +229,7 @@ func (user *User) PostEditInfo(userInfo models.User) revel.Result {
 	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Redirect((*App).Index)
+	return user.Redirect("/user/info/%d", userInfo.Id)
 }
 
 func (user *User) DeleteArticle(articleid string) revel.Result {
