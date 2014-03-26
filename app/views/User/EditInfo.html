@@ -11,7 +11,7 @@
         <form role="form-horizontal" action="{{url "User.PostEditInfo"}}" method="POST">          
           <dl class="dl-horizontal text-success">
           	<dt>头像</dt> <dd><img src="/public/img/cow.jpg" class="img-thumbnail" alt="Responsive image"></dd></br>
-            <dt>昵称</dt> 
+            <dt>昵称</dt>             
             <dd>
               {{$nickName := .user.Nickname}}
             	{{with $field := field "userInfo.Nickname" .}}

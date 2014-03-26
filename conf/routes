@@ -17,8 +17,8 @@ GET     /logout                                 Account.Logout
 
 GET     /user/:id                               User.Index
 GET     /user/info/:id                          User.Info
-GET     /user/info/edit/:id                     User.EditInfo
-Post    /user/info/edit/:id                     User.PostEditInfo
+GET     /user/info/edit/:userid                 User.EditInfo
+Post    /user/info/edit/:userid                 User.PostEditInfo
 GET     /user/article/add                       User.AddArticle 
 POST    /user/article/add                       User.PostAddArticle
 GET     /user/article/show/:userid/:articleid   User.ShowArticle

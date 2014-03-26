@@ -206,6 +206,7 @@ func (user *User) PostEditInfo(userInfo models.User) revel.Result {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
+	userInfo.Id, _ = strconv.Atoi(user.Session["userid"])
 	err = manager.UpdateUserInfo(userInfo.Id, userInfo)
 
 	user.RenderArgs["userid"] = user.Session["userid"]

@@ -18,20 +18,31 @@ func (manager *DbManager) GetUserById(userid int) (userInfo User, err error) {
 	return userInfo, err
 }
 
-func (manager *DbManager) UpdateUserInfo(userid int, userinfo User) (err error) {
+func (manager *DbManager) UpdateUserInfo(userid int, newUserInfo User) (err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
-	// err = uc.Find(bson.M{"id": userid}).One(&userInfo)
-	// if err != nil {
-	// 	fmt.Println("查询用户信息失败")
-	// }
+	var oldUserInfo User
+	err = uc.Find(bson.M{"id": userid}).One(&oldUserInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+	// 修改一些基本的信息，并不是全部，参看修改页面的内容
+	tempInfo := oldUserInfo
+	tempInfo.AvatarUrl = newUserInfo.AvatarUrl
+	tempInfo.Nickname = newUserInfo.Nickname
+	tempInfo.PenName = newUserInfo.PenName
+	tempInfo.Gender = newUserInfo.Gender
+	tempInfo.Email = newUserInfo.Email
+	tempInfo.Birth = newUserInfo.Birth
+	tempInfo.FavoriteAuthor = newUserInfo.FavoriteAuthor
+	tempInfo.FavoriteBook = newUserInfo.FavoriteBook
+	tempInfo.Intrest = newUserInfo.Intrest
+	tempInfo.Introduction = newUserInfo.Introduction
 
-	var userBefore, userAfter User
-	err = uc.Find(bson.M{"id": userid}).One(&userBefore)
-	err = uc.Find(bson.M{"id": userid}).One(&userAfter)
-	userAfter.FavoriteAuthor = userinfo.FavoriteAuthor
-
-	err = uc.Update(userBefore, userAfter)
+	err = uc.Update(oldUserInfo, tempInfo)
+	if err != nil {
+		fmt.Println("修改用户信息失败")
+	}
 
 	return err
 }
@@ -39,19 +50,25 @@ func (manager *DbManager) UpdateUserInfo(userid int, userinfo User) (err error) 
 func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
-	var userBefore, userAfter User
-	err := uc.Find(bson.M{"id": article.AuthorId}).One(&userBefore)
-	err = uc.Find(bson.M{"id": article.AuthorId}).One(&userAfter)
+	// 根据文章作者的ID, 查找作者的信息
+	var oldUserInfo User
+	err := uc.Find(bson.M{"id": article.AuthorId}).One(&oldUserInfo)
+	tmpUser := oldUserInfo
 
+	// 给新文章创建ID和创作日期并格式化
 	article.Id = bson.NewObjectId().Hex()
 	article.CreateTime = time.Now().Format("2006-01-02 15:04:05")
 
-	//userBefore = userAfter
-	as := userAfter.Articles
+	// 追加文章到已有的集合
+	as := oldUserInfo.Articles
 	as = append(as, *article)
-	userAfter.Articles = as
+	tmpUser.Articles = as
 
-	err = uc.Update(userBefore, userAfter)
+	// 更新整个用户信息，包括新加的文章
+	err = uc.Update(oldUserInfo, tmpUser)
+	if err != nil {
+		fmt.Println("新增文章失败")
+	}
 
 	return err
 }
