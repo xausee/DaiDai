@@ -52,17 +52,26 @@ func (user *User) Index(id string) revel.Result {
 	return user.Render()
 }
 
-func (user *User) Info(id string) revel.Result {
+func (user *User) Info(id int) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 
-	user.RenderArgs["authorId"] = id
+	userInfo, _ := manager.GetUserById(id)
+
+	// 判断访问该页面的用户是否是本人
+	var isCurrentUser bool
+	if user.Session["userid"] == strconv.Itoa(id) {
+		isCurrentUser = true
+	}
+
+	user.RenderArgs["isCurrentUser"] = isCurrentUser
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["userInfo"] = userInfo
 
 	return user.Render()
 }
@@ -116,11 +125,13 @@ func (user *User) PostAddArticle(article *models.UserArticle) revel.Result {
 	}
 	defer manager.Close()
 
+	// 给文章附加上作者id和名字（昵称）
 	article.AuthorId, err = strconv.Atoi(user.Session["userid"])
 	if err != nil {
 		fmt.Println("转换用户id失败")
 		return user.Redirect((*User).AddArticle)
 	}
+	article.AuthorNickName = user.Session["nickName"]
 
 	err = manager.AddUserArticle(article)
 	if err != nil {
@@ -158,9 +169,14 @@ func (user *User) ShowArticle(userid int, articleid string) revel.Result {
 	}
 	defer manager.Close()
 	article, _ := manager.GetArticleByUserIdAndArticleId(userid, articleid)
-	authorId := strconv.Itoa(article.AuthorId)
 
-	user.RenderArgs["authorId"] = authorId
+	// 判断访问该页面的用户是否是本人
+	var isCurrentUser bool
+	if user.Session["userid"] == strconv.Itoa(article.AuthorId) {
+		isCurrentUser = true
+	}
+
+	user.RenderArgs["isCurrentUser"] = isCurrentUser
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]

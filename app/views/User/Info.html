@@ -10,16 +10,16 @@
         <div class="panel-body">          
           <dl class="dl-horizontal text-success">
           	<dt>头像</dt> <dd><img src="/public/img/cow.jpg" class="img-thumbnail" alt="Responsive image"></dd></br>
-            <dt>昵称</dt> <dd>手指在燃烧</dd></br>
-            <dt>笔名</dt> <dd>手指在燃烧</dd></br>
-            <dt>性别</dt> <dd>男</dd></br>
-            <dt>邮箱</dt> <dd>xausee@gmail.com</dd></br>
-            <dt>生日</dt> <dd>阿斯顿发放北京北京和环境水电费水电费</dd></br>
-            <dt>喜欢的作者</dt> <dd>阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费</dd></br>
-            <dt>酷爱的书籍</dt> <dd>阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费</dd></br>
-            <dt>兴趣爱好</dt> <dd>阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费</dd></br>
-            <dt>个人简介</dt> <dd>阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费阿斯顿发放北京北京和环境水电费水电费</dd></br>
-            {{if eq .userid .authorId}}
+            <dt>昵称</dt> <dd>{{.userInfo.Nickname}}</dd></br>
+            <dt>笔名</dt> <dd>{{.userInfo.PenName}}</dd></br>
+            <dt>性别</dt> <dd>{{.userInfo.Gender}}</dd></br>
+            <dt>邮箱</dt> <dd>{{.userInfo.Email}}</dd></br>
+            <dt>生日</dt> <dd>{{.userInfo.Birth}}</dd></br>
+            <dt>喜欢的作者</dt> <dd>{{.userInfo.FavoriteAuthor}}</dd></br>
+            <dt>酷爱的书籍</dt> <dd>{{.userInfo.FavoriteBook}}</dd></br>
+            <dt>兴趣爱好</dt> <dd>{{.userInfo.Intrest}}</dd></br>
+            <dt>个人简介</dt> <dd>{{.userInfo.Introduction}}</dd></br>
+            {{if .isCurrentUser}}
              <dt></dt> <dd><a href="{{url "User.EditInfo" .userid}}">编辑</a></dd></br>
             {{end}}
           </dl>      

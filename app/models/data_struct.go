@@ -44,22 +44,24 @@ type Comment struct {
 }
 
 type UserArticle struct {
-	Id         string
-	Title      string
-	Tag        string
-	Content    string
-	CreateTime string
-	AuthorId   int
-	Comments   []Comment
+	Id             string
+	Title          string
+	Tag            string
+	Content        string
+	CreateTime     string
+	AuthorId       int
+	AuthorNickName string
+	Comments       []Comment
 }
 
 type User struct {
 	Id                int
 	Email             string
 	Nickname          string
+	RealName          string
+	PenName           string
 	AvatarUrl         string
 	Password          []byte
-	PenName           string
 	Birth             string
 	Gender            string
 	FavoriteAuthor    string
