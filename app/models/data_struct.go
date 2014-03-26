@@ -60,7 +60,7 @@ type User struct {
 	AvatarUrl         string
 	Password          []byte
 	PenName           string
-	Birth             time.Time
+	Birth             string
 	Gender            string
 	FavoriteAuthor    string
 	FavoriteBook      string
