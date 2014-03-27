@@ -15,7 +15,7 @@ GET     /login                                  Account.Login
 POST    /login                                  Account.PostLogin
 GET     /logout                                 Account.Logout
 
-GET     /user/:id                               User.Index
+GET     /user/:userid                           User.Index
 GET     /user/info/:id                          User.Info
 GET     /user/info/edit/:userid                 User.EditInfo
 Post    /user/info/edit/:userid                 User.PostEditInfo

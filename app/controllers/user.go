@@ -11,14 +11,13 @@ type User struct {
 	*revel.Controller
 }
 
-func (user *User) Index(id string) revel.Result {
+func (user *User) Index(userid int) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 
-	userid, _ := strconv.Atoi(id)
 	articles, _ := manager.GetAllArticlesByUserId(userid)
 	count := len(articles)
 
@@ -41,6 +40,13 @@ func (user *User) Index(id string) revel.Result {
 		articlesOnOnePage = articles
 	}
 
+	// 判断访问该页面的用户是否是本人
+	var isCurrentUser bool
+	if user.Session["userid"] == strconv.Itoa(userid) {
+		isCurrentUser = true
+	}
+
+	user.RenderArgs["isCurrentUser"] = isCurrentUser
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["allArticles"] = articles
