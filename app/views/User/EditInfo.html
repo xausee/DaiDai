@@ -13,8 +13,8 @@
           	<dt>头像</dt> <dd><img src="/public/img/cow.jpg" class="img-thumbnail" alt="Responsive image"></dd></br>
             <dt>昵称</dt>             
             <dd>
-              {{$nickName := .user.Nickname}}
-            	{{with $field := field "userInfo.Nickname" .}}
+              {{$nickName := .user.NickName}}
+            	{{with $field := field "userInfo.NickName" .}}
                 <div class="input-group {{$field.ErrorClass}}">
                   <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">{{$nickName}}</textarea> 
                   {{if $field.Error}} 

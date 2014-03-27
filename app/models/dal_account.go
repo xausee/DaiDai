@@ -10,23 +10,24 @@ import (
 func (manager *DbManager) RegisterUser(mu *MockUser) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
-	i, _ := uc.Find(bson.M{"nickname": mu.Nickname}).Count()
+	i, _ := uc.Find(bson.M{"nickname": mu.NickName}).Count()
 	if i != 0 {
 		return errors.New("用户昵称已经被使用")
 	}
 
-	i, _ = uc.Find(bson.M{"email": mu.Email}).Count()
-	if i != 0 {
-		return errors.New("邮件地址已经被使用")
-	}
+	// i, _ = uc.Find(bson.M{"email": mu.Email}).Count()
+	// if i != 0 {
+	// 	return errors.New("邮件地址已经被使用")
+	// }
 
 	count, _ := uc.Count()
 
 	var u User
-	// Id start from 10000
+	// 用户ID从10000开始
 	u.Id = 10000 + count
 	u.Email = mu.Email
-	u.Nickname = mu.Nickname
+	u.NickName = mu.NickName
+	u.PenName = mu.PenName
 	u.Gender = mu.Gender
 	u.Password, _ = bcrypt.GenerateFromPassword([]byte(mu.Password), bcrypt.DefaultCost)
 
@@ -38,13 +39,13 @@ func (manager *DbManager) RegisterUser(mu *MockUser) error {
 func (manager *DbManager) LoginUser(lu *LoginUser) (user *User, err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
-	i, _ := uc.Find(bson.M{"email": lu.Email}).Count()
+	i, _ := uc.Find(bson.M{"nickname": lu.NickName}).Count()
 	if i == 0 {
 		fmt.Println("此账号不存在")
 		err = errors.New("此账号不存在")
 	}
 
-	uc.Find(bson.M{"email": lu.Email}).One(&user)
+	uc.Find(bson.M{"nickname": lu.NickName}).One(&user)
 
 	if user.Password == nil {
 		err = errors.New("获取密码错误")

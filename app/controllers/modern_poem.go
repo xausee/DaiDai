@@ -41,7 +41,6 @@ func (mp *ModernPoem) Index() revel.Result {
 	}
 
 	mp.RenderArgs["userid"] = mp.Session["userid"]
-	mp.RenderArgs["email"] = mp.Session["email"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
 	mp.RenderArgs["allPoems"] = allPoems
 	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
@@ -81,7 +80,6 @@ func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
 	}
 
 	mp.RenderArgs["userid"] = mp.Session["userid"]
-	mp.RenderArgs["email"] = mp.Session["email"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
 	mp.RenderArgs["allPoems"] = allPoems
 	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
@@ -93,9 +91,9 @@ func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
 }
 
 func (mp *ModernPoem) Add() revel.Result {
-	email := mp.Session["email"]
+	userid := mp.Session["userid"]
 	nickName := mp.Session["nickName"]
-	return mp.Render(email, nickName)
+	return mp.Render(userid, nickName)
 }
 
 func (mp *ModernPoem) Edit(id string) revel.Result {
@@ -108,7 +106,6 @@ func (mp *ModernPoem) Edit(id string) revel.Result {
 	oringinalModernPoem, _ := manager.GetModernPoemById(id)
 
 	mp.RenderArgs["userid"] = mp.Session["userid"]
-	mp.RenderArgs["email"] = mp.Session["email"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
 	mp.RenderArgs["oringinalModernPoem"] = oringinalModernPoem
 
@@ -193,7 +190,6 @@ func (mp *ModernPoem) Show(id string) revel.Result {
 	// }
 
 	mp.RenderArgs["userid"] = mp.Session["userid"]
-	mp.RenderArgs["email"] = mp.Session["email"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
 	mp.RenderArgs["modernPoem"] = modernPoem
 
@@ -285,7 +281,7 @@ func (mp *ModernPoem) PageListWithTag(uPageNumber string, tag string) revel.Resu
 }
 
 func (mp *ModernPoem) Delete(id string) revel.Result {
-	email := mp.Session["email"]
+	userid := mp.Session["userid"]
 	nickName := mp.Session["nickName"]
 
 	manager, err := models.NewDbManager()
@@ -296,6 +292,6 @@ func (mp *ModernPoem) Delete(id string) revel.Result {
 	defer manager.Close()
 	err = manager.DeleteModernPoemById(id)
 
-	mp.Render(email, nickName)
+	mp.Render(userid, nickName)
 	return mp.Redirect((*ModernPoem).Index)
 }

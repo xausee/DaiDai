@@ -41,7 +41,6 @@ func (e *Essay) Index() revel.Result {
 	}
 
 	e.RenderArgs["userid"] = e.Session["userid"]
-	e.RenderArgs["email"] = e.Session["email"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
 	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
@@ -81,7 +80,6 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 	}
 
 	e.RenderArgs["userid"] = e.Session["userid"]
-	e.RenderArgs["email"] = e.Session["email"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
 	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
@@ -93,13 +91,13 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 }
 
 func (e *Essay) Add() revel.Result {
-	email := e.Session["email"]
+	userid := e.Session["userid"]
 	nickName := e.Session["nickName"]
-	return e.Render(email, nickName)
+	return e.Render(userid, nickName)
 }
 
 func (e *Essay) Edit(id string) revel.Result {
-	email := e.Session["email"]
+	userid := e.Session["userid"]
 	nickName := e.Session["nickName"]
 
 	manager, err := models.NewDbManager()
@@ -110,7 +108,7 @@ func (e *Essay) Edit(id string) revel.Result {
 	defer manager.Close()
 	oringinalEssay, _ := manager.GetEssayById(id)
 
-	return e.Render(email, nickName, oringinalEssay)
+	return e.Render(userid, nickName, oringinalEssay)
 }
 
 func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
@@ -178,9 +176,6 @@ func (e *Essay) PostEdit(originalEssayID string, newEssay *models.Essay) revel.R
 }
 
 func (e *Essay) Show(id string) revel.Result {
-	email := e.Session["email"]
-	nickName := e.Session["nickName"]
-
 	manager, err := models.NewDbManager()
 	if err != nil {
 		e.Response.Status = 500
@@ -193,7 +188,9 @@ func (e *Essay) Show(id string) revel.Result {
 	// 	//return e.Redirect((*Essay).Add)
 	// }
 	e.RenderArgs["userid"] = e.Session["userid"]
-	return e.Render(email, nickName, essay)
+	e.RenderArgs["nickName"] = e.Session["nickName"]
+	e.RenderArgs["essay"] = essay
+	return e.Render()
 }
 
 func (e *Essay) PageList(pageNumber string) revel.Result {
@@ -281,7 +278,7 @@ func (e *Essay) PageListWithTag(uPageNumber string, tag string) revel.Result {
 }
 
 func (e *Essay) Delete(id string) revel.Result {
-	email := e.Session["email"]
+	userid := e.Session["userid"]
 	nickName := e.Session["nickName"]
 
 	manager, err := models.NewDbManager()
@@ -292,6 +289,6 @@ func (e *Essay) Delete(id string) revel.Result {
 	defer manager.Close()
 	err = manager.DeleteEssayById(id)
 
-	e.Render(email, nickName)
+	e.Render(userid, nickName)
 	return e.Redirect((*Essay).Index)
 }

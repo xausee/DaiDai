@@ -29,7 +29,7 @@ func (manager *DbManager) UpdateUserInfo(userid int, newUserInfo User) (err erro
 	// 修改一些基本的信息，并不是全部，参看修改页面的内容
 	tempInfo := oldUserInfo
 	tempInfo.AvatarUrl = newUserInfo.AvatarUrl
-	tempInfo.Nickname = newUserInfo.Nickname
+	tempInfo.NickName = newUserInfo.NickName
 	tempInfo.PenName = newUserInfo.PenName
 	tempInfo.Gender = newUserInfo.Gender
 	tempInfo.Email = newUserInfo.Email

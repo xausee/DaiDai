@@ -5,11 +5,23 @@
   <div class="col-md-4"></div>
   <div class="col-md-4">
     <form class="form-horizontal" role="form" action="{{url "Account.PostLogin"}}" method="POST">     
-      {{with $field := field "loginUser.Email" .}} 
+      <!-- {{with $field := field "loginUser.Email" .}} 
       <div class="form-group {{$field.ErrorClass}}"> 
         <label class="col-sm-2 control-label" for="{{$field.Id}}">电子邮件</label> 
         <div class="col-sm-10"> 
           <input type="email" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="电子邮件" required> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}} 
+        </div> 
+      </div> 
+      {{end}}  -->
+
+     {{with $field := field "loginUser.NickName" .}} 
+      <div class="form-group {{$field.ErrorClass}}"> 
+        <label class="col-sm-2 control-label" for="{{$field.Id}}">昵称</label> 
+        <div class="col-sm-10"> 
+          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="昵称" required> 
           {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
           {{end}} 

@@ -20,7 +20,6 @@ func (w *Witticism) Index() revel.Result {
 	witticisms, err := manager.GetAllWitticism()
 
 	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["email"] = w.Session["email"]
 	w.RenderArgs["nickName"] = w.Session["nickName"]
 	w.RenderArgs["witticisms"] = witticisms
 
@@ -29,7 +28,6 @@ func (w *Witticism) Index() revel.Result {
 
 func (w *Witticism) Add() revel.Result {
 	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["email"] = w.Session["email"]
 	w.RenderArgs["nickName"] = w.Session["nickName"]
 
 	return w.Render()
@@ -45,7 +43,6 @@ func (w *Witticism) Edit(id string) revel.Result {
 	originalWitticism, _ := manager.GetWitticismById(id)
 
 	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["email"] = w.Session["email"]
 	w.RenderArgs["nickName"] = w.Session["nickName"]
 	w.RenderArgs["originalWitticism"] = originalWitticism
 
@@ -131,7 +128,6 @@ func (w *Witticism) Show(id string) revel.Result {
 	// }
 
 	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["email"] = w.Session["email"]
 	w.RenderArgs["nickName"] = w.Session["nickName"]
 	w.RenderArgs["witticism"] = witticism
 
@@ -148,7 +144,6 @@ func (w *Witticism) Delete(id string) revel.Result {
 	err = manager.DeleteWitticismById(id)
 
 	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["email"] = w.Session["email"]
 	w.RenderArgs["nickName"] = w.Session["nickName"]
 
 	return w.Redirect((*Witticism).Index)

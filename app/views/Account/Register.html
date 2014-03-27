@@ -6,7 +6,7 @@
   <div class="col-md-4">        
     <form class="form-horizontal" role="form" action="{{url "Account.PostRegister"}}" method="POST"> 
     
-      {{with $field := field "user.Email" .}} 
+     <!--  {{with $field := field "user.Email" .}} 
       <div class="form-group {{$field.ErrorClass}}"> 
         <label class="col-sm-2 control-label" for="{{$field.Id}}">电子邮件</label>            
         <div class="col-sm-10"> 
@@ -16,13 +16,25 @@
           {{end}} 
         </div> 
       </div> 
-      {{end}} 
+      {{end}}  -->
       
-      {{with $field := field "user.Nickname" .}} 
+      {{with $field := field "user.NickName" .}} 
       <div class="form-group {{$field.ErrorClass}}"> 
         <label class="col-sm-2 control-label" for="{{$field.Id}}">昵称</label> 
         <div class="col-sm-10"> 
           <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="昵称" required> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}} 
+        </div> 
+      </div> 
+      {{end}} 
+
+      {{with $field := field "user.PenName" .}} 
+      <div class="form-group {{$field.ErrorClass}}"> 
+        <label class="col-sm-2 control-label" for="{{$field.Id}}">笔名</label> 
+        <div class="col-sm-10"> 
+          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="笔名" required> 
           {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
           {{end}} 

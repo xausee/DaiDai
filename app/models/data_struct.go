@@ -4,6 +4,7 @@ import (
 	"time"
 )
 
+// 用户基本信息其它数据分开定义？
 // type User struct {
 // 	Id        int
 // 	Email     string
@@ -17,7 +18,8 @@ import (
 
 type MockUser struct {
 	Email           string
-	Nickname        string
+	NickName        string
+	PenName         string
 	Gender          string
 	Password        string
 	ConfirmPassword string
@@ -25,13 +27,13 @@ type MockUser struct {
 
 type LoginUser struct {
 	Email    string
-	Nickname string
+	NickName string
 	Password string
 }
 
 type Commenter struct {
 	Email     string
-	Nickname  string
+	NickName  string
 	AvatarUrl string
 }
 
@@ -57,7 +59,7 @@ type UserArticle struct {
 type User struct {
 	Id                int
 	Email             string
-	Nickname          string
+	NickName          string
 	RealName          string
 	PenName           string
 	AvatarUrl         string

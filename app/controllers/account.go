@@ -24,8 +24,7 @@ func (c *Account) Login() revel.Result {
 }
 
 func (c *Account) Logout() revel.Result {
-	fmt.Println("Logout successful with email: ", c.Session["email"])
-	fmt.Println("Nickname is: ", c.Session["nickName"])
+	fmt.Println("登出用户昵称: ", c.Session["nickName"])
 	for k := range c.Session {
 		delete(c.Session, k)
 	}
@@ -33,8 +32,8 @@ func (c *Account) Logout() revel.Result {
 }
 
 func (c *Account) PostRegister(user *models.MockUser) revel.Result {
-	c.Validation.Email(user.Email).Message("电子邮件格式无效")
-	c.Validation.Required(user.Nickname).Message("用户昵称不能为空")
+	//c.Validation.Email(user.Email).Message("电子邮件格式无效")
+	c.Validation.Required(user.NickName).Message("用户昵称不能为空")
 	c.Validation.Required(user.Password).Message("密码不能为空")
 	c.Validation.MinSize(user.Password, 6).Message("密码长度不短于6位")
 	c.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
@@ -64,7 +63,7 @@ func (c *Account) PostRegister(user *models.MockUser) revel.Result {
 }
 
 func (c *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
-	c.Validation.Email(loginUser.Email).Message("电子邮件格式无效")
+	c.Validation.Required(loginUser.NickName).Message("请输入昵称")
 	c.Validation.Required(loginUser.Password).Message("请输入密码")
 
 	if c.Validation.HasErrors() {
@@ -89,11 +88,8 @@ func (c *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 		return c.Redirect((*Account).Login)
 	}
 	c.Session["userid"] = strconv.Itoa(u.Id)
-	c.Session["nickName"] = u.Nickname
-	c.Session["email"] = u.Email
-	c.Session["nickName"] = u.Nickname
-	fmt.Println("Login successful with email: ", loginUser.Email)
-	fmt.Println("Nickname is: ", u.Nickname)
+	c.Session["nickName"] = u.NickName
+	fmt.Println("使用昵称登陆: ", loginUser.NickName)
 
 	return c.Redirect((*App).Index)
 }

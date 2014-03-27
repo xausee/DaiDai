@@ -41,7 +41,6 @@ func (q *Quotation) Index() revel.Result {
 	}
 
 	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 	q.RenderArgs["allQuotations"] = quotations
 	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
@@ -81,7 +80,6 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 	}
 
 	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 	q.RenderArgs["allQuotations"] = quotations
 	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
@@ -94,7 +92,6 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 
 func (q *Quotation) Add() revel.Result {
 	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 
 	return q.Render()
@@ -110,7 +107,6 @@ func (q *Quotation) Edit(id string) revel.Result {
 	originalQuotation, _ := manager.GetQuotationById(id)
 
 	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 	q.RenderArgs["originalQuotation"] = originalQuotation
 
@@ -201,7 +197,6 @@ func (q *Quotation) Show(id string) revel.Result {
 	// }
 
 	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["email"] = q.Session["email"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
 	q.RenderArgs["quotation"] = quotation
 
@@ -293,7 +288,7 @@ func (q *Quotation) PageListWithTag(uPageNumber string, tag string) revel.Result
 }
 
 func (q *Quotation) Delete(id string) revel.Result {
-	email := q.Session["email"]
+	userid := q.Session["userid"]
 	nickName := q.Session["nickName"]
 
 	manager, err := models.NewDbManager()
@@ -304,6 +299,6 @@ func (q *Quotation) Delete(id string) revel.Result {
 	defer manager.Close()
 	err = manager.DeleteQuotationById(id)
 
-	q.Render(email, nickName)
+	q.Render(userid, nickName)
 	return q.Redirect((*Quotation).Index)
 }

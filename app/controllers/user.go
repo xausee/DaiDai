@@ -42,7 +42,6 @@ func (user *User) Index(id string) revel.Result {
 	}
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["allArticles"] = articles
 	user.RenderArgs["articlesOnOnePage"] = articlesOnOnePage
@@ -69,7 +68,6 @@ func (user *User) Info(id int) revel.Result {
 
 	user.RenderArgs["isCurrentUser"] = isCurrentUser
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["userInfo"] = userInfo
 
@@ -84,7 +82,6 @@ func (user *User) Message(id string) revel.Result {
 	defer manager.Close()
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
@@ -98,7 +95,6 @@ func (user *User) Friend(id string) revel.Result {
 	defer manager.Close()
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
@@ -112,7 +108,6 @@ func (user *User) AddArticle() revel.Result {
 	defer manager.Close()
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
@@ -142,7 +137,6 @@ func (user *User) PostAddArticle(article *models.UserArticle) revel.Result {
 	}
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Redirect((*User).AddArticle)
@@ -156,7 +150,6 @@ func (user *User) EditArticle(articleid string) revel.Result {
 	defer manager.Close()
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
@@ -178,7 +171,6 @@ func (user *User) ShowArticle(userid int, articleid string) revel.Result {
 
 	user.RenderArgs["isCurrentUser"] = isCurrentUser
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["article"] = article
 
@@ -193,7 +185,6 @@ func (user *User) PostEditArticle(article *models.UserArticle) revel.Result {
 	defer manager.Close()
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
@@ -210,7 +201,6 @@ func (user *User) EditInfo(userid int) revel.Result {
 
 	user.RenderArgs["user"] = userInfo
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
@@ -226,7 +216,6 @@ func (user *User) PostEditInfo(userInfo models.User) revel.Result {
 	err = manager.UpdateUserInfo(userInfo.Id, userInfo)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Redirect("/user/info/%d", userInfo.Id)
@@ -240,7 +229,6 @@ func (user *User) DeleteArticle(articleid string) revel.Result {
 	defer manager.Close()
 
 	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["email"] = user.Session["email"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()

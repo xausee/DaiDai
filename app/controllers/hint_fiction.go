@@ -41,7 +41,6 @@ func (hf *HintFiction) Index() revel.Result {
 	}
 
 	hf.RenderArgs["userid"] = hf.Session["userid"]
-	hf.RenderArgs["email"] = hf.Session["email"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
 	hf.RenderArgs["allHintFinctions"] = hintFictions
 	hf.RenderArgs["hintFictionsOnOnePage"] = hintFictionsOnOnePage
@@ -61,7 +60,6 @@ func (hf *HintFiction) TypeIndex(tag string) revel.Result {
 	hintFictions, err := manager.GetHintFictionByTag(tag)
 
 	hf.RenderArgs["userid"] = hf.Session["userid"]
-	hf.RenderArgs["email"] = hf.Session["email"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
 	hf.RenderArgs["hintFictions"] = hintFictions
 
@@ -70,7 +68,6 @@ func (hf *HintFiction) TypeIndex(tag string) revel.Result {
 
 func (hf *HintFiction) Add() revel.Result {
 	hf.RenderArgs["userid"] = hf.Session["userid"]
-	hf.RenderArgs["email"] = hf.Session["email"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
 
 	return hf.Render()
@@ -86,7 +83,6 @@ func (hf *HintFiction) Edit(id string) revel.Result {
 	oringinalHintFiction, _ := manager.GetHintFictionById(id)
 
 	hf.RenderArgs["userid"] = hf.Session["userid"]
-	hf.RenderArgs["email"] = hf.Session["email"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
 	hf.RenderArgs["oringinalHintFiction"] = oringinalHintFiction
 
@@ -171,7 +167,6 @@ func (hf *HintFiction) Show(id string) revel.Result {
 	// }
 
 	hf.RenderArgs["userid"] = hf.Session["userid"]
-	hf.RenderArgs["email"] = hf.Session["email"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
 	hf.RenderArgs["hintFiction"] = hintFiction
 
@@ -221,7 +216,7 @@ func (hf *HintFiction) PageList(pageNumber string) revel.Result {
 }
 
 func (hf *HintFiction) Delete(id string) revel.Result {
-	email := hf.Session["email"]
+	userid := hf.Session["userid"]
 	nickName := hf.Session["nickName"]
 
 	manager, err := models.NewDbManager()
@@ -232,6 +227,6 @@ func (hf *HintFiction) Delete(id string) revel.Result {
 	defer manager.Close()
 	err = manager.DeleteHintFictionById(id)
 
-	hf.Render(email, nickName)
+	hf.Render(userid, nickName)
 	return hf.Redirect((*HintFiction).Index)
 }
