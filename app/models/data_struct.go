@@ -1,9 +1,5 @@
 package models
 
-import (
-	"time"
-)
-
 // 用户基本信息其它数据分开定义？
 // type User struct {
 // 	Id        int
@@ -38,11 +34,11 @@ type Commenter struct {
 }
 
 type Comment struct {
-	Id     string
-	Author Commenter
-	Time   time.Time
-	Score  int
-	Cotent string
+	Id      string
+	Author  Commenter
+	Time    string
+	Score   int
+	Content string
 }
 
 type UserArticle struct {

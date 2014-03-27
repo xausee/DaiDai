@@ -196,6 +196,29 @@ func (user *User) PostEditArticle(article *models.UserArticle) revel.Result {
 	return user.Render()
 }
 
+func (user *User) PostArticleComment(authorid int, articleid string, comment *models.Comment) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	fmt.Println("authorid: ", authorid)
+	fmt.Println("articleid: ", articleid)
+	fmt.Println("comment: ", *comment)
+
+	// 根据作者ID和文章ID查找到该文章
+	article, _ := manager.GetArticleByUserIdAndArticleId(authorid, articleid)
+	// 添加新的评论
+	err = manager.AddArticleComment(&article, comment)
+
+	user.RenderArgs["article"] = article
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Render()
+}
+
 func (user *User) EditInfo(userid int) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {

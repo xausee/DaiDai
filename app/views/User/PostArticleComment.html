@@ -1,0 +1,7 @@
+{{range .article.Comments}}
+<pre class="text-center">{{.Content}} 
+  <div class="text-center">{{.Author.NickName}}</div>    
+  <div class="text-left">{{.Id}}</div> 
+  <div class="text-right">{{.Time}}</div>          
+  </pre>
+{{end}}
