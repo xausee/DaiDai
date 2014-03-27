@@ -24,21 +24,34 @@
     </div> 
   </div>
   {{end}}
-
+ 
   <div class="row">
-    <div class="col-xs-1"></div> 
-    <div class="col-xs-10">评论
-    {{range .article.Comments}}
-    <pre class="text-center">{{.Cotent}} 
-      <div class="text-center">{{.Author.NickName}}</div>    
-      <div class="text-left">{{.Id}}</div> 
-      <div class="text-right">{{.Time}}</div>          
-    </pre>
-    {{end}}
-    </div>      
-  </div>
+    <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <div class="panel panel-success">
+          <div class="row">
+          {{range .article.Comments}}      
+          <div class="col-xs-0"></div>
+          <div class="col-xs-3">
+            <div class="text-left">{{.Author.NickName}}：</div> 
+          </div>    
+          <div class="col-xs-9">
+            <div class="text-right">{{.Time}} 发表</div>
+          </div> 
+          </div> 
+          
+          <div class="row">
+            <div class="col-xs-0"></div>
+            <div class="col-xs-3">
+              <div class="text-left">{{.Content}}</div>
+            </div>
+         {{end}}  
+        </div>    
+      </div>    
+    </div> 
+  </div>   
 
-  <div class="row">  
+  <div class="row">    
     <div class="col-xs-1"></div> 
     <div class="col-xs-10">
       <form role="form" action="{{url "User.PostArticleComment"}}" method="POST"> 
@@ -64,9 +77,8 @@
       {{end}} 
       <div class="input-group">                  
         <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
-        </div>
-      </form>    
-    </div>   
+      </div>
+    </form>  
   </div>
 
 </div>

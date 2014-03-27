@@ -73,13 +73,13 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	return err
 }
 
-func (manager *DbManager) AddArticleComment(article *UserArticle, comment *Comment) error {
+func (manager *DbManager) AddArticleComment(article UserArticle, comment *Comment) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
 	// 根据文章作者的ID, 查找作者的信息
-	var oldUserInfo User
+	var oldUserInfo, tmpUser User
 	err := uc.Find(bson.M{"id": article.AuthorId}).One(&oldUserInfo)
-	tmpUser := oldUserInfo
+	err = uc.Find(bson.M{"id": article.AuthorId}).One(&tmpUser)
 
 	// 给新评论创建ID，增加日期并格式化
 	comment.Id = bson.NewObjectId().Hex()
@@ -102,12 +102,11 @@ func (manager *DbManager) AddArticleComment(article *UserArticle, comment *Comme
 
 	if flag {
 		// 更新该篇文章
-		tmpUser.Articles[index] = *article
+		tmpUser.Articles[index] = article
 	} else {
 		fmt.Println("找不到指定的文章， 添加评论失败")
 	}
 
-	fmt.Println("文章: ", tmpUser.Articles[index])
 	// 更新整个用户信息，包括新加的文章
 	err = uc.Update(oldUserInfo, tmpUser)
 	if err != nil {

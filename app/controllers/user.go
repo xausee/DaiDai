@@ -203,14 +203,11 @@ func (user *User) PostArticleComment(authorid int, articleid string, comment *mo
 	}
 	defer manager.Close()
 
-	fmt.Println("authorid: ", authorid)
-	fmt.Println("articleid: ", articleid)
-	fmt.Println("comment: ", *comment)
-
 	// 根据作者ID和文章ID查找到该文章
 	article, _ := manager.GetArticleByUserIdAndArticleId(authorid, articleid)
 	// 添加新的评论
-	err = manager.AddArticleComment(&article, comment)
+	comment.Author.NickName = user.Session["nickName"]
+	err = manager.AddArticleComment(article, comment)
 
 	user.RenderArgs["article"] = article
 	user.RenderArgs["userid"] = user.Session["userid"]
