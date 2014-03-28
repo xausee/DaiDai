@@ -9,44 +9,53 @@
       <pre class="text-center">{{.article.Title}} 
         <div class="text-center">{{.article.AuthorNickName}}</div>  	
         <div class="text-left">{{.article.Content}}</div> 
-        <div class="text-right">{{.article.CreateTime}}</div>          
-      </pre>
+        <div class="text-right">{{.article.CreateTime}} </div>
+      </pre>          
     </div>      
   </div>  
   {{if .isCurrentUser}}
   <div class="row">
     <div class="col-xs-1"></div>
-    <div class="col-xs-10">
-  	  <ul class="nav navbar-nav navbar-right">
-        <li><a id="edit" href="{{url "User.EditArticle" .article.Id}}">编辑</a></li> 
-        <li><a id="delete" href="{{url "User.DeleteArticle" .article.Id}}">删除</a></li> 
-      </ul>
+    <div class="col-xs-10">      
+  	  <ul class="nav nav-pills">
+        <li>
+          <a id="edit" href="{{url "User.EditArticle" .article.Id}}">
+            <span class="glyphicon glyphicon-edit"></span> 编辑
+          </a>
+        </li> 
+        <li>
+          <a id="delete" href="{{url "User.DeleteArticle" .article.Id}}">
+            <span class="glyphicon glyphicon-remove-sign"></span> 删除
+          </a>
+        </li> 
+      </ul>      
     </div> 
   </div>
   {{end}}
  
   <div class="row">
     <div class="col-xs-1"></div>
-      <div class="col-xs-10">
-        <div class="panel panel-success">
-          <div class="row">
-          {{range .article.Comments}}      
+    <div class="col-xs-10">
+      <strong><span class="glyphicon glyphicon-comment"></span> 评论：</strong>
+      <div class="panel panel-success">
+        {{range .article.Comments}} 
+        <div class="row">               
           <div class="col-xs-0"></div>
           <div class="col-xs-3">
-            <div class="text-left">{{.Author.NickName}}：</div> 
+            <div class="text-left text-success">{{.Author.NickName}}：</div> 
           </div>    
           <div class="col-xs-9">
-            <div class="text-right">{{.Time}} 发表</div>
+            <div class="text-right text-success">{{.Time}} 发表</div>
           </div> 
-          </div> 
-          
-          <div class="row">
-            <div class="col-xs-0"></div>
-            <div class="col-xs-3">
-              <div class="text-left">{{.Content}}</div>
-            </div>
-         {{end}}  
-        </div>    
+        </div>           
+        <div class="row">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-10">
+            <div class="text-left">{{nl2br .Content}}</div>
+          </div>
+          </br>  
+        </div>  
+        {{end}}   
       </div>    
     </div> 
   </div>   
@@ -58,12 +67,12 @@
         {{$authorid := .article.AuthorId}}
         {{with $field := field "authorid" .}} 
         <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
-        rows="1">{{$authorid}}</textarea> 
+        rows="1" style="visibility:hidden; display:none;">{{$authorid}}</textarea> 
         {{end}} 
 
         {{$articleid := .article.Id}}
         {{with $field := field "articleid" .}} 
-        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1">{{$articleid}}</textarea> 
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1" style="visibility:hidden; display:none;">{{$articleid}}</textarea> 
         {{end}}  
 
       {{with $field := field "comment.Content" .}} 
@@ -72,12 +81,12 @@
         <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5" placeholder="内容" required></textarea> 
         {{if $field.Error}} 
         <span class="help-inline">{{$field.Error}}</span> 
-        {{end}}         
+        {{end}}   
+        <span class="input-group-addon">
+          <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
+        </span>      
       </div> 
-      {{end}} 
-      <div class="input-group">                  
-        <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
-      </div>
+      {{end}}       
     </form>  
   </div>
 
