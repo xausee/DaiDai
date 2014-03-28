@@ -179,6 +179,7 @@ func (user *User) ShowArticle(userid int, articleid string) revel.Result {
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["article"] = article
+	user.RenderArgs["commentCount"] = len(article.Comments)
 
 	return user.Render()
 }
@@ -205,15 +206,23 @@ func (user *User) PostArticleComment(authorid int, articleid string, comment *mo
 
 	// 根据作者ID和文章ID查找到该文章
 	article, _ := manager.GetArticleByUserIdAndArticleId(authorid, articleid)
+
+	// 增加评论人的昵称
+	if user.Session["nickName"] == "" {
+		comment.Author.NickName = "匿名网友"
+	} else {
+		comment.Author.NickName = user.Session["nickName"]
+	}
+
 	// 添加新的评论
-	comment.Author.NickName = user.Session["nickName"]
 	err = manager.AddArticleComment(article, comment)
 
 	user.RenderArgs["article"] = article
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Render()
+	//user.Render()
+	return user.Redirect("/user/article/show/%d/%s", authorid, articleid)
 }
 
 func (user *User) EditInfo(userid int) revel.Result {
