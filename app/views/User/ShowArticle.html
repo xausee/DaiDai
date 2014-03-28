@@ -2,42 +2,38 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
-<div class="container">
+<div class="container">  
   <div class="row">
     <div class="col-xs-1"></div> 
-    <div class="col-xs-10">
+    <div class="col-xs-10">      
       <pre class="text-center">{{.article.Title}} 
         <div class="text-center">{{.article.AuthorNickName}}</div>  	
         <div class="text-left">{{.article.Content}}</div> 
         <div class="text-right">{{.article.CreateTime}} </div>
-      </pre>          
+      </pre>
+      {{if .isCurrentUser}}
+      <div class="text-right">
+        <a id="edit" href="{{url "User.EditArticle" .article.Id}}">
+          <span class="glyphicon glyphicon-edit"></span> 编辑
+        </a>
+        <a id="delete" href="{{url "User.DeleteArticle" .article.Id}}">
+          <span class="glyphicon glyphicon-remove-sign"></span> 删除
+        </a> 
+      </div>
+      {{end}}    
     </div>      
-  </div>  
-  {{if .isCurrentUser}}
+  </div>
+
   <div class="row">
     <div class="col-xs-1"></div>
     <div class="col-xs-10">      
-  	  <ul class="nav nav-pills">
-        <li>
-          <a id="edit" href="{{url "User.EditArticle" .article.Id}}">
-            <span class="glyphicon glyphicon-edit"></span> 编辑
-          </a>
-        </li> 
-        <li>
-          <a id="delete" href="{{url "User.DeleteArticle" .article.Id}}">
-            <span class="glyphicon glyphicon-remove-sign"></span> 删除
-          </a>
-        </li> 
-      </ul>      
-    </div> 
-  </div>
-  {{end}}
- 
-  <div class="row">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-10">
-      <strong><span class="glyphicon glyphicon-comment"></span> 评论：</strong>
       <div class="panel panel-success">
+        <div class="text-success">
+          <well>
+            <span class="glyphicon glyphicon-comment text-warning"></span> 评论 [{{.commentCount}}]
+            <div class="aligncenter" style="width:auto;height:0;border-top:1px dotted #468847;font-size:0;"></div>
+          </well>          
+        </div>
         {{range .article.Comments}}         
         <div class="row">               
           <div class="col-xs-0"></div>
