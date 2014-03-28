@@ -1,7 +1,6 @@
 package models
 
 import (
-	"errors"
 	"fmt"
 	"labix.org/v2/mgo/bson"
 	"time"
@@ -73,6 +72,41 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	return err
 }
 
+func (manager *DbManager) UpdateUserArticle(authorid int, newAritlce UserArticle) error {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据文章作者的ID, 查找作者的信息
+	var oldUserInfo, tmpUser User
+	err := uc.Find(bson.M{"id": authorid}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"id": authorid}).One(&tmpUser)
+
+	flag, index := false, 0
+	for _, art := range oldUserInfo.Articles {
+		if art.Id == newAritlce.Id {
+			flag = true
+			fmt.Println("找到指定的文章")
+			break
+		}
+		index += 1
+	}
+
+	if flag {
+		// 更新指定的文章的类型，标题和内容
+		as := tmpUser.Articles
+		as[index].Tag = newAritlce.Tag
+		as[index].Title = newAritlce.Title
+		as[index].Content = newAritlce.Content
+
+		// 更新整个用户信息
+		err = uc.Update(oldUserInfo, tmpUser)
+		if err != nil {
+			fmt.Println("更新失败")
+		}
+	}
+
+	return err
+}
+
 func (manager *DbManager) AddArticleComment(article UserArticle, comment *Comment) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
@@ -132,15 +166,18 @@ func (manager *DbManager) GetAllArticlesByUserId(userid int) (articles []UserArt
 func (manager *DbManager) GetArticleByUserIdAndArticleId(userid int, articleid string) (article UserArticle, err error) {
 	articles, _ := manager.GetAllArticlesByUserId(userid)
 
+	flag := false
 	for _, art := range articles {
 		if art.Id == articleid {
 			article = art
+			flag = true
 			fmt.Println("找到指定的文章")
 			return article, err
-		} else {
-			errors.New("查找文章失败")
-			fmt.Println("找不到指定的文章")
 		}
+	}
+
+	if !flag {
+		fmt.Println("找到指定的文章")
 	}
 
 	return article, err

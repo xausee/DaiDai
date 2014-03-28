@@ -23,7 +23,7 @@ GET     /user/article/add                       User.AddArticle
 POST    /user/article/add                       User.PostAddArticle
 GET     /user/article/show/:userid/:articleid   User.ShowArticle
 POST    /user/article/comments                  User.PostArticleComment
-GET     /user/article/edit/:id                  User.EditArticle
+GET     /user/article/edit/:articleid           User.EditArticle
 Post    /user/article/edit/:id                  User.PostEditArticle
 GET     /user/message/:id                       User.Message
 GET     /user/friend/:id                        User.Friend

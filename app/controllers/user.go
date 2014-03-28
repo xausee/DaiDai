@@ -145,7 +145,7 @@ func (user *User) PostAddArticle(article *models.UserArticle) revel.Result {
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Redirect((*User).AddArticle)
+	return user.Redirect("/user/article/show/%d/%s", article.AuthorId, article.Id)
 }
 
 func (user *User) EditArticle(articleid string) revel.Result {
@@ -155,10 +155,37 @@ func (user *User) EditArticle(articleid string) revel.Result {
 	}
 	defer manager.Close()
 
+	authorid, err := strconv.Atoi(user.Session["userid"])
+	// 根据作者ID和文章ID查找到该文章
+	article, _ := manager.GetArticleByUserIdAndArticleId(authorid, articleid)
+
+	user.RenderArgs["oldArticle"] = article
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
+}
+
+func (user *User) PostEditArticle(oldArticleId string, newArticle models.UserArticle) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	authorid, err := strconv.Atoi(user.Session["userid"])
+
+	newArticle.Id = oldArticleId
+	err = manager.UpdateUserArticle(authorid, newArticle)
+	if err != nil {
+		fmt.Println("更新文章失败")
+	}
+
+	//user.RenderArgs["oldArticle"] = article
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Redirect("/user/article/show/%d/%s", authorid, newArticle.Id)
 }
 
 func (user *User) ShowArticle(userid int, articleid string) revel.Result {
@@ -180,19 +207,6 @@ func (user *User) ShowArticle(userid int, articleid string) revel.Result {
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["article"] = article
 	user.RenderArgs["commentCount"] = len(article.Comments)
-
-	return user.Render()
-}
-
-func (user *User) PostEditArticle(article *models.UserArticle) revel.Result {
-	manager, err := models.NewDbManager()
-	if err != nil {
-		fmt.Println("链接数据库失败")
-	}
-	defer manager.Close()
-
-	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
 }
@@ -221,7 +235,6 @@ func (user *User) PostArticleComment(authorid int, articleid string, comment *mo
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	//user.Render()
 	return user.Redirect("/user/article/show/%d/%s", authorid, articleid)
 }
 
