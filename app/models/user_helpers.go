@@ -145,3 +145,37 @@ func (manager *DbManager) GetArticleByUserIdAndArticleId(userid int, articleid s
 
 	return article, err
 }
+
+func (manager *DbManager) DeleteUserArticle(userid int, articleid string) error {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据文章作者的ID, 查找作者的信息
+	var oldUserInfo User
+	err := uc.Find(bson.M{"id": userid}).One(&oldUserInfo)
+	tmpUser := oldUserInfo
+
+	flag, index := false, 0
+	for _, art := range oldUserInfo.Articles {
+		if art.Id == articleid {
+			flag = true
+			fmt.Println("找到指定的文章")
+			break
+		}
+		index += 1
+	}
+
+	if flag {
+		// 删除指定的文章
+		as := oldUserInfo.Articles
+		as = append(as[:index], as[index+1:]...)
+
+		// 更新整个用户信息，包括新加的文章
+		tmpUser.Articles = as
+		err = uc.Update(oldUserInfo, tmpUser)
+		if err != nil {
+			fmt.Println("更新失败")
+		}
+	}
+
+	return err
+}

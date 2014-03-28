@@ -262,9 +262,12 @@ func (user *User) DeleteArticle(articleid string) revel.Result {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
+	// 能调用此方法的用户就是作者本人，所以authorid等于Session["userid"]
+	authorid, _ := strconv.Atoi(user.Session["userid"])
+	err = manager.DeleteUserArticle(authorid, articleid)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Render()
+	return user.Redirect("/user/%d", authorid)
 }
