@@ -46,6 +46,34 @@ func (manager *DbManager) UpdateUserInfo(userid int, newUserInfo User) (err erro
 	return err
 }
 
+func (manager *DbManager) UpdateMessage(userid int, message Comment) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据用户ID, 查找用户信息
+	var oldUserInfo, tmpUser User
+	err = uc.Find(bson.M{"id": userid}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"id": userid}).One(&tmpUser)
+
+	// 给新留言创建ID，增加日期并格式化
+	message.Id = bson.NewObjectId().Hex()
+	message.Time = time.Now().Format("2006-01-02 15:04:05")
+
+	// 追加留言到已有的集合
+	ms := tmpUser.Message
+	ms = append(ms, message)
+	tmpUser.Message = ms
+
+	fmt.Println(oldUserInfo)
+	fmt.Println(tmpUser)
+	// 更新整个用户信息，包括新加的文章
+	err = uc.Update(oldUserInfo, tmpUser)
+	if err != nil {
+		fmt.Println("添加留言失败")
+	}
+
+	return err
+}
+
 func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 

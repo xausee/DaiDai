@@ -6,7 +6,8 @@
   <div class="row">
   	<div class="col-xs-1"></div>
   	<div class="col-xs-2">
-  	  <div class="panel panel-success" style="height:300px">        
+  	  <div class="panel panel-success" style="height:300px">  
+        <div class="panel-heading"><h3 class="panel-title text-center">基本信息</h3></div>      
         <div class="panel-body">           
           <img src="/public/img/cow.jpg" alt="140x140" class="img-thumbnail"> 
           </br></br> 
@@ -20,14 +21,15 @@
           </a>                
         </div>                        
       </div> 
-      <div class="panel panel-success" style="height:300px">        
-        <div class="panel-body">  
-          <div class="text-center text-success"><p>最新留言</p></div>  
-          </br>
-          <sub>
-Expedia makes it easy to book European vacation packages. With top deals on international flights & hotels, anyone can discover Europe's hidden 
-          </sub></br> </br> </br> </br>
-          <a href="{{url "User.Message" .userid}}">更多留言<span class="badge">42</span></a>        
+      <div class="panel panel-success" style="height:300px"> 
+        <div class="panel-heading"><h3 class="panel-title text-center">最新留言</h3></div>       
+        <div class="panel-body"> 
+          <sub>{{.lastMessage.Content}}</sub>                    
+          <div class="modal-footer"> 
+            <p class="text-center">
+              <a href="{{url "User.Message" .userid}}">更多留言<span class="badge">{{.messageCount}}</span></a>
+            </p>    
+          </div>        
         </div>                        
       </div> 
     </div> 

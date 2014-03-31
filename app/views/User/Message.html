@@ -17,7 +17,7 @@
         <div class="row">               
           <div class="col-xs-0"></div>
           <div class="col-xs-3">
-            <div class="text-left text-success">{{.NickName}}：</div> 
+            <div class="text-left text-success">{{.Author.NickName}}：</div> 
           </div>    
           <div class="col-xs-9">
             <div class="text-right text-success">{{.Time}} 发表</div>
@@ -42,16 +42,16 @@
           <div class="col-xs-0"></div> 
           <div class="col-xs-12">            
             <form role="form" action="{{url "User.PostMessage"}}" method="POST"> 
-              {{$authorid := .article.AuthorId}}
-              {{with $field := field "authorid" .}} 
+              {{$ownerid := .ownerid}}
+              {{with $field := field "userid" .}} 
               <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
-        rows="1" style="visibility:hidden; display:none;">{{$authorid}}</textarea> 
-              {{end}} 
-
-              {{$articleid := .article.Id}}
-              {{with $field := field "articleid" .}} 
-              <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1" style="visibility:hidden; display:none;">{{$articleid}}</textarea> 
-              {{end}}  
+        rows="1" style="visibility:hidden; display:none;">{{$ownerid}}</textarea> 
+              {{end}}
+              {{$nickName := .nickName}}
+              {{with $field := field "message.Author.NickName" .}} 
+              <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
+        rows="1" style="visibility:hidden; display:none;">{{$nickName}}</textarea> 
+              {{end}}              
 
               {{with $field := field "message.Content" .}} 
               <div class="input-group {{$field.ErrorClass}}">         

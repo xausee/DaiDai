@@ -18,14 +18,17 @@ func (user *User) Index(userid int) revel.Result {
 	}
 	defer manager.Close()
 
-	articles, _ := manager.GetAllArticlesByUserId(userid)
-	count := len(articles)
+	//articles, _ := manager.GetAllArticlesByUserId(userid)
+
+	userInfo, _ := manager.GetUserById(userid)
+	articles := userInfo.Articles
+	articlesCount := len(articles)
 
 	var pageCount int
-	if (count % models.ArticlesInSinglePage) == 0 {
-		pageCount = count / models.ArticlesInSinglePage
+	if (articlesCount % models.ArticlesInSinglePage) == 0 {
+		pageCount = articlesCount / models.ArticlesInSinglePage
 	} else {
-		pageCount = count/models.ArticlesInSinglePage + 1
+		pageCount = articlesCount/models.ArticlesInSinglePage + 1
 	}
 
 	pageSlice := make([]int, 0)
@@ -34,8 +37,8 @@ func (user *User) Index(userid int) revel.Result {
 	}
 
 	articlesOnOnePage := []models.UserArticle{}
-	if count > models.ArticlesInSinglePage {
-		articlesOnOnePage = articles[(count - models.ArticlesInSinglePage):]
+	if articlesCount > models.ArticlesInSinglePage {
+		articlesOnOnePage = articles[(articlesCount - models.ArticlesInSinglePage):]
 	} else {
 		articlesOnOnePage = articles
 	}
@@ -47,6 +50,8 @@ func (user *User) Index(userid int) revel.Result {
 	}
 
 	user.RenderArgs["isAuthor"] = isAuthor
+	user.RenderArgs["lastMessage"] = userInfo.Message[len(userInfo.Message)-1]
+	user.RenderArgs["messageCount"] = len(userInfo.Message)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["allArticles"] = articles
@@ -137,6 +142,7 @@ func (user *User) Message(userid int) revel.Result {
 
 	messages, _ := manager.GetAllMessageByUserId(userid)
 
+	user.RenderArgs["ownerid"] = userid
 	user.RenderArgs["messages"] = messages
 	user.RenderArgs["messageCount"] = len(messages)
 	user.RenderArgs["userid"] = user.Session["userid"]
@@ -152,10 +158,19 @@ func (user *User) PostMessage(userid int, message models.Comment) revel.Result {
 	}
 	defer manager.Close()
 
+	// 增加评论人的昵称
+	if user.Session["nickName"] == "" {
+		message.Author.NickName = "匿名网友"
+	} else {
+		message.Author.NickName = user.Session["nickName"]
+	}
+
+	err = manager.UpdateMessage(userid, message)
+
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Render()
+	return user.Redirect("/user/message/%d", userid)
 }
 
 func (user *User) Friend(id string) revel.Result {
