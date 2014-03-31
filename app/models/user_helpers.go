@@ -17,6 +17,17 @@ func (manager *DbManager) GetUserById(userid int) (userInfo User, err error) {
 	return userInfo, err
 }
 
+func (manager *DbManager) GetUserByNickName(nickName string) (userInfo User, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	err = uc.Find(bson.M{"nickname": nickName}).One(&userInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+
+	return userInfo, err
+}
+
 func (manager *DbManager) UpdateUserInfo(userid int, newUserInfo User) (err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 

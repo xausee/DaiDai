@@ -11,16 +11,16 @@ type User struct {
 	*revel.Controller
 }
 
-func (user *User) Index(userid int) revel.Result {
+func (user *User) Index(nickName string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 
-	//articles, _ := manager.GetAllArticlesByUserId(userid)
+	//articles, _ := manager.GetUserByNickName(nickName)
 
-	userInfo, _ := manager.GetUserById(userid)
+	userInfo, _ := manager.GetUserByNickName(nickName)
 	articles := userInfo.Articles
 	articlesCount := len(articles)
 
@@ -45,12 +45,14 @@ func (user *User) Index(userid int) revel.Result {
 
 	// 判断访问该页面的用户是否是本人
 	var isAuthor bool
-	if user.Session["userid"] == strconv.Itoa(userid) {
+	if user.Session["nickName"] == nickName {
 		isAuthor = true
 	}
 
 	user.RenderArgs["isAuthor"] = isAuthor
-	user.RenderArgs["lastMessage"] = userInfo.Message[len(userInfo.Message)-1]
+	if len(userInfo.Message) != 0 {
+		user.RenderArgs["lastMessage"] = userInfo.Message[len(userInfo.Message)-1]
+	}
 	user.RenderArgs["messageCount"] = len(userInfo.Message)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
