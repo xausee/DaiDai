@@ -21,12 +21,13 @@ GET     /user/info/edit/:userid                 User.EditInfo
 Post    /user/info/edit/:userid                 User.PostEditInfo
 GET     /user/article/add                       User.AddArticle 
 POST    /user/article/add                       User.PostAddArticle
+GET     /user/articlelist/:userid               User.OriginalArticleList
 GET     /user/article/show/:userid/:articleid   User.ShowArticle
 POST    /user/article/comments                  User.PostArticleComment
 GET     /user/article/edit/:articleid           User.EditArticle
 Post    /user/article/edit/:id                  User.PostEditArticle
 GET     /user/message/:id                       User.Message
-GET     /user/friend/:id                        User.Friend
+GET     /user/friend/:id                        User.Friend 
 
 GET     /quotation                              Quotation.Index
 GET     /quotation/:tag                         Quotation.TypeIndex

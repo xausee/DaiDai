@@ -41,15 +41,63 @@ func (user *User) Index(userid int) revel.Result {
 	}
 
 	// 判断访问该页面的用户是否是本人
-	var isCurrentUser bool
+	var isAuthor bool
 	if user.Session["userid"] == strconv.Itoa(userid) {
-		isCurrentUser = true
+		isAuthor = true
 	}
 
-	user.RenderArgs["isCurrentUser"] = isCurrentUser
+	user.RenderArgs["isAuthor"] = isAuthor
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["allArticles"] = articles
+	user.RenderArgs["articleCount"] = len(articles)
+	user.RenderArgs["articlesOnOnePage"] = articlesOnOnePage
+	user.RenderArgs["pageCount"] = pageCount
+	user.RenderArgs["pageSlice"] = pageSlice
+
+	return user.Render()
+}
+
+func (user *User) OriginalArticleList(userid int) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	articles, _ := manager.GetAllArticlesByUserId(userid)
+	count := len(articles)
+
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	pageSlice := make([]int, 0)
+	for i := 1; i <= pageCount; i++ {
+		pageSlice = append(pageSlice, i)
+	}
+
+	articlesOnOnePage := []models.UserArticle{}
+	if count > models.ArticlesInSinglePage {
+		articlesOnOnePage = articles[(count - models.ArticlesInSinglePage):]
+	} else {
+		articlesOnOnePage = articles
+	}
+
+	// 判断访问该页面的用户是否是本人
+	var isAuthor bool
+	if user.Session["userid"] == strconv.Itoa(userid) {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["allArticles"] = articles
+	user.RenderArgs["articleCount"] = len(articles)
 	user.RenderArgs["articlesOnOnePage"] = articlesOnOnePage
 	user.RenderArgs["pageCount"] = pageCount
 	user.RenderArgs["pageSlice"] = pageSlice
