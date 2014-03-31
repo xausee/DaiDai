@@ -128,7 +128,24 @@ func (user *User) Info(id int) revel.Result {
 	return user.Render()
 }
 
-func (user *User) Message(id string) revel.Result {
+func (user *User) Message(userid int) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	messages, _ := manager.GetAllMessageByUserId(userid)
+
+	user.RenderArgs["messages"] = messages
+	user.RenderArgs["messageCount"] = len(messages)
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Render()
+}
+
+func (user *User) PostMessage(userid int, message models.Comment) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")

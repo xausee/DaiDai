@@ -68,7 +68,7 @@ type User struct {
 	Introduction      string
 	Fans              string
 	Watch             string
-	Message           string
+	Message           []Comment
 	ArticleCollection []UserArticle
 	Articles          []UserArticle
 }

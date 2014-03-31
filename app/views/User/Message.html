@@ -1,0 +1,75 @@
+{{set . "title" .article.Title}}
+{{template "header.html" .}}
+{{template "navigate_bar.html" .}}
+
+<div class="container">    
+  <div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-10">      
+      <div class="panel panel-success">
+        <div class="text-success">
+          <well>
+            <span class="glyphicon glyphicon-comment text-warning"></span> 留言 [{{.messageCount}}]
+            <div class="aligncenter" style="width:auto;height:0;border-top:1px dotted #468847;font-size:0;"></div>
+          </well>          
+        </div>
+        {{range .messages}}         
+        <div class="row">               
+          <div class="col-xs-0"></div>
+          <div class="col-xs-3">
+            <div class="text-left text-success">{{.NickName}}：</div> 
+          </div>    
+          <div class="col-xs-9">
+            <div class="text-right text-success">{{.Time}} 发表</div>
+          </div> 
+        </div>           
+        <div class="row">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-11">
+            <div class="text-left">{{nl2br .Content}}</div>
+          </div>
+          </br>  
+        </div>  
+        <div class="row">
+          <div class="col-xs-1"></div>
+          <div class="col-xs-11">
+            <div class="aligncenter" style="width:auto;height:0;border-top:1px dotted #468847;font-size:0;"></div>
+          </div> 
+        </div>
+        {{end}} 
+
+        <div class="row">    
+          <div class="col-xs-0"></div> 
+          <div class="col-xs-12">            
+            <form role="form" action="{{url "User.PostMessage"}}" method="POST"> 
+              {{$authorid := .article.AuthorId}}
+              {{with $field := field "authorid" .}} 
+              <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
+        rows="1" style="visibility:hidden; display:none;">{{$authorid}}</textarea> 
+              {{end}} 
+
+              {{$articleid := .article.Id}}
+              {{with $field := field "articleid" .}} 
+              <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1" style="visibility:hidden; display:none;">{{$articleid}}</textarea> 
+              {{end}}  
+
+              {{with $field := field "message.Content" .}} 
+              <div class="input-group {{$field.ErrorClass}}">         
+                <span class="input-group-addon">新增留言</span>      
+                <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5" placeholder="内容" required></textarea> 
+                {{if $field.Error}} 
+                <span class="help-inline">{{$field.Error}}</span> 
+                {{end}}   
+                <span class="input-group-addon">
+                  <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
+                </span>      
+              </div> 
+              {{end}}       
+            </form>  
+          </div>  
+        </div>  
+      </div>  
+    </div> 
+  </div> 
+</div>
+{{template "footer.html" .}}

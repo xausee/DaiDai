@@ -163,6 +163,19 @@ func (manager *DbManager) GetAllArticlesByUserId(userid int) (articles []UserArt
 	return articles, err
 }
 
+func (manager *DbManager) GetAllMessageByUserId(userid int) (message []Comment, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	var userInfo User
+	err = uc.Find(bson.M{"id": userid}).One(&userInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+	message = userInfo.Message
+
+	return message, err
+}
+
 func (manager *DbManager) GetArticleByUserIdAndArticleId(userid int, articleid string) (article UserArticle, err error) {
 	articles, _ := manager.GetAllArticlesByUserId(userid)
 
