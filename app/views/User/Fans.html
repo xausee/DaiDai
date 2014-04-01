@@ -1,0 +1,33 @@
+{{set . "title" "我的粉丝"}}
+{{template "header.html" .}}
+{{template "navigate_bar.html" .}}
+
+<div class="container">
+  <div class="row">
+    <div class="col-xs-1"></div>
+  	<div class="col-xs-10">
+  	  <div class="panel panel-success" style="height:620px">
+        <div class="panel-heading"><h3 class="panel-title">我的粉丝</h3></div>
+        <div class="panel-body">           
+          {{range .fans}}
+          <div class="row">           
+            <div class="col-xs-7"><a href="{{url "User.Index" .nickName}}">{{.nickName}}</a></div>           
+          </div>
+          {{end}}
+
+          <div class="text-center">                  
+            <ul class="pagination pagination-centered">
+              <li value="-1" id="previous" onclick="updateEssayList(this.value)"><a>上一页</a></li>
+              {{range .pageSlice}}
+                <li value={{.}} id=page_{{.}} onclick="updateEssayList(this.value)"><a>{{.}}</a></li>
+              {{end}}              
+              <li value="-2" id="next" onclick="updateEssayList(this.value)"><a>下一页</a></li>
+            </ul>
+          </div>      
+        </div>                       
+      </div>  
+    </div>
+  </div>  
+</div>
+
+{{template "footer.html" .}}

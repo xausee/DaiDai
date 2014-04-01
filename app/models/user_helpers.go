@@ -112,6 +112,31 @@ func (manager *DbManager) UpdateMessage(userid int, message Comment) (err error)
 	return err
 }
 
+func (manager *DbManager) AddWatch(watcherNickName string, watchedUserNickName string) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据用户ID, 查找用户信息
+	var oldUserInfo, tmpUser User
+	err = uc.Find(bson.M{"nickname": watchedUserNickName}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"nickname": watchedUserNickName}).One(&tmpUser)
+
+	// 追加关注到已有的集合
+	var idol Idol
+	idol.NickName = watchedUserNickName
+
+	wts := tmpUser.Watch
+	wts = append(wts, idol)
+	tmpUser.Watch = wts
+
+	// 更新整个用户信息，包括新加的文章
+	err = uc.Update(oldUserInfo, tmpUser)
+	if err != nil {
+		fmt.Println("添加留言失败")
+	}
+
+	return err
+}
+
 func (manager *DbManager) UpdateMessageByNickName(nickName string, message Comment) (err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
@@ -164,13 +189,13 @@ func (manager *DbManager) AddUserArticle(article *UserArticle) error {
 	return err
 }
 
-func (manager *DbManager) UpdateUserArticle(authorid int, newAritlce UserArticle) error {
+func (manager *DbManager) UpdateUserArticle(authorNickName string, newAritlce UserArticle) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
 	// 根据文章作者的ID, 查找作者的信息
 	var oldUserInfo, tmpUser User
-	err := uc.Find(bson.M{"id": authorid}).One(&oldUserInfo)
-	err = uc.Find(bson.M{"id": authorid}).One(&tmpUser)
+	err := uc.Find(bson.M{"nickname": authorNickName}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"nickname": authorNickName}).One(&tmpUser)
 
 	flag, index := false, 0
 	for _, art := range oldUserInfo.Articles {
@@ -281,6 +306,32 @@ func (manager *DbManager) GetAllMessageByUserId(userid int) (message []Comment, 
 	return message, err
 }
 
+func (manager *DbManager) GetAllFansByUserNickName(nickName string) (fans []Fans, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	var userInfo User
+	err = uc.Find(bson.M{"nickname": nickName}).One(&userInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+	fans = userInfo.Fans
+
+	return fans, err
+}
+
+func (manager *DbManager) GetAllIdolByUserNickName(nickName string) (idol []Idol, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	var userInfo User
+	err = uc.Find(bson.M{"nickname": nickName}).One(&userInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+	idol = userInfo.Watch
+
+	return idol, err
+}
+
 func (manager *DbManager) GetAllMessageByUserNickName(nickName string) (message []Comment, err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
@@ -334,12 +385,12 @@ func (manager *DbManager) GetArticleByUserNickNameAndArticleId(nickName string, 
 	return article, err
 }
 
-func (manager *DbManager) DeleteUserArticle(userid int, articleid string) error {
+func (manager *DbManager) DeleteUserArticle(nickName string, articleid string) error {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
 	// 根据文章作者的ID, 查找作者的信息
 	var oldUserInfo User
-	err := uc.Find(bson.M{"id": userid}).One(&oldUserInfo)
+	err := uc.Find(bson.M{"nickname": nickName}).One(&oldUserInfo)
 	tmpUser := oldUserInfo
 
 	flag, index := false, 0

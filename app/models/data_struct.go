@@ -33,6 +33,18 @@ type Commenter struct {
 	AvatarUrl string
 }
 
+type Fans struct {
+	Email     string
+	NickName  string
+	AvatarUrl string
+}
+
+type Idol struct {
+	Email     string
+	NickName  string
+	AvatarUrl string
+}
+
 type Comment struct {
 	Id      string
 	Author  Commenter
@@ -66,8 +78,8 @@ type User struct {
 	FavoriteBook      string
 	Intrest           string
 	Introduction      string
-	Fans              string
-	Watch             string
+	Fans              []Fans
+	Watch             []Idol
 	Message           []Comment
 	ArticleCollection []UserArticle
 	Articles          []UserArticle

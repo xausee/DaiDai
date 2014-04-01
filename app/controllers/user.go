@@ -55,6 +55,8 @@ func (user *User) Index(nickName string) revel.Result {
 	}
 
 	user.RenderArgs["authorNickName"] = nickName
+	user.RenderArgs["fansCount"] = len(userInfo.Fans)
+	user.RenderArgs["idolsCount"] = len(userInfo.Watch)
 	user.RenderArgs["messageCount"] = len(userInfo.Message)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
@@ -144,7 +146,6 @@ func (user *User) Message(nickName string) revel.Result {
 	}
 	defer manager.Close()
 
-	//messages, _ := manager.GetAllMessageByUserId(userid)
 	messages, _ := manager.GetAllMessageByUserNickName(nickName)
 
 	user.RenderArgs["ownerNickName"] = nickName
@@ -154,6 +155,62 @@ func (user *User) Message(nickName string) revel.Result {
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Render()
+}
+
+func (user *User) Fans(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	fans, _ := manager.GetAllFansByUserNickName(nickName)
+
+	user.RenderArgs["ownerNickName"] = nickName
+	user.RenderArgs["fans"] = fans
+	user.RenderArgs["fansCount"] = len(fans)
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Render()
+}
+
+func (user *User) Watch(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	idols, _ := manager.GetAllIdolByUserNickName(nickName)
+
+	user.RenderArgs["ownerNickName"] = nickName
+	user.RenderArgs["idols"] = idols
+	user.RenderArgs["idolsCount"] = len(idols)
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Render()
+}
+
+func (user *User) AddWatch(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	watcherNickName := user.Session["nickName"]
+	watchedUserNickName := nickName
+	err = manager.AddWatch(watcherNickName, watchedUserNickName)
+
+	user.RenderArgs["ownerNickName"] = nickName
+	// user.RenderArgs["idols"] = idols
+	// user.RenderArgs["idolsCount"] = len(idols)
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Redirect("/user/%s", nickName)
 }
 
 func (user *User) PostMessage(nickName string, message models.Comment) revel.Result {
@@ -260,10 +317,10 @@ func (user *User) PostEditArticle(oldArticleId string, newArticle models.UserArt
 	}
 	defer manager.Close()
 
-	authorid, err := strconv.Atoi(user.Session["userid"])
+	authorNickName := user.Session["nickName"]
 
 	newArticle.Id = oldArticleId
-	err = manager.UpdateUserArticle(authorid, newArticle)
+	err = manager.UpdateUserArticle(authorNickName, newArticle)
 	if err != nil {
 		fmt.Println("更新文章失败")
 	}
@@ -271,7 +328,7 @@ func (user *User) PostEditArticle(oldArticleId string, newArticle models.UserArt
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Redirect("/user/article/show/%d/%s", authorid, newArticle.Id)
+	return user.Redirect("/user/%s/article/%s", authorNickName, newArticle.Id)
 }
 
 func (user *User) ShowArticle(nickName string, articleid string) revel.Result {
@@ -362,12 +419,11 @@ func (user *User) DeleteArticle(articleid string) revel.Result {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
-	// 能调用此方法的用户就是作者本人，所以authorid等于Session["userid"]
-	authorid, _ := strconv.Atoi(user.Session["userid"])
-	err = manager.DeleteUserArticle(authorid, articleid)
+	// 能调用此方法的用户就是作者本人，所以nickName等于Session["nickName"]
+	err = manager.DeleteUserArticle(user.Session["nickName"], articleid)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Redirect("/user/%d", authorid)
+	return user.Redirect("/user/%s", user.Session["nickName"])
 }
