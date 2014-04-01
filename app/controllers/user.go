@@ -53,6 +53,8 @@ func (user *User) Index(nickName string) revel.Result {
 	if len(userInfo.Message) != 0 {
 		user.RenderArgs["lastMessage"] = userInfo.Message[len(userInfo.Message)-1]
 	}
+
+	user.RenderArgs["authorNickName"] = nickName
 	user.RenderArgs["messageCount"] = len(userInfo.Message)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
@@ -65,14 +67,14 @@ func (user *User) Index(nickName string) revel.Result {
 	return user.Render()
 }
 
-func (user *User) OriginalArticleList(userid int) revel.Result {
+func (user *User) OriginalArticleList(nickName string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 
-	articles, _ := manager.GetAllArticlesByUserId(userid)
+	articles, _ := manager.GetAllArticlesByUserNickName(nickName)
 	count := len(articles)
 
 	var pageCount int
@@ -96,7 +98,7 @@ func (user *User) OriginalArticleList(userid int) revel.Result {
 
 	// 判断访问该页面的用户是否是本人
 	var isAuthor bool
-	if user.Session["userid"] == strconv.Itoa(userid) {
+	if user.Session["nickName"] == nickName {
 		isAuthor = true
 	}
 
@@ -112,22 +114,22 @@ func (user *User) OriginalArticleList(userid int) revel.Result {
 	return user.Render()
 }
 
-func (user *User) Info(id int) revel.Result {
+func (user *User) Info(nickName string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 
-	userInfo, _ := manager.GetUserById(id)
+	userInfo, _ := manager.GetUserByNickName(nickName)
 
 	// 判断访问该页面的用户是否是本人
-	var isCurrentUser bool
-	if user.Session["userid"] == strconv.Itoa(id) {
-		isCurrentUser = true
+	var isAuthor bool
+	if user.Session["nickName"] == nickName {
+		isAuthor = true
 	}
 
-	user.RenderArgs["isCurrentUser"] = isCurrentUser
+	user.RenderArgs["isAuthor"] = isAuthor
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["userInfo"] = userInfo
@@ -135,16 +137,17 @@ func (user *User) Info(id int) revel.Result {
 	return user.Render()
 }
 
-func (user *User) Message(userid int) revel.Result {
+func (user *User) Message(nickName string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 
-	messages, _ := manager.GetAllMessageByUserId(userid)
+	//messages, _ := manager.GetAllMessageByUserId(userid)
+	messages, _ := manager.GetAllMessageByUserNickName(nickName)
 
-	user.RenderArgs["ownerid"] = userid
+	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["messages"] = messages
 	user.RenderArgs["messageCount"] = len(messages)
 	user.RenderArgs["userid"] = user.Session["userid"]
@@ -153,7 +156,7 @@ func (user *User) Message(userid int) revel.Result {
 	return user.Render()
 }
 
-func (user *User) PostMessage(userid int, message models.Comment) revel.Result {
+func (user *User) PostMessage(nickName string, message models.Comment) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -167,12 +170,12 @@ func (user *User) PostMessage(userid int, message models.Comment) revel.Result {
 		message.Author.NickName = user.Session["nickName"]
 	}
 
-	err = manager.UpdateMessage(userid, message)
+	err = manager.UpdateMessageByNickName(nickName, message)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Redirect("/user/message/%d", userid)
+	return user.Redirect("/user/%s/message", nickName)
 }
 
 func (user *User) Friend(id string) revel.Result {
@@ -227,7 +230,9 @@ func (user *User) PostAddArticle(article *models.UserArticle) revel.Result {
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Redirect("/user/article/show/%d/%s", article.AuthorId, article.Id)
+	// 使用的是article的指针， AddUserArticle里面给article ID赋值后
+	// 可调用下面controller(ShowArticle) 访问新增的article
+	return user.Redirect("/user/%s/article/%s", article.AuthorNickName, article.Id)
 }
 
 func (user *User) EditArticle(articleid string) revel.Result {
@@ -263,20 +268,20 @@ func (user *User) PostEditArticle(oldArticleId string, newArticle models.UserArt
 		fmt.Println("更新文章失败")
 	}
 
-	//user.RenderArgs["oldArticle"] = article
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
 	return user.Redirect("/user/article/show/%d/%s", authorid, newArticle.Id)
 }
 
-func (user *User) ShowArticle(userid int, articleid string) revel.Result {
+func (user *User) ShowArticle(nickName string, articleid string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
-	article, _ := manager.GetArticleByUserIdAndArticleId(userid, articleid)
+
+	article, _ := manager.GetArticleByUserNickNameAndArticleId(nickName, articleid)
 
 	// 判断访问该页面的用户是否是本人
 	var isCurrentUser bool
@@ -293,7 +298,7 @@ func (user *User) ShowArticle(userid int, articleid string) revel.Result {
 	return user.Render()
 }
 
-func (user *User) PostArticleComment(authorid int, articleid string, comment *models.Comment) revel.Result {
+func (user *User) PostArticleComment(authorNickName string, articleid string, comment *models.Comment) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -301,7 +306,7 @@ func (user *User) PostArticleComment(authorid int, articleid string, comment *mo
 	defer manager.Close()
 
 	// 根据作者ID和文章ID查找到该文章
-	article, _ := manager.GetArticleByUserIdAndArticleId(authorid, articleid)
+	article, _ := manager.GetArticleByUserNickNameAndArticleId(authorNickName, articleid)
 
 	// 增加评论人的昵称
 	if user.Session["nickName"] == "" {
@@ -317,17 +322,17 @@ func (user *User) PostArticleComment(authorid int, articleid string, comment *mo
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Redirect("/user/article/show/%d/%s", authorid, articleid)
+	return user.Redirect("/user/%s/article/%s", authorNickName, articleid)
 }
 
-func (user *User) EditInfo(userid int) revel.Result {
+func (user *User) EditInfo(nickName string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 
-	userInfo, _ := manager.GetUserById(userid)
+	userInfo, _ := manager.GetUserByNickName(nickName)
 
 	user.RenderArgs["user"] = userInfo
 	user.RenderArgs["userid"] = user.Session["userid"]
@@ -343,12 +348,12 @@ func (user *User) PostEditInfo(userInfo models.User) revel.Result {
 	}
 	defer manager.Close()
 	userInfo.Id, _ = strconv.Atoi(user.Session["userid"])
-	err = manager.UpdateUserInfo(userInfo.Id, userInfo)
+	err = manager.UpdateUserInfoById(userInfo.Id, userInfo)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
-	return user.Redirect("/user/info/%d", userInfo.Id)
+	return user.Redirect("/user/%s/info", user.Session["nickName"])
 }
 
 func (user *User) DeleteArticle(articleid string) revel.Result {

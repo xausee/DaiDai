@@ -19,8 +19,8 @@
             <dt>酷爱的书籍</dt> <dd>{{.userInfo.FavoriteBook}}</dd></br>
             <dt>兴趣爱好</dt> <dd>{{.userInfo.Intrest}}</dd></br>
             <dt>个人简介</dt> <dd>{{.userInfo.Introduction}}</dd></br>
-            {{if .isCurrentUser}}
-             <dt></dt> <dd><a href="{{url "User.EditInfo" .userid}}">编辑</a></dd></br>
+            {{if .isAuthor}}
+             <dt></dt> <dd><a href="{{url "User.EditInfo" .nickName}}">编辑</a></dd></br>
             {{end}}
           </dl>      
         </div>                       

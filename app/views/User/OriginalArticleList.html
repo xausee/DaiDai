@@ -12,7 +12,7 @@
           {{$isAuthor := .isAuthor}}
           {{range .allArticles}}
           <div class="row">           
-            <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorId .Id}}">{{.Title}}</a></div>
+            <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>
             <div class="col-xs-5 text-right">
               <span class="badge text-right">{{.CreateTime}}</span> 
               {{if $isAuthor}}                        

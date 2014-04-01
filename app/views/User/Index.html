@@ -16,7 +16,7 @@
           <a href="#">关注 <span class="badge">42</span></a>   
           <a href="#">粉丝 <span class="badge">42</span></a>            
           <a href="#">收藏 <span class="badge">42</span></a>
-          <a href="{{url "User.OriginalArticleList" .userid}}">原创 
+          <a href="{{url "User.OriginalArticleList" .authorNickName}}">原创 
             <span class="badge">{{.articleCount}}</span>
           </a>                
         </div>                        
@@ -27,7 +27,7 @@
           <sub>{{.lastMessage.Content}}</sub>                    
           <div class="modal-footer"> 
             <p class="text-center">
-              <a href="{{url "User.Message" .userid}}">更多留言<span class="badge">{{.messageCount}}</span></a>
+              <a href="{{url "User.Message" .authorNickName}}">更多留言<span class="badge">{{.messageCount}}</span></a>
             </p>    
           </div>        
         </div>                        
@@ -48,7 +48,7 @@
           {{$isAuthor := .isAuthor}}
           {{range .allArticles}}
           <div class="row">           
-            <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorId .Id}}">{{.Title}}</a></div>
+            <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>
             <div class="col-xs-5 text-right">
               <span class="badge text-right">{{.CreateTime}}</span> 
               {{if $isAuthor}}                        

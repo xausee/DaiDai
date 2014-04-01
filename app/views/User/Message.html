@@ -45,11 +45,12 @@
           <div class="col-xs-0"></div> 
           <div class="col-xs-12">            
             <form role="form" action="{{url "User.PostMessage"}}" method="POST"> 
-              {{$ownerid := .ownerid}}
-              {{with $field := field "userid" .}} 
+              {{$ownerNickName := .ownerNickName}}
+              {{with $field := field "nickName" .}} 
               <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
-        rows="1" style="visibility:hidden; display:none;">{{$ownerid}}</textarea> 
+        rows="1" style="visibility:hidden; display:none;">{{$ownerNickName}}</textarea> 
               {{end}}
+              
               {{$nickName := .nickName}}
               {{with $field := field "message.Author.NickName" .}} 
               <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
