@@ -27,8 +27,8 @@ POST    /user/article/comments                  User.PostArticleComment
 GET     /user/article/edit/:articleid           User.EditArticle
 Post    /user/article/edit/:id                  User.PostEditArticle
 GET     /user/:nickName/message                 User.Message
-GET     /user/:nickName/fans/                   User.Fans
-GET     /user/:nickName/watch/                  User.Watch
+GET     /user/:nickName/fans                    User.Fans
+GET     /user/:nickName/watch                   User.Watch
 GET     /user/friend/:id                        User.Friend 
 
 GET     /quotation                              Quotation.Index

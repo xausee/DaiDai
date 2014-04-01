@@ -56,7 +56,7 @@ func (user *User) Index(nickName string) revel.Result {
 
 	user.RenderArgs["authorNickName"] = nickName
 	user.RenderArgs["fansCount"] = len(userInfo.Fans)
-	user.RenderArgs["idolsCount"] = len(userInfo.Watch)
+	user.RenderArgs["wathCount"] = len(userInfo.Watch)
 	user.RenderArgs["messageCount"] = len(userInfo.Message)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
@@ -182,11 +182,11 @@ func (user *User) Watch(nickName string) revel.Result {
 	}
 	defer manager.Close()
 
-	idols, _ := manager.GetAllIdolByUserNickName(nickName)
+	watches, _ := manager.GetAllWatchByUserNickName(nickName)
 
 	user.RenderArgs["ownerNickName"] = nickName
-	user.RenderArgs["idols"] = idols
-	user.RenderArgs["idolsCount"] = len(idols)
+	user.RenderArgs["watches"] = watches
+	user.RenderArgs["watchesCount"] = len(watches)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 
@@ -200,13 +200,17 @@ func (user *User) AddWatch(nickName string) revel.Result {
 	}
 	defer manager.Close()
 
+	// 添加到自己的关注
 	watcherNickName := user.Session["nickName"]
 	watchedUserNickName := nickName
 	err = manager.AddWatch(watcherNickName, watchedUserNickName)
 
+	// 添加到对方的粉丝
+	fansNickName := user.Session["nickName"]
+	ownerNickName := nickName
+	err = manager.AddFans(fansNickName, ownerNickName)
+
 	user.RenderArgs["ownerNickName"] = nickName
-	// user.RenderArgs["idols"] = idols
-	// user.RenderArgs["idolsCount"] = len(idols)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 

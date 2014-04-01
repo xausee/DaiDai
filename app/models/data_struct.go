@@ -39,7 +39,7 @@ type Fans struct {
 	AvatarUrl string
 }
 
-type Idol struct {
+type Watch struct {
 	Email     string
 	NickName  string
 	AvatarUrl string
@@ -79,7 +79,7 @@ type User struct {
 	Intrest           string
 	Introduction      string
 	Fans              []Fans
-	Watch             []Idol
+	Watch             []Watch
 	Message           []Comment
 	ArticleCollection []UserArticle
 	Articles          []UserArticle

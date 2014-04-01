@@ -117,16 +117,41 @@ func (manager *DbManager) AddWatch(watcherNickName string, watchedUserNickName s
 
 	// 根据用户ID, 查找用户信息
 	var oldUserInfo, tmpUser User
-	err = uc.Find(bson.M{"nickname": watchedUserNickName}).One(&oldUserInfo)
-	err = uc.Find(bson.M{"nickname": watchedUserNickName}).One(&tmpUser)
+	err = uc.Find(bson.M{"nickname": watcherNickName}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"nickname": watcherNickName}).One(&tmpUser)
 
 	// 追加关注到已有的集合
-	var idol Idol
-	idol.NickName = watchedUserNickName
+	var watch Watch
+	watch.NickName = watcherNickName
 
 	wts := tmpUser.Watch
-	wts = append(wts, idol)
+	wts = append(wts, watch)
 	tmpUser.Watch = wts
+
+	// 更新整个用户信息，包括新加的文章
+	err = uc.Update(oldUserInfo, tmpUser)
+	if err != nil {
+		fmt.Println("添加留言失败")
+	}
+
+	return err
+}
+
+func (manager *DbManager) AddFans(fansNickName string, ownerNickName string) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据用户ID, 查找用户信息
+	var oldUserInfo, tmpUser User
+	err = uc.Find(bson.M{"nickname": ownerNickName}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"nickname": ownerNickName}).One(&tmpUser)
+
+	// 追加粉丝到已有的集合
+	var fans Fans
+	fans.NickName = fansNickName
+
+	wts := tmpUser.Fans
+	wts = append(wts, fans)
+	tmpUser.Fans = wts
 
 	// 更新整个用户信息，包括新加的文章
 	err = uc.Update(oldUserInfo, tmpUser)
@@ -319,7 +344,7 @@ func (manager *DbManager) GetAllFansByUserNickName(nickName string) (fans []Fans
 	return fans, err
 }
 
-func (manager *DbManager) GetAllIdolByUserNickName(nickName string) (idol []Idol, err error) {
+func (manager *DbManager) GetAllWatchByUserNickName(nickName string) (watch []Watch, err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
 	var userInfo User
@@ -327,9 +352,9 @@ func (manager *DbManager) GetAllIdolByUserNickName(nickName string) (idol []Idol
 	if err != nil {
 		fmt.Println("查询用户信息失败")
 	}
-	idol = userInfo.Watch
+	watch = userInfo.Watch
 
-	return idol, err
+	return watch, err
 }
 
 func (manager *DbManager) GetAllMessageByUserNickName(nickName string) (message []Comment, err error) {
