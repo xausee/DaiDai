@@ -11,24 +11,24 @@
         <div class="panel-body">           
           <img src="/public/img/cow.jpg" alt="140x140" class="img-thumbnail"> 
           </br></br> 
-          <div class="text-center text-success"><p>手指在燃烧</p></div>  
+          <div class="text-center text-success"><p>{{.ownerNickName}}</p></div>  
           </br> 
           <div class="row"> 
             <div class="col-xs-3">   
-              <span class="badge">{{.fansCount}}</span>    
-              <a href="{{url "User.Watch" .authorNickName}}">关注 </a> 
+              <span class="badge">{{.wathCount}}</span>    
+              <a href="{{url "User.Watch" .ownerNickName}}">关注 </a> 
             </div>  
             <div class="col-xs-3">     
-              <span class="badge">{{.wathCount}}</span>  
-              <a href="{{url "User.Fans" .authorNickName}}">粉丝</a> 
+              <span class="badge">{{.fansCount}}</span>  
+              <a href="{{url "User.Fans" .ownerNickName}}">粉丝</a> 
             </div> 
             <div class="col-xs-3">
-              <span class="badge">{{.wathCount}}</span>         
-              <a href="{{url "User.OriginalArticleList" .authorNickName}}">收藏</a>
+              <span class="badge">0</span>         
+              <a href="{{url "User.OriginalArticleList" .ownerNickName}}">收藏</a>
             </div>
             <div class="col-xs-3">
               <span class="badge">{{.articleCount}}</span>
-              <a href="{{url "User.OriginalArticleList" .authorNickName}}">原创 </a>  
+              <a href="{{url "User.OriginalArticleList" .ownerNickName}}">原创 </a>  
             </div> 
           </div>             
         </div>                        
@@ -36,8 +36,12 @@
 
       {{if .nickName}}
       <div class="panel panel-success" style="height:60px">               
-        <div class="panel-body"> 
-          <a href="{{url "User.AddWatch" .authorNickName}}">关注TA</a>    
+        <div class="panel-body">
+          {{if .isWatched}}
+            <a href="{{url "User.DeleteWatch" .ownerNickName}}">取消关注</a>
+          {{else}} 
+            <a href="{{url "User.AddWatch" .ownerNickName}}">关注TA</a>  
+          {{end}}  
         </div>                        
       </div> 
       {{else}}
@@ -55,7 +59,7 @@
           <sub>{{.lastMessage.Content}}</sub>                    
           <div class="modal-footer"> 
             <p class="text-center">
-              <a href="{{url "User.Message" .authorNickName}}">更多留言<span class="badge">{{.messageCount}}</span></a>
+              <a href="{{url "User.Message" .ownerNickName}}">更多留言<span class="badge">{{.messageCount}}</span></a>
             </p>    
           </div>        
         </div>                        

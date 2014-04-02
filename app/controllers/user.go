@@ -54,7 +54,16 @@ func (user *User) Index(nickName string) revel.Result {
 		user.RenderArgs["lastMessage"] = userInfo.Message[len(userInfo.Message)-1]
 	}
 
-	user.RenderArgs["authorNickName"] = nickName
+	isWatched := false
+	for _, v := range userInfo.Fans {
+		// 访问者是被访问者的粉丝，设置标记isWatched
+		if v.NickName == user.Session["nickName"] {
+			isWatched = true
+		}
+	}
+
+	user.RenderArgs["ownerNickName"] = nickName
+	user.RenderArgs["isWatched"] = isWatched
 	user.RenderArgs["fansCount"] = len(userInfo.Fans)
 	user.RenderArgs["wathCount"] = len(userInfo.Watch)
 	user.RenderArgs["messageCount"] = len(userInfo.Message)
@@ -203,12 +212,37 @@ func (user *User) AddWatch(nickName string) revel.Result {
 	// 添加到自己的关注
 	watcherNickName := user.Session["nickName"]
 	watchedUserNickName := nickName
+	fmt.Println(watcherNickName, watchedUserNickName)
 	err = manager.AddWatch(watcherNickName, watchedUserNickName)
 
 	// 添加到对方的粉丝
 	fansNickName := user.Session["nickName"]
 	ownerNickName := nickName
 	err = manager.AddFans(fansNickName, ownerNickName)
+
+	user.RenderArgs["ownerNickName"] = nickName
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Redirect("/user/%s", nickName)
+}
+
+func (user *User) DeleteWatch(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	// 从访问者的关注里删除数据
+	watcherNickName := user.Session["nickName"]
+	watchedUserNickName := nickName
+	err = manager.DeleteWatch(watcherNickName, watchedUserNickName)
+
+	// 从访问者的粉丝里删除数据
+	fansNickName := user.Session["nickName"]
+	ownerNickName := nickName
+	err = manager.DeleteFans(fansNickName, ownerNickName)
 
 	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["userid"] = user.Session["userid"]

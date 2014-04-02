@@ -122,13 +122,21 @@ func (manager *DbManager) AddWatch(watcherNickName string, watchedUserNickName s
 
 	// 追加关注到已有的集合
 	var watch Watch
-	watch.NickName = watcherNickName
+	watch.NickName = watchedUserNickName
 
 	wts := tmpUser.Watch
+	for _, v := range wts {
+		// 已经关注过此作者 ，返回
+		if v.NickName == watchedUserNickName {
+			fmt.Println("已经关注此作者")
+			return nil
+		}
+	}
+	// 没有关注过此作者，则添加
 	wts = append(wts, watch)
 	tmpUser.Watch = wts
 
-	// 更新整个用户信息，包括新加的文章
+	// 更新整个用户信息
 	err = uc.Update(oldUserInfo, tmpUser)
 	if err != nil {
 		fmt.Println("添加关注失败")
@@ -149,14 +157,91 @@ func (manager *DbManager) AddFans(fansNickName string, ownerNickName string) (er
 	var fans Fans
 	fans.NickName = fansNickName
 
-	wts := tmpUser.Fans
-	wts = append(wts, fans)
-	tmpUser.Fans = wts
+	fs := tmpUser.Fans
+	for _, v := range fs {
+		// 已经包含该粉丝 ，返回
+		if v.NickName == fansNickName {
+			fmt.Println("已经包含该粉丝")
+			return nil
+		}
+	}
+	// 没有关包含该粉丝 ，则添加
+	fs = append(fs, fans)
+	tmpUser.Fans = fs
 
-	// 更新整个用户信息，包括新加的文章
+	// 更新整个用户信息
 	err = uc.Update(oldUserInfo, tmpUser)
 	if err != nil {
 		fmt.Println("添加粉丝失败")
+	}
+
+	return err
+}
+
+func (manager *DbManager) DeleteWatch(watcherNickName string, watchedUserNickName string) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据用户ID, 查找用户信息
+	var oldUserInfo, tmpUser User
+	err = uc.Find(bson.M{"nickname": watcherNickName}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"nickname": watcherNickName}).One(&tmpUser)
+
+	// 查找，删除关注
+	wts := tmpUser.Watch
+	for p, v := range wts {
+		if v.NickName == watchedUserNickName {
+			// 找到该关注，删除数据
+			fmt.Println("找到该关注")
+			wts = append(wts[:p], wts[p+1:]...)
+			break
+		}
+		// 没有该注则返回，不做任何更改
+		if p == len(wts) {
+			return nil
+		}
+	}
+	tmpUser.Watch = wts
+
+	// 更新整个用户信息
+	err = uc.Update(oldUserInfo, tmpUser)
+	if err != nil {
+		fmt.Println("删除关注失败")
+	}
+
+	return err
+}
+
+func (manager *DbManager) DeleteFans(fansNickName string, ownerNickName string) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据用户ID, 查找用户信息
+	var oldUserInfo, tmpUser User
+	err = uc.Find(bson.M{"nickname": ownerNickName}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"nickname": ownerNickName}).One(&tmpUser)
+
+	// 查找，删除粉丝
+	var fans Fans
+	fans.NickName = fansNickName
+
+	fs := tmpUser.Fans
+	for p, v := range fs {
+		if v.NickName == fansNickName {
+			// 找到该粉丝，删除数据
+			fmt.Println("找到该粉丝")
+			fs = append(fs[:p], fs[p+1:]...)
+			break
+		}
+		// 没有该粉丝则返回，不做任何更改
+		if p == len(fs) {
+			return nil
+		}
+	}
+	tmpUser.Fans = fs
+
+	// 更新整个用户信息
+	err = uc.Update(oldUserInfo, tmpUser)
+	if err != nil {
+		fmt.Println("删除粉丝失败")
 	}
 
 	return err
