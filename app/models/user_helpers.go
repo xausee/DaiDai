@@ -131,7 +131,7 @@ func (manager *DbManager) AddWatch(watcherNickName string, watchedUserNickName s
 	// 更新整个用户信息，包括新加的文章
 	err = uc.Update(oldUserInfo, tmpUser)
 	if err != nil {
-		fmt.Println("添加留言失败")
+		fmt.Println("添加关注失败")
 	}
 
 	return err
@@ -156,7 +156,7 @@ func (manager *DbManager) AddFans(fansNickName string, ownerNickName string) (er
 	// 更新整个用户信息，包括新加的文章
 	err = uc.Update(oldUserInfo, tmpUser)
 	if err != nil {
-		fmt.Println("添加留言失败")
+		fmt.Println("添加粉丝失败")
 	}
 
 	return err

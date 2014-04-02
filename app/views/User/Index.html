@@ -12,23 +12,44 @@
           <img src="/public/img/cow.jpg" alt="140x140" class="img-thumbnail"> 
           </br></br> 
           <div class="text-center text-success"><p>手指在燃烧</p></div>  
-          </br></br>         
-          <a href="{{url "User.Watch" .authorNickName}}">关注 
-            <span class="badge">{{.fansCount}}</span>
-          </a> 
-          <a href="{{url "User.AddWatch" .authorNickName}}">关注TA</a>   
-          <a href="{{url "User.Fans" .authorNickName}}">粉丝 
-            <span class="badge">{{.wathCount}}</span>
-          </a>            
-          <a href="{{url "User.OriginalArticleList" .authorNickName}}">收藏 
-            <span class="badge">{{.wathCount}}</span>
-          </a>
-          <a href="{{url "User.OriginalArticleList" .authorNickName}}">原创 
-            <span class="badge">{{.articleCount}}</span>
-          </a>                
+          </br> 
+          <div class="row"> 
+            <div class="col-xs-3">   
+              <span class="badge">{{.fansCount}}</span>    
+              <a href="{{url "User.Watch" .authorNickName}}">关注 </a> 
+            </div>  
+            <div class="col-xs-3">     
+              <span class="badge">{{.wathCount}}</span>  
+              <a href="{{url "User.Fans" .authorNickName}}">粉丝</a> 
+            </div> 
+            <div class="col-xs-3">
+              <span class="badge">{{.wathCount}}</span>         
+              <a href="{{url "User.OriginalArticleList" .authorNickName}}">收藏</a>
+            </div>
+            <div class="col-xs-3">
+              <span class="badge">{{.articleCount}}</span>
+              <a href="{{url "User.OriginalArticleList" .authorNickName}}">原创 </a>  
+            </div> 
+          </div>             
         </div>                        
       </div> 
-      <div class="panel panel-success" style="height:300px"> 
+
+      {{if .nickName}}
+      <div class="panel panel-success" style="height:60px">               
+        <div class="panel-body"> 
+          <a href="{{url "User.AddWatch" .authorNickName}}">关注TA</a>    
+        </div>                        
+      </div> 
+      {{else}}
+      <div class="panel panel-success" style="height:60px">               
+        <div class="panel-body text-success text-center"> 
+          <a href="{{url "Account.Register"}}">注册一下</a> 
+           </br>就可以关注TA了哦    
+        </div>                        
+      </div>
+      {{end}}
+
+      <div class="panel panel-success" style="height:210px"> 
         <div class="panel-heading"><h3 class="panel-title text-center">最新留言</h3></div>       
         <div class="panel-body"> 
           <sub>{{.lastMessage.Content}}</sub>                    
@@ -42,7 +63,7 @@
     </div> 
 
   	<div class="col-xs-8">
-  	  <div class="panel panel-success" style="height:620px">
+  	  <div class="panel panel-success" style="height:600px">
         <div class="panel-heading"><h3 class="panel-title">我的文章</h3></div>
         <div class="panel-body"> 
           <div class="text-right">  
