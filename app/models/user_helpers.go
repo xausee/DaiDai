@@ -188,6 +188,8 @@ func (manager *DbManager) DeleteWatch(watcherNickName string, watchedUserNickNam
 
 	// 查找，删除关注
 	wts := tmpUser.Watch
+	count := len(wts)
+	var pos int
 	for p, v := range wts {
 		if v.NickName == watchedUserNickName {
 			// 找到该关注，删除数据
@@ -195,11 +197,13 @@ func (manager *DbManager) DeleteWatch(watcherNickName string, watchedUserNickNam
 			wts = append(wts[:p], wts[p+1:]...)
 			break
 		}
-		// 没有该注则返回，不做任何更改
-		if p == len(wts) {
-			return nil
-		}
+		pos = p
 	}
+	// 没有关注则返回，不做任何更改
+	if pos == count {
+		return nil
+	}
+
 	tmpUser.Watch = wts
 
 	// 更新整个用户信息
@@ -224,6 +228,8 @@ func (manager *DbManager) DeleteFans(fansNickName string, ownerNickName string) 
 	fans.NickName = fansNickName
 
 	fs := tmpUser.Fans
+	count := len(fs)
+	var pos int
 	for p, v := range fs {
 		if v.NickName == fansNickName {
 			// 找到该粉丝，删除数据
@@ -231,11 +237,13 @@ func (manager *DbManager) DeleteFans(fansNickName string, ownerNickName string) 
 			fs = append(fs[:p], fs[p+1:]...)
 			break
 		}
-		// 没有该粉丝则返回，不做任何更改
-		if p == len(fs) {
-			return nil
-		}
+		pos = p
 	}
+	// 没有该粉丝则返回，不做任何更改
+	if pos == count {
+		return nil
+	}
+
 	tmpUser.Fans = fs
 
 	// 更新整个用户信息
@@ -414,6 +422,83 @@ func (manager *DbManager) GetAllMessageByUserId(userid int) (message []Comment, 
 	message = userInfo.Message
 
 	return message, err
+}
+
+func (manager *DbManager) GetArticleCollectionByNickName(nickName string) (articles []ArticleInCollection, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	var userInfo User
+	err = uc.Find(bson.M{"nickname": nickName}).One(&userInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+	articles = userInfo.ArticleCollection
+
+	return articles, err
+}
+
+func (manager *DbManager) AddAticleToArticleCollection(userNickName string, article ArticleInCollection) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据用户ID, 查找用户信息
+	var oldUserInfo, tmpUser User
+	err = uc.Find(bson.M{"nickname": userNickName}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"nickname": userNickName}).One(&tmpUser)
+
+	ac := tmpUser.ArticleCollection
+	for _, v := range ac {
+		// 已经收藏 ，返回
+		if v.Id == article.Id {
+			fmt.Println("已经收藏此文章")
+			return nil
+		}
+	}
+	// 没有关收藏过，则添加
+	ac = append(ac, article)
+	tmpUser.ArticleCollection = ac
+
+	// 更新整个用户信息
+	err = uc.Update(oldUserInfo, tmpUser)
+	if err != nil {
+		fmt.Println("添加留言失败")
+	}
+
+	return err
+}
+
+func (manager *DbManager) DeleteAticleFromArticleCollection(userNickName string, article ArticleInCollection) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	// 根据用户ID, 查找用户信息
+	var oldUserInfo, tmpUser User
+	err = uc.Find(bson.M{"nickname": userNickName}).One(&oldUserInfo)
+	err = uc.Find(bson.M{"nickname": userNickName}).One(&tmpUser)
+
+	ac := tmpUser.ArticleCollection
+	count := len(ac)
+	var pos int
+	for p, v := range ac {
+		// 找到该文章 ，删除
+		if v.Id == article.Id {
+			ac = append(ac[:p], ac[p+1:]...)
+			break
+		}
+		pos = p
+	}
+	// 没有收藏过该文章则返回，不做任何更改
+	if pos == count {
+		return nil
+	}
+
+	tmpUser.ArticleCollection = ac
+
+	// 更新整个用户信息
+	err = uc.Update(oldUserInfo, tmpUser)
+	if err != nil {
+		fmt.Println("添加留言失败")
+	}
+
+	return err
 }
 
 func (manager *DbManager) GetAllFansByUserNickName(nickName string) (fans []Fans, err error) {

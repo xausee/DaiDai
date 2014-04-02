@@ -66,6 +66,7 @@ func (user *User) Index(nickName string) revel.Result {
 	user.RenderArgs["isWatched"] = isWatched
 	user.RenderArgs["fansCount"] = len(userInfo.Fans)
 	user.RenderArgs["wathCount"] = len(userInfo.Watch)
+	user.RenderArgs["articleCollectionCount"] = len(userInfo.ArticleCollection)
 	user.RenderArgs["messageCount"] = len(userInfo.Message)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
@@ -330,6 +331,70 @@ func (user *User) PostAddArticle(article *models.UserArticle) revel.Result {
 	return user.Redirect("/user/%s/article/%s", article.AuthorNickName, article.Id)
 }
 
+func (user *User) ArticleCollection(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	articlCollection, _ := manager.GetArticleCollectionByNickName(nickName)
+
+	user.RenderArgs["ownerNickName"] = nickName
+	user.RenderArgs["articlCollection"] = articlCollection
+	user.RenderArgs["articlCollectionCount"] = len(articlCollection)
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Render()
+}
+
+func (user *User) AddToArticleCollection(articleAuthorNickName string, aticleTitle string, articleId string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	userNickName := user.Session["nickName"]
+
+	// 添加文章到收藏
+	var article models.ArticleInCollection
+	article.Id = articleId
+	article.Title = aticleTitle
+	article.AuthorNickName = articleAuthorNickName
+
+	err = manager.AddAticleToArticleCollection(userNickName, article)
+
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Redirect("/user/%s/articlecollection", userNickName)
+}
+
+func (user *User) DeleteFromArticleCollection(articleAuthorNickName string, aticleTitle string, articleId string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	userNickName := user.Session["nickName"]
+
+	// 从收藏里删除该文章
+	var article models.ArticleInCollection
+	article.Id = articleId
+	article.Title = aticleTitle
+	article.AuthorNickName = articleAuthorNickName
+
+	err = manager.DeleteAticleFromArticleCollection(userNickName, article)
+
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+
+	return user.Redirect("/user/%s/articlecollection", userNickName)
+}
+
 func (user *User) EditArticle(articleid string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
@@ -384,6 +449,18 @@ func (user *User) ShowArticle(nickName string, articleid string) revel.Result {
 		isCurrentUser = true
 	}
 
+	// 从访问者本人收藏里查找，确认是否已经收藏
+	isInArticleCollection := false
+	userNickName := user.Session["nickName"]
+	articlCollection, _ := manager.GetArticleCollectionByNickName(userNickName)
+	for _, v := range articlCollection {
+		if v.Id == articleid {
+			isInArticleCollection = true
+			break
+		}
+	}
+
+	user.RenderArgs["isInArticleCollection"] = isInArticleCollection
 	user.RenderArgs["isCurrentUser"] = isCurrentUser
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]

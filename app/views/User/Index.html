@@ -23,8 +23,8 @@
               <a href="{{url "User.Fans" .ownerNickName}}">粉丝</a> 
             </div> 
             <div class="col-xs-3">
-              <span class="badge">0</span>         
-              <a href="{{url "User.OriginalArticleList" .ownerNickName}}">收藏</a>
+              <span class="badge">{{.articleCollectionCount}}</span>         
+              <a href="{{url "User.ArticleCollection" .ownerNickName}}">收藏</a>
             </div>
             <div class="col-xs-3">
               <span class="badge">{{.articleCount}}</span>

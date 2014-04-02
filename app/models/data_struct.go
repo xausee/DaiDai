@@ -64,6 +64,13 @@ type UserArticle struct {
 	Comments       []Comment
 }
 
+type ArticleInCollection struct {
+	Id             string
+	Title          string
+	AuthorId       int
+	AuthorNickName string
+}
+
 type User struct {
 	Id                int
 	Email             string
@@ -81,7 +88,7 @@ type User struct {
 	Fans              []Fans
 	Watch             []Watch
 	Message           []Comment
-	ArticleCollection []UserArticle
+	ArticleCollection []ArticleInCollection
 	Articles          []UserArticle
 }
 
