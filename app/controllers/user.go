@@ -39,8 +39,8 @@ func (user *User) Index(nickName string) revel.Result {
 	}
 
 	articlesOnOnePage := []models.UserArticle{}
-	if articlesCount > models.ArticlesInSinglePage {
-		articlesOnOnePage = articles[(articlesCount - models.ArticlesInSinglePage):]
+	if articlesCount > models.ArticlesInUserHomePanel {
+		articlesOnOnePage = articles[(articlesCount - models.ArticlesInUserHomePanel):]
 	} else {
 		articlesOnOnePage = articles
 	}
@@ -117,6 +117,7 @@ func (user *User) OriginalArticleList(nickName string) revel.Result {
 	}
 
 	user.RenderArgs["isAuthor"] = isAuthor
+	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["allArticles"] = articles
@@ -124,6 +125,55 @@ func (user *User) OriginalArticleList(nickName string) revel.Result {
 	user.RenderArgs["articlesOnOnePage"] = articlesOnOnePage
 	user.RenderArgs["pageCount"] = pageCount
 	user.RenderArgs["pageSlice"] = pageSlice
+
+	return user.Render()
+}
+
+func (user *User) PageList(authorNickName string, pageNumber string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	articles, err := manager.GetAllArticlesByUserNickName(authorNickName)
+	count := len(articles)
+
+	var pageCount int
+	if (count % models.ArticlesInSinglePage) == 0 {
+		pageCount = count / models.ArticlesInSinglePage
+	} else {
+		pageCount = count/models.ArticlesInSinglePage + 1
+	}
+
+	var iPageNumber int
+	iPageNumber, err = strconv.Atoi(pageNumber)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	artilcesOnOnePage := []models.UserArticle{}
+	if count >= iPageNumber*models.ArticlesInSinglePage {
+		artilcesOnOnePage = articles[(iPageNumber-1)*models.ArticlesInSinglePage : iPageNumber*models.ArticlesInSinglePage]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage < count && count < iPageNumber*models.ArticlesInSinglePage {
+		artilcesOnOnePage = articles[(iPageNumber-1)*models.ArticlesInSinglePage:]
+	} else if (iPageNumber-1)*models.ArticlesInSinglePage > count {
+		fmt.Println("已超过最大页码")
+	}
+	fmt.Println("pageCount:", pageCount)
+	fmt.Println("pageNumber:", pageNumber)
+
+	// 判断访问该页面的用户是否是作者本人
+	var isAuthor bool
+	if user.Session["nickName"] == authorNickName {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
+	user.RenderArgs["allArticles"] = articles
+	user.RenderArgs["artilcesOnOnePage"] = artilcesOnOnePage
+	user.RenderArgs["pageCount"] = pageCount
+	user.RenderArgs["pageNumber"] = pageNumber
 
 	return user.Render()
 }
