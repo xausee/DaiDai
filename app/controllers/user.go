@@ -280,6 +280,13 @@ func (user *User) Message(nickName string) revel.Result {
 
 	messages, _ := manager.GetAllMessageByUserNickName(nickName)
 
+	// 判断访问该页面的用户是否是作者本人
+	var isAuthor bool
+	if user.Session["nickName"] == nickName {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
 	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["messages"] = messages
 	user.RenderArgs["messageCount"] = len(messages)
@@ -298,6 +305,13 @@ func (user *User) Fans(nickName string) revel.Result {
 
 	fans, _ := manager.GetAllFansByUserNickName(nickName)
 
+	// 判断访问该页面的用户是否是作者本人
+	var isAuthor bool
+	if user.Session["nickName"] == nickName {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
 	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["fans"] = fans
 	user.RenderArgs["fansCount"] = len(fans)
@@ -316,6 +330,13 @@ func (user *User) Watch(nickName string) revel.Result {
 
 	watches, _ := manager.GetAllWatchByUserNickName(nickName)
 
+	// 判断访问该页面的用户是否是本人
+	var isAuthor bool
+	if user.Session["nickName"] == nickName {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
 	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["watches"] = watches
 	user.RenderArgs["watchesCount"] = len(watches)
@@ -462,6 +483,13 @@ func (user *User) ArticleCollection(nickName string) revel.Result {
 
 	articlCollection, _ := manager.GetArticleCollectionByNickName(nickName)
 
+	// 判断访问该页面的用户是否是本人
+	var isAuthor bool
+	if user.Session["nickName"] == nickName {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
 	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["articlCollection"] = articlCollection
 	user.RenderArgs["articlCollectionCount"] = len(articlCollection)

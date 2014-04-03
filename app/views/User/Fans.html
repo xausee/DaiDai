@@ -1,4 +1,10 @@
-{{set . "title" "我的粉丝"}}
+{{if .isAuthor}}
+  {{set . "title" "我的粉丝"}}
+{{else}}
+  {{$title := concat .ownerNickName "的粉丝"}}
+  {{set . "title" $title}}
+{{end}}
+
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
@@ -7,7 +13,7 @@
     <div class="col-xs-1"></div>
   	<div class="col-xs-10">
   	  <div class="panel panel-success" style="height:620px">
-        <div class="panel-heading"><h3 class="panel-title">我的粉丝</h3></div>
+        <div class="panel-heading"><h3 class="panel-title">我的粉丝[{{.fansCount}}]</h3></div>
         <div class="panel-body">           
           {{range .fans}}
           <div class="row">           

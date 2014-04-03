@@ -1,4 +1,10 @@
-{{set . "title" .article.Title}}
+{{if .isAuthor}}
+  {{set . "title" "我的留言"}}
+{{else}}
+  {{$title := concat .ownerNickName "的留言"}}
+  {{set . "title" $title}}
+{{end}}
+
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 

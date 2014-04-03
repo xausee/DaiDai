@@ -17,5 +17,6 @@ func init() {
 		revel.ActionInvoker,           // Invoke the action.
 	}
 
+	// 注册模板里的字符串相加函数
 	revel.TemplateFuncs["concat"] = func(a, b string) string { return a + b }
 }
