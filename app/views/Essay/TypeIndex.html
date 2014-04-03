@@ -93,7 +93,11 @@ xmlhttp.send();
               <li value="-1" id="previous" onclick="updateEssayTypeList({{.type}}, this.value)"><a>上一页</a></li>
               {{$type := .type}}
               {{range .pageSlice}}
+                {{if eq . 1}}
+                <li value={{.}} id=page_{{.}} class="active" onclick="updateEssayTypeList({{$type}}, this.value)"><a>{{.}}</a></li>
+                {{else}}
                 <li value={{.}} id=page_{{.}} onclick="updateEssayTypeList({{$type}}, this.value)"><a>{{.}}</a></li>
+                {{end}}
               {{end}}              
               <li value="-2" id="next" onclick="updateEssayTypeList({{.type}}, this.value)"><a>下一页</a></li>
             </ul>

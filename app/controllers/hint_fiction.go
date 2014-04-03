@@ -19,7 +19,12 @@ func (hf *HintFiction) Index() revel.Result {
 	defer manager.Close()
 
 	hintFictions, err := manager.GetAllHintFiction()
+
+	// 倒序处理
 	count := len(hintFictions)
+	for i := 0; i < count/2; i++ {
+		hintFictions[i], hintFictions[count-i-1] = hintFictions[count-i-1], hintFictions[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -35,7 +40,7 @@ func (hf *HintFiction) Index() revel.Result {
 
 	hintFictionsOnOnePage := []models.HintFiction{}
 	if count > models.ArticlesInSinglePage {
-		hintFictionsOnOnePage = hintFictions[(count - models.ArticlesInSinglePage):]
+		hintFictionsOnOnePage = hintFictions[:models.ArticlesInSinglePage]
 	} else {
 		hintFictionsOnOnePage = hintFictions
 	}
@@ -181,7 +186,12 @@ func (hf *HintFiction) PageList(pageNumber string) revel.Result {
 	defer manager.Close()
 
 	allHintfictions, err := manager.GetAllHintFiction()
+
+	// 倒序处理
 	count := len(allHintfictions)
+	for i := 0; i < count/2; i++ {
+		allHintfictions[i], allHintfictions[count-i-1] = allHintfictions[count-i-1], allHintfictions[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {

@@ -19,7 +19,12 @@ func (mp *ModernPoem) Index() revel.Result {
 	defer manager.Close()
 
 	allPoems, err := manager.GetAllModernPoem()
+
+	// 倒序处理
 	count := len(allPoems)
+	for i := 0; i < count/2; i++ {
+		allPoems[i], allPoems[count-i-1] = allPoems[count-i-1], allPoems[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -35,7 +40,7 @@ func (mp *ModernPoem) Index() revel.Result {
 
 	poemsOnOnePage := []models.ModernPoem{}
 	if count > models.ArticlesInSinglePage {
-		poemsOnOnePage = allPoems[(count - models.ArticlesInSinglePage):]
+		poemsOnOnePage = allPoems[:models.ArticlesInSinglePage]
 	} else {
 		poemsOnOnePage = allPoems
 	}
@@ -58,7 +63,12 @@ func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
 	defer manager.Close()
 
 	allPoems, err := manager.GetModernPoemByTag(tag)
+
+	// 倒序处理
 	count := len(allPoems)
+	for i := 0; i < count/2; i++ {
+		allPoems[i], allPoems[count-i-1] = allPoems[count-i-1], allPoems[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -74,7 +84,7 @@ func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
 
 	poemsOnOnePage := []models.ModernPoem{}
 	if count > models.ArticlesInSinglePage {
-		poemsOnOnePage = allPoems[(count - models.ArticlesInSinglePage):]
+		poemsOnOnePage = allPoems[:models.ArticlesInSinglePage]
 	} else {
 		poemsOnOnePage = allPoems
 	}
@@ -204,7 +214,12 @@ func (mp *ModernPoem) PageList(pageNumber string) revel.Result {
 	defer manager.Close()
 
 	allPoems, err := manager.GetAllModernPoem()
+
+	// 倒序处理
 	count := len(allPoems)
+	for i := 0; i < count/2; i++ {
+		allPoems[i], allPoems[count-i-1] = allPoems[count-i-1], allPoems[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -246,7 +261,12 @@ func (mp *ModernPoem) PageListWithTag(uPageNumber string, tag string) revel.Resu
 	defer manager.Close()
 
 	allPoems, err := manager.GetModernPoemByTag(tag)
+
+	// 倒序处理
 	count := len(allPoems)
+	for i := 0; i < count/2; i++ {
+		allPoems[i], allPoems[count-i-1] = allPoems[count-i-1], allPoems[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {

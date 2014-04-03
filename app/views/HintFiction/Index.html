@@ -90,7 +90,11 @@ xmlhttp.send();
             <ul class="pagination pagination-centered">
               <li value="-1" id="previous" onclick="updateHintFictionPageList(this.value)"><a>上一页</a></li>
               {{range .pages}}
+                {{if eq . 1}}
+                <li value={{.}} id=page_{{.}} class="active" onclick="updateHintFictionPageList(this.value)"><a>{{.}}</a></li>
+                {{else}}
                 <li value={{.}} id=page_{{.}} onclick="updateHintFictionPageList(this.value)"><a>{{.}}</a></li>
+                {{end}}
               {{end}}              
               <li value="-2" id="next" onclick="updateHintFictionPageList(this.value)"><a>下一页</a></li>
             </ul>

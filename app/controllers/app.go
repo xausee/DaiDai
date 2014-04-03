@@ -52,13 +52,18 @@ func (c App) Add() revel.Result {
 func (c *App) RenderQuotations(manager *models.DbManager) error {
 	qs, err := manager.GetAllQuotation()
 
+	// 倒序处理
+	var count = len(qs)
+	for i := 0; i < count/2; i++ {
+		qs[i], qs[count-i-1] = qs[count-i-1], qs[i]
+	}
+
 	// 只取前15条摘录用于首页的显示
 	var quotations []models.Quotation
-	var count = len(qs)
 	var more bool
 	if count > models.ArticlesInHomePanel {
 		more = true
-		quotations = qs[(count - models.ArticlesInHomePanel):]
+		quotations = qs[:models.ArticlesInHomePanel]
 	} else {
 		more = false
 		quotations = qs
@@ -72,13 +77,18 @@ func (c *App) RenderQuotations(manager *models.DbManager) error {
 func (c *App) RenderWitticism(manager *models.DbManager) error {
 	ws, err := manager.GetAllWitticism()
 
+	// 倒序处理
+	var count = len(ws)
+	for i := 0; i < count/2; i++ {
+		ws[i], ws[count-i-1] = ws[count-i-1], ws[i]
+	}
+
 	// 只取前5条名人语录用于首页的显示
 	var witticisms []models.Witticism
-	var count = len(ws)
 	var more bool
 	if count > 5 {
 		more = true
-		witticisms = ws[(count - 5):]
+		witticisms = ws[:5]
 	} else {
 		more = false
 		witticisms = ws
@@ -110,13 +120,18 @@ func (c *App) RenderAncientPoems(manager *models.DbManager) error {
 func (c *App) RenderModernPoems(manager *models.DbManager) error {
 	ps, err := manager.GetAllModernPoem()
 
+	// 倒序处理
+	var count = len(ps)
+	for i := 0; i < count/2; i++ {
+		ps[i], ps[count-i-1] = ps[count-i-1], ps[i]
+	}
+
 	// 只取前15篇现代诗用于首页的显示
 	var poems []models.ModernPoem
-	var count = len(ps)
 	var more bool
 	if count > models.ArticlesInHomePanel {
 		more = true
-		poems = ps[(count - models.ArticlesInHomePanel):]
+		poems = ps[:models.ArticlesInHomePanel]
 	} else {
 		more = false
 		poems = ps
@@ -130,13 +145,18 @@ func (c *App) RenderModernPoems(manager *models.DbManager) error {
 func (c *App) RenderEssays(manager *models.DbManager) error {
 	es, err := manager.GetAllEssay()
 
+	// 倒序处理
+	var count = len(es)
+	for i := 0; i < count/2; i++ {
+		es[i], es[count-i-1] = es[count-i-1], es[i]
+	}
+
 	// 只取前15篇散文用于首页的显示
 	var essays []models.Essay
-	var count = len(es)
 	var more bool
 	if count > models.ArticlesInHomePanel {
 		more = true
-		essays = es[(count - models.ArticlesInHomePanel):]
+		essays = es[:models.ArticlesInHomePanel]
 	} else {
 		more = false
 		essays = es
@@ -150,13 +170,18 @@ func (c *App) RenderEssays(manager *models.DbManager) error {
 func (c *App) RenderHintFictions(manager *models.DbManager) error {
 	hs, err := manager.GetAllHintFiction()
 
+	// 倒序处理
+	var count = len(hs)
+	for i := 0; i < count/2; i++ {
+		hs[i], hs[count-i-1] = hs[count-i-1], hs[i]
+	}
+
 	// 只取前15篇现代诗用于首页的显示
 	var hintFictions []models.HintFiction
-	var count = len(hs)
 	var more bool
 	if count > models.ArticlesInHomePanel {
 		more = true
-		hintFictions = hs[(count - models.ArticlesInHomePanel):]
+		hintFictions = hs[:models.ArticlesInHomePanel]
 	} else {
 		more = false
 		hintFictions = hs

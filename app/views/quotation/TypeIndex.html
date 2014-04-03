@@ -89,10 +89,14 @@ xmlhttp.send();
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
               <li value="-1" id="previous" onclick="updateQuotationPageList({{.type}}, this.value)"><a>上一页</a></li>
-              {{$type := .type}}
+              {{$type := .type}}                 
               {{range .pages}}
+                {{if eq . 1}}
+                <li value={{.}} id=page_{{.}} class="active" onclick="updateQuotationPageList({{$type}}, this.value)"><a>{{.}}</a></li>
+                {{else}}
                 <li value={{.}} id=page_{{.}} onclick="updateQuotationPageList({{$type}}, this.value)"><a>{{.}}</a></li>
-              {{end}}              
+                {{end}}
+              {{end}}           
               <li value="-2" id="next" onclick="updateQuotationPageList({{.type}}, this.value)"><a>下一页</a></li>
             </ul>
           </div>     

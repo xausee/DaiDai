@@ -19,7 +19,12 @@ func (q *Quotation) Index() revel.Result {
 	defer manager.Close()
 
 	quotations, err := manager.GetAllQuotation()
+
+	// 倒序处理
 	count := len(quotations)
+	for i := 0; i < count/2; i++ {
+		quotations[i], quotations[count-i-1] = quotations[count-i-1], quotations[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -35,7 +40,7 @@ func (q *Quotation) Index() revel.Result {
 
 	quotationsOnOnePage := []models.Quotation{}
 	if count > models.ArticlesInSinglePage {
-		quotationsOnOnePage = quotations[(count - models.ArticlesInSinglePage):]
+		quotationsOnOnePage = quotations[:models.ArticlesInSinglePage]
 	} else {
 		quotationsOnOnePage = quotations
 	}
@@ -58,7 +63,12 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 	defer manager.Close()
 
 	quotations, err := manager.GetQuotationByTag(tag)
+
+	// 倒序处理
 	count := len(quotations)
+	for i := 0; i < count/2; i++ {
+		quotations[i], quotations[count-i-1] = quotations[count-i-1], quotations[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -74,7 +84,7 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 
 	quotationsOnOnePage := []models.Quotation{}
 	if count > models.ArticlesInSinglePage {
-		quotationsOnOnePage = quotations[(count - models.ArticlesInSinglePage):]
+		quotationsOnOnePage = quotations[:models.ArticlesInSinglePage]
 	} else {
 		quotationsOnOnePage = quotations
 	}
@@ -211,7 +221,12 @@ func (q *Quotation) PageList(pageNumber string) revel.Result {
 	defer manager.Close()
 
 	allQuotations, err := manager.GetAllQuotation()
+
+	// 倒序处理
 	count := len(allQuotations)
+	for i := 0; i < count/2; i++ {
+		allQuotations[i], allQuotations[count-i-1] = allQuotations[count-i-1], allQuotations[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -253,7 +268,12 @@ func (q *Quotation) PageListWithTag(uPageNumber string, tag string) revel.Result
 	defer manager.Close()
 
 	allQuotations, err := manager.GetQuotationByTag(tag)
+
+	// 倒序处理
 	count := len(allQuotations)
+	for i := 0; i < count/2; i++ {
+		allQuotations[i], allQuotations[count-i-1] = allQuotations[count-i-1], allQuotations[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {

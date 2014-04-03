@@ -19,7 +19,12 @@ func (e *Essay) Index() revel.Result {
 	defer manager.Close()
 
 	allEssays, err := manager.GetAllEssay()
+
+	// 倒序处理
 	count := len(allEssays)
+	for i := 0; i < count/2; i++ {
+		allEssays[i], allEssays[count-i-1] = allEssays[count-i-1], allEssays[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -35,7 +40,7 @@ func (e *Essay) Index() revel.Result {
 
 	essaysOnOnePage := []models.Essay{}
 	if count > models.ArticlesInSinglePage {
-		essaysOnOnePage = allEssays[(count - models.ArticlesInSinglePage):]
+		essaysOnOnePage = allEssays[:models.ArticlesInSinglePage]
 	} else {
 		essaysOnOnePage = allEssays
 	}
@@ -58,7 +63,12 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 	defer manager.Close()
 
 	allEssays, err := manager.GetEssayByTag(tag)
+
+	// 倒序处理
 	count := len(allEssays)
+	for i := 0; i < count/2; i++ {
+		allEssays[i], allEssays[count-i-1] = allEssays[count-i-1], allEssays[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -74,7 +84,7 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 
 	essaysOnOnePage := []models.Essay{}
 	if count > models.ArticlesInSinglePage {
-		essaysOnOnePage = allEssays[(count - models.ArticlesInSinglePage):]
+		essaysOnOnePage = allEssays[:models.ArticlesInSinglePage]
 	} else {
 		essaysOnOnePage = allEssays
 	}
@@ -201,7 +211,12 @@ func (e *Essay) PageList(pageNumber string) revel.Result {
 	defer manager.Close()
 
 	allEssays, err := manager.GetAllEssay()
+
+	// 倒序处理
 	count := len(allEssays)
+	for i := 0; i < count/2; i++ {
+		allEssays[i], allEssays[count-i-1] = allEssays[count-i-1], allEssays[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -243,7 +258,12 @@ func (e *Essay) PageListWithTag(uPageNumber string, tag string) revel.Result {
 	defer manager.Close()
 
 	allEssays, err := manager.GetEssayByTag(tag)
+
+	// 倒序处理
 	count := len(allEssays)
+	for i := 0; i < count/2; i++ {
+		allEssays[i], allEssays[count-i-1] = allEssays[count-i-1], allEssays[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
