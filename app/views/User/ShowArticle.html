@@ -25,6 +25,8 @@
         <a href="{{url "RecommondArticle.Recommond" .article.AuthorNickName .article.Title .article.Id}}">推荐</a>
       </div>
       {{end}} 
+    {{else}}
+      <div class="col-xs-9 text-right"></div>
     {{end}}
 
     {{if .isInArticleCollection}}  
