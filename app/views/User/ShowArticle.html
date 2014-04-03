@@ -14,13 +14,25 @@
     </div>      
   </div>
   <div class="row">  
-    <div class="col-xs-1"></div> 
+    <div class="col-xs-1"></div>
+    {{if eq .nickName "手指在燃烧1"}}
+      {{if .isRecommonded}}
+      <div class="col-xs-9 text-right">
+        <a href="{{url "RecommondArticle.DeleteRecommond" .article.AuthorNickName .article.Title .article.Id}}">取消推荐</a>
+      </div>
+      {{else}}
+      <div class="col-xs-9 text-right">
+        <a href="{{url "RecommondArticle.Recommond" .article.AuthorNickName .article.Title .article.Id}}">推荐</a>
+      </div>
+      {{end}} 
+    {{end}}
+
     {{if .isInArticleCollection}}  
-    <div class="col-xs-10 text-right">
+    <div class="col-xs-1 text-right">      
       <a href="{{url "User.DeleteFromArticleCollection" .article.AuthorNickName .article.Title .article.Id}}">取消收藏</a>
     </div>
     {{else}}      
-    <div class="col-xs-10 text-right">
+    <div class="col-xs-1 text-right">
       <a href="{{url "User.AddToArticleCollection" .article.AuthorNickName .article.Title .article.Id}}">收藏</a>
     </div>  
     {{end}}         

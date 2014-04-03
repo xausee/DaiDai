@@ -6,14 +6,15 @@ import (
 )
 
 const (
-	DbName                = "SanWenJia"
-	UserCollection        = "user"
-	QuotationCollection   = "quotation"
-	WitticismCollection   = "witticism"
-	AncientPoemCollection = "ancientPoem"
-	ModernPoemCollection  = "modernPoem"
-	EssayCollection       = "essay"
-	HintFictionCollection = "hintFiction"
+	DbName                     = "SanWenJia"
+	UserCollection             = "user"
+	QuotationCollection        = "quotation"
+	WitticismCollection        = "witticism"
+	AncientPoemCollection      = "ancientPoem"
+	ModernPoemCollection       = "modernPoem"
+	EssayCollection            = "essay"
+	HintFictionCollection      = "hintFiction"
+	RecommendArticleCollection = "RecommendArticle"
 )
 
 type DbManager struct {

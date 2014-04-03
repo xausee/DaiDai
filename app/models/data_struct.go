@@ -71,6 +71,10 @@ type ArticleInCollection struct {
 	AuthorNickName string
 }
 
+type RecommendArticle struct {
+	Article ArticleInCollection
+}
+
 type User struct {
 	Id                int
 	Email             string

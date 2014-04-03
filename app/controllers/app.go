@@ -39,6 +39,9 @@ func (c App) Index() revel.Result {
 	// 获取微小说最新15条数据
 	c.RenderHintFictions(manager)
 
+	// 获取所有的推荐文章（15）篇
+	c.RenderRecommendArticles(manager)
+
 	return c.Render(userid, nickName)
 }
 
@@ -189,6 +192,19 @@ func (c *App) RenderHintFictions(manager *models.DbManager) error {
 
 	c.RenderArgs["hintFictions"] = hintFictions
 	c.RenderArgs["moreHintFiction"] = more
+	return err
+}
+
+func (c *App) RenderRecommendArticles(manager *models.DbManager) error {
+	as, err := manager.GetAllRecommendArticle()
+
+	// 倒序处理
+	var count = len(as)
+	for i := 0; i < count/2; i++ {
+		as[i], as[count-i-1] = as[count-i-1], as[i]
+	}
+
+	c.RenderArgs["allRecommendArticles"] = as
 	return err
 }
 

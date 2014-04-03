@@ -1,14 +1,14 @@
 <div class="panel panel-success" style="height:400px">
   <div class="panel-heading"><h3 class="panel-title">原创精选</h3></div>
   <div class="panel-body"> 
-     {{range .hintFictions}}
+     {{range .allRecommendArticles}}
       <div class="row">
-        <div class="col-xs-10"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
-        <div class="col-xs-2"><span class="badge text-right">{{.Author}}</div>
+        <div class="col-xs-10"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>    
+        <div class="col-xs-2"><span class="badge text-right">{{.AuthorNickName}}</div>
       </div>  
     {{end}} 
-    <div class="row text-center">
+   <!--  <div class="row text-center">
       <div class="col-xs-10 "><a href="#">更多内容>>></a></div>                
-    </div>                  
+    </div> -->                  
   </div>   
 </div>
