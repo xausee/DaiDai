@@ -1,4 +1,4 @@
-{{set . "title" "我的主页"}}
+{{set . "title" "文章列表"}}
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 <script>
@@ -77,7 +77,15 @@ xmlhttp.send();
     <div class="col-xs-1"></div>
   	<div class="col-xs-10">
   	  <div class="panel panel-success">
-        <div class="panel-heading"><h3 class="panel-title">我的文章</h3></div>
+        {{if .isAuthor}}
+          <div class="panel-heading"><h3 class="panel-title">我的文章</h3></div>
+        {{else}}
+          <div class="panel-heading">
+            <h3 class="panel-title">
+              <a href="{{url "User.Index" .ownerNickName}}">{{.ownerNickName}}</a>的文章
+            </h3>
+          </div>
+        {{end}}
         <div class="panel-body"> 
           <div id="articlelist">
             {{$isAuthor := .isAuthor}}
