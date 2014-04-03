@@ -1,4 +1,10 @@
-{{set . "title" "我的主页"}}
+{{if .isAuthor}}
+  {{set . "title" "我的主页"}}
+{{else}}
+  {{$title := concat .ownerNickName "的主页"}}
+  {{set . "title" $title}}
+{{end}}
+
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 <script>
@@ -124,7 +130,11 @@ xmlhttp.send();
       {{end}}
 
       <div class="panel panel-success" style="height:210px"> 
-        <div class="panel-heading"><h3 class="panel-title text-center">最新留言</h3></div>       
+        <div class="panel-heading">
+          <h3 class="panel-title text-center">
+            最新留言<span class="glyphicon glyphicon-comment">
+          </h3>
+        </div>       
         <div class="panel-body"> 
           <sub>{{.lastMessage.Content}}</sub>                    
           <div class="modal-footer"> 

@@ -16,4 +16,6 @@ func init() {
 		revel.InterceptorFilter,       // Run interceptors around the action.
 		revel.ActionInvoker,           // Invoke the action.
 	}
+
+	revel.TemplateFuncs["concat"] = func(a, b string) string { return a + b }
 }
