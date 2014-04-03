@@ -1,6 +1,76 @@
 {{set . "title" "我的主页"}}
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
+<script>
+function updateUserArticleList(pageNumber)
+{
+var xmlhttp;    
+if (pageNumber=="")
+  {
+  document.getElementById("articlelist").innerHTML="";
+  return;
+  }
+
+if (pageNumber==-1|| pageNumber==-2)
+{
+  $('.pagination>li').each(function()
+  {  
+    var status = $(this).prop("class")    
+    if (status == "active")
+    { 
+      var IdNumber = parseInt($(this).prop("id").substr(5)) 
+      if (pageNumber == -1)
+      {        
+        pageNumber = IdNumber -1                   
+      }
+      else
+      {        
+        pageNumber = IdNumber + 1 
+      }      
+    }
+  });
+} 
+// no li which class is active exist when click preious of next page link, just return. 
+if (pageNumber==-1|| pageNumber==-2){return}
+
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {    
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    { 
+      // remove all pagination active class first    
+      $('.pagination>li').removeClass('active'); 
+      // remove disable regardless of exist
+      $('#previous').removeClass('disabled');
+      $('#next').removeClass('disabled'); 
+      // reach first or last page
+      if (pageNumber == 1)
+      {
+        $('#previous').addClass('disabled');            
+      }
+      if (pageNumber == {{.pageCount}})
+      {       
+        $('#next').addClass('disabled');      
+      }
+      // add active class to the clicked item
+      var id = "#"+"page_"+pageNumber
+      $(id).addClass('active');
+      // return result
+      document.getElementById("articlelist").innerHTML=xmlhttp.responseText;
+    }
+  } 
+
+xmlhttp.open("GET","{{url "User.PageListOnHomePage" .ownerNickName ""}}" + pageNumber, true);
+xmlhttp.send();
+}
+</script>
 
 <div class="container">
   <div class="row">
@@ -76,32 +146,34 @@
               <span class="glyphicon glyphicon-plus-sign"></span> 写作
             </a>  
             {{end}} 
-          </div>      
-          {{$isAuthor := .isAuthor}}
-          {{range .articlesOnOnePage}}
-          <div class="row">           
-            <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>
-            <div class="col-xs-5 text-right">
-              <span class="badge text-right">{{.CreateTime}}</span> 
-              {{if $isAuthor}}                        
-              <a id="edit" href="{{url "User.EditArticle" .Id}}">
-                <span class="glyphicon glyphicon-edit"></span> 编辑
-              </a>
-              <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
-                <span class="glyphicon glyphicon-remove-sign"></span> 删除
-              </a>             
-              {{end}} 
+          </div>  
+          <div id="articlelist">    
+            {{$isAuthor := .isAuthor}}
+            {{range .articlesOnOnePage}}
+            <div class="row">           
+              <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>
+              <div class="col-xs-5 text-right">
+                <span class="badge text-right">{{.CreateTime}}</span> 
+                {{if $isAuthor}}                        
+                <a id="edit" href="{{url "User.EditArticle" .Id}}">
+                  <span class="glyphicon glyphicon-edit"></span> 编辑
+                </a>
+                <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
+                  <span class="glyphicon glyphicon-remove-sign"></span> 删除
+                </a>             
+                {{end}} 
+              </div>
             </div>
+            {{end}}
           </div>
-          {{end}}
 
           <div class="text-center">                  
             <ul class="pagination pagination-centered">
-              <li value="-1" id="previous" onclick="updateEssayList(this.value)"><a>上一页</a></li>
+              <li value="-1" id="previous" onclick="updateUserArticleList(this.value)"><a>上一页</a></li>
               {{range .pageSlice}}
-                <li value={{.}} id=page_{{.}} onclick="updateEssayList(this.value)"><a>{{.}}</a></li>
+                <li value={{.}} id=page_{{.}} onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
               {{end}}              
-              <li value="-2" id="next" onclick="updateEssayList(this.value)"><a>下一页</a></li>
+              <li value="-2" id="next" onclick="updateUserArticleList(this.value)"><a>下一页</a></li>
             </ul>
           </div>      
         </div>                       
