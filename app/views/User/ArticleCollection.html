@@ -8,10 +8,19 @@
   	<div class="col-xs-10">
   	  <div class="panel panel-success" style="height:620px">
         <div class="panel-heading"><h3 class="panel-title">我的收藏</h3></div>
-        <div class="panel-body">                   
+        <div class="panel-body">   
+          <div class="row">           
+            <div class="col-xs-7 text-muted">篇名</div> 
+            <div class="col-xs-5 text-muted text-right">作者</div>           
+          </div>                
           {{range .articlCollection}}
           <div class="row">           
-            <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>           
+            <div class="col-xs-7">
+              <a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a>
+            </div> 
+            <div class="col-xs-5 text-right">
+              <a href="{{url "User.Index" .AuthorNickName}}">{{.AuthorNickName}}</a>
+            </div>           
           </div>
           {{end}}
 
