@@ -1,0 +1,40 @@
+{{template "HeaderWithoutWelcomeBar.html" .}}
+
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+</br>
+
+<div class="container">
+  <div class="row">
+    <div class="text-center text-warning">抱歉，您访问的页面不存在</div>
+  </div>
+</div>
+{{template "footer.html" .}}
+
+<!-- <!DOCTYPE html>
+<html lang="en">
+	<head>
+		<title>Page Not found</title>
+	</head>
+	<body>	  
+{{if eq .RunMode "dev"}}
+{{template "errors/404-dev.html" .}}
+{{else}}
+	{{with .Error}}
+	<h1>
+		{{.Title}}
+	</h1>
+	<p>
+		{{.Description}}
+	</p>
+	{{end}}
+{{end}}
+	</body>
+</html> -->

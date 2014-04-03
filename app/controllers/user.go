@@ -18,9 +18,11 @@ func (user *User) Index(nickName string) revel.Result {
 	}
 	defer manager.Close()
 
-	//articles, _ := manager.GetUserByNickName(nickName)
+	userInfo, e := manager.GetUserByNickName(nickName)
+	if e != nil {
+		return user.Redirect((*ErrorPages).Page404)
+	}
 
-	userInfo, _ := manager.GetUserByNickName(nickName)
 	articles := userInfo.Articles
 	articlesCount := len(articles)
 
