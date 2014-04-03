@@ -38,9 +38,14 @@ func (user *User) Index(nickName string) revel.Result {
 		pageSlice = append(pageSlice, i)
 	}
 
+	// 倒序处理
+	for i := 0; i < articlesCount/2; i++ {
+		articles[i], articles[articlesCount-i-1] = articles[articlesCount-i-1], articles[i]
+	}
+
 	articlesOnOnePage := []models.UserArticle{}
 	if articlesCount > models.ArticlesInUserHomePanel {
-		articlesOnOnePage = articles[(articlesCount - models.ArticlesInUserHomePanel):]
+		articlesOnOnePage = articles[:models.ArticlesInUserHomePanel]
 	} else {
 		articlesOnOnePage = articles
 	}
@@ -89,7 +94,12 @@ func (user *User) OriginalArticleList(nickName string) revel.Result {
 	defer manager.Close()
 
 	articles, _ := manager.GetAllArticlesByUserNickName(nickName)
+
+	// 倒序处理
 	count := len(articles)
+	for i := 0; i < count/2; i++ {
+		articles[i], articles[count-i-1] = articles[count-i-1], articles[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -105,7 +115,8 @@ func (user *User) OriginalArticleList(nickName string) revel.Result {
 
 	articlesOnOnePage := []models.UserArticle{}
 	if count > models.ArticlesInSinglePage {
-		articlesOnOnePage = articles[(count - models.ArticlesInSinglePage):]
+		// 获取前面最新的文章
+		articlesOnOnePage = articles[:models.ArticlesInSinglePage]
 	} else {
 		articlesOnOnePage = articles
 	}
@@ -137,7 +148,12 @@ func (user *User) PageList(authorNickName string, pageNumber string) revel.Resul
 	defer manager.Close()
 
 	articles, err := manager.GetAllArticlesByUserNickName(authorNickName)
+
+	// 倒序处理
 	count := len(articles)
+	for i := 0; i < count/2; i++ {
+		articles[i], articles[count-i-1] = articles[count-i-1], articles[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInSinglePage) == 0 {
@@ -186,7 +202,12 @@ func (user *User) PageListOnHomePage(authorNickName string, pageNumber string) r
 	defer manager.Close()
 
 	articles, err := manager.GetAllArticlesByUserNickName(authorNickName)
+
+	// 倒序处理
 	count := len(articles)
+	for i := 0; i < count/2; i++ {
+		articles[i], articles[count-i-1] = articles[count-i-1], articles[i]
+	}
 
 	var pageCount int
 	if (count % models.ArticlesInUserHomePanel) == 0 {
