@@ -4,6 +4,8 @@ import (
 	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
+	// "io/ioutil"
+	"os"
 	"strconv"
 )
 
@@ -658,6 +660,11 @@ func (user *User) EditInfo(nickName string) revel.Result {
 	}
 	defer manager.Close()
 
+	// 如果不是本人，则不能访问此页面，跳到其主页面
+	if nickName != user.Session["nickName"] {
+		return user.Redirect("/user/%s", user.Session["userid"])
+	}
+
 	userInfo, _ := manager.GetUserByNickName(nickName)
 
 	user.RenderArgs["user"] = userInfo
@@ -667,13 +674,52 @@ func (user *User) EditInfo(nickName string) revel.Result {
 	return user.Render()
 }
 
-func (user *User) PostEditInfo(userInfo models.User) revel.Result {
+func (user *User) PostEditInfo(uploadfile *os.File, userInfo models.User) revel.Result {
+	// fmt.Println(len(user.Params.Files), uploadfile)
+	// fmt.Println(user.Params.Form["files"])
+	// fmt.Println(user.Params)
+	fmt.Println(user.Request.Form)
+	fmt.Println(user.Response)
+	// for p, v := range file.Params {
+	// 	fmt.Println(p, v)
+	// }
+	//file, handler, err := user.Request.FormFile
+	fmt.Println(user.Request.FormFile)
+	file, handler, err := user.Request.FormFile("files")
+	fmt.Println(file, handler, err)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// data, err := ioutil.ReadAll(file)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+	// err = ioutil.WriteFile(handler.Filename, data, 0777)
+	// if err != nil {
+	// 	fmt.Println(err)
+	// }
+
+	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
 	}
 	defer manager.Close()
 	userInfo.Id, _ = strconv.Atoi(user.Session["userid"])
+
+	// localFile := userInfo.AvatarUrl
+	// fmt.Println("**********************", localFile)
+	// // 如果头像地址不为空，则修改
+	// if localFile != "" {
+	// 	//上传到七牛空间 http://sanwenjia.qiniudn.com/
+	// 	key, e := models.UploadToQiniu(localFile)
+	// 	if e != nil {
+	// 		fmt.Println("上传头像失败")
+	// 	}
+	// 	//指向空间里面的头像地址
+	// 	userInfo.AvatarUrl = "http://sanwenjia.qiniudn.com/" + key
+	// }
+	userInfo.AvatarUrl = "http://sanwenjia.qiniudn.com/Donate.PNG"
 	err = manager.UpdateUserInfoById(userInfo.Id, userInfo)
 
 	user.RenderArgs["userid"] = user.Session["userid"]

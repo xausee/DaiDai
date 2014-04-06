@@ -1,6 +1,16 @@
 {{set . "title" "修改个人信息"}}
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
+<script>
+function getFilePath()
+{ 
+  f = document.getElementById("fileField")
+  // alert(window.URL.createObjectURL(f.files[0]))
+  document.getElementById('Image').src = window.URL.createObjectURL(f.files[0]);
+  document.getElementById('fileField').value = window.URL.createObjectURL(f.files[0]);
+};
+</script>
+
 <div class="container">
   <div class="row">
   	<div class="col-xs-1"></div> 	
@@ -8,9 +18,17 @@
   	  <div class="panel panel-success">
         <div class="panel-heading"><h3 class="panel-title">个人资料</h3></div>
         <div class="panel-body"> 
+          
         <form role="form-horizontal" action="{{url "User.PostEditInfo"}}" method="POST">          
           <dl class="dl-horizontal text-success">
-          	<dt>头像</dt> <dd><img src="/public/img/cow.jpg" class="img-thumbnail" alt="Responsive image"></dd></br>
+          	<dt>头像</dt> 
+            <dd>
+              <img src= {{.user.AvatarUrl}} id="image" class="img-thumbnail" alt="Responsive image">
+              </br>     
+              <input type="file" name="files" onchange="document.getElementById('image').src=window.URL.createObjectURL(this.files[0])" />
+              </br>
+            </dd>                      
+                        
             <dt>昵称</dt>             
             <dd>
               {{$nickName := .user.NickName}}
@@ -124,10 +142,10 @@
             <dd>
             	<div class="form-group">
             	  <label class="radio-inline">
-            	    <div class="form-group"><button type="submit" class="btn btn-primary" id="button_Register_Form_Submit">保存</button></div> 
+            	    <div class="form-group"><button type="submit" class="btn btn-primary" id="submit">保存</button></div> 
             	  </label> 
             	  <label class="radio-inline">
-                  <a href="{{url "User.Info" .nickName}}">取消</a>            	    
+                  <a href="{{url "User.Info" .user.NickName}}">取消</a>            	    
             	  </label> 
             	</div>  
             </dd></br>
