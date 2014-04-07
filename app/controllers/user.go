@@ -712,7 +712,11 @@ func (user *User) PostEditInfo(uploadFile *os.File, userInfo models.User) revel.
 		fmt.Println("头像地址：", userInfo.AvatarUrl)
 	}
 
-	// TODO 删除文件
+	// 删除临时头像文件
+	err = os.Remove(filePath)
+	if err != nil {
+		fmt.Println("删除临时头像文件失败:", err)
+	}
 
 	// TODO： 直接使用 uploadFile 进行操作，放弃上面的方案
 
