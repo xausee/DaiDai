@@ -17,16 +17,15 @@ function getFilePath()
   	<div class="col-xs-10">
   	  <div class="panel panel-success">
         <div class="panel-heading"><h3 class="panel-title">个人资料</h3></div>
-        <div class="panel-body"> 
-          
-        <form role="form-horizontal" action="{{url "User.PostEditInfo"}}" method="POST">          
+        <div class="panel-body">
+        <form role="form-horizontal" action="{{url "User.PostEditInfo"}}" enctype="multipart/form-data" method="POST">          
           <dl class="dl-horizontal text-success">
           	<dt>头像</dt> 
             <dd>
-              <img src= {{.user.AvatarUrl}} id="image" class="img-thumbnail" alt="Responsive image">
+              <img src={{.user.AvatarUrl}} id="image" class="img-thumbnail" alt="Responsive image">
               </br>     
-              <input type="file" name="files" onchange="document.getElementById('image').src=window.URL.createObjectURL(this.files[0])" />
-              </br>
+              <input type="file" name="uploadFile" onchange="document.getElementById('image').src=window.URL.createObjectURL(this.files[0])" />
+              </br>               
             </dd>                      
                         
             <dt>昵称</dt>             

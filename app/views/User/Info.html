@@ -9,7 +9,7 @@
         <div class="panel-heading"><h3 class="panel-title">个人资料</h3></div>
         <div class="panel-body">          
           <dl class="dl-horizontal text-success">
-          	<dt>头像</dt> <dd><img src="/public/img/cow.jpg" class="img-thumbnail" alt="Responsive image"></dd></br>
+          	<dt>头像</dt> <dd><img src={{.userInfo.AvatarUrl}} class="img-thumbnail" alt="Responsive image"></dd></br>
             <dt>昵称</dt> <dd>{{.userInfo.NickName}}</dd></br>
             <dt>笔名</dt> <dd>{{.userInfo.PenName}}</dd></br>
             <dt>性别</dt> <dd>{{.userInfo.Gender}}</dd></br>

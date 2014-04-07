@@ -11,8 +11,6 @@ GET     /donate                                 App.Donate
 GET     /404                                    ErrorPages.Page404
 GET     /500                                    ErrorPages.Page500
 
-POST    /fileupload                             FileUploader.Upload
-
 GET     /register                               Account.Register
 POST    /register                               Account.PostRegister
 GET     /registersuccessful                     Account.RegisterSuccessful

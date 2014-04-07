@@ -4,8 +4,10 @@ import (
 	"SanWenJia/app/models"
 	"fmt"
 	"github.com/robfig/revel"
-	// "io/ioutil"
+	"io/ioutil"
+	"log"
 	"os"
+	"path/filepath"
 	"strconv"
 )
 
@@ -674,32 +676,46 @@ func (user *User) EditInfo(nickName string) revel.Result {
 	return user.Render()
 }
 
-func (user *User) PostEditInfo(uploadfile *os.File, userInfo models.User) revel.Result {
-	// fmt.Println(len(user.Params.Files), uploadfile)
-	// fmt.Println(user.Params.Form["files"])
-	// fmt.Println(user.Params)
-	fmt.Println(user.Request.Form)
-	fmt.Println(user.Response)
-	// for p, v := range file.Params {
-	// 	fmt.Println(p, v)
-	// }
-	//file, handler, err := user.Request.FormFile
-	fmt.Println(user.Request.FormFile)
-	file, handler, err := user.Request.FormFile("files")
-	fmt.Println(file, handler, err)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// data, err := ioutil.ReadAll(file)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
-	// err = ioutil.WriteFile(handler.Filename, data, 0777)
-	// if err != nil {
-	// 	fmt.Println(err)
-	// }
+func (user *User) PostEditInfo(uploadFile *os.File, userInfo models.User) revel.Result {
+	// 使用revel requst formfile获取文件数据
+	file, handler, err := user.Request.FormFile("uploadFile")
+	if err != nil {
+		fmt.Println(err)
+	}
+	// 读取所有数据
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Println(err)
+	}
 
-	//@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@
+	// 获取当前路径
+	dir, patherr := filepath.Abs(filepath.Dir(os.Args[0]))
+	if patherr != nil {
+		log.Fatal(patherr)
+	}
+
+	// 文件路径
+	filePath := dir + "/" + handler.Filename
+
+	// 保存到文件
+	err = ioutil.WriteFile(filePath, data, 0777)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// 上传到七牛云储存
+	key, e := models.UploadToQiniu(filePath)
+	if e != nil {
+		fmt.Println("修改头像失败:", e)
+	} else {
+		userInfo.AvatarUrl = models.QiNiuSpace + key
+		fmt.Println("头像地址：", userInfo.AvatarUrl)
+	}
+
+	// TODO 删除文件
+
+	// TODO： 直接使用 uploadFile 进行操作，放弃上面的方案
+
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -707,19 +723,6 @@ func (user *User) PostEditInfo(uploadfile *os.File, userInfo models.User) revel.
 	defer manager.Close()
 	userInfo.Id, _ = strconv.Atoi(user.Session["userid"])
 
-	// localFile := userInfo.AvatarUrl
-	// fmt.Println("**********************", localFile)
-	// // 如果头像地址不为空，则修改
-	// if localFile != "" {
-	// 	//上传到七牛空间 http://sanwenjia.qiniudn.com/
-	// 	key, e := models.UploadToQiniu(localFile)
-	// 	if e != nil {
-	// 		fmt.Println("上传头像失败")
-	// 	}
-	// 	//指向空间里面的头像地址
-	// 	userInfo.AvatarUrl = "http://sanwenjia.qiniudn.com/" + key
-	// }
-	userInfo.AvatarUrl = "http://sanwenjia.qiniudn.com/Donate.PNG"
 	err = manager.UpdateUserInfoById(userInfo.Id, userInfo)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
