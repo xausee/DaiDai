@@ -3,7 +3,7 @@ package controllers
 import (
 	"SanWenJia/app/models"
 	"fmt"
-	"github.com/robfig/revel"
+	"github.com/revel/revel"
 	"io/ioutil"
 	"log"
 	"os"
