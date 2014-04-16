@@ -7,19 +7,18 @@ import (
 	"github.com/qiniu/api/conf"
 	"github.com/qiniu/api/io"
 	// rio "github.com/qiniu/api/resumable/io"
+	"github.com/qiniu/api/auth/digest"
 	"github.com/qiniu/api/rs"
 )
 
 //将本地文件上传到七牛云存储，返回key。
 func UploadToQiniu(filepath string) (string, error) {
-	//bucket := "sanwenjia"
-	bucket := "sanwenjia"
 
 	conf.ACCESS_KEY = QiNiuAccessKey
 	conf.SECRET_KEY = QiNiuSecretKey
 
 	//获取uptoken
-	putPolicy := rs.PutPolicy{Scope: bucket}
+	putPolicy := rs.PutPolicy{Scope: QiNiuBucket}
 	uptoken := putPolicy.Token(nil)
 
 	//上传
@@ -32,4 +31,15 @@ func UploadToQiniu(filepath string) (string, error) {
 	}
 
 	return ret.Key, err
+}
+
+func DeleteFileOnQiNiu(key string) error {
+	mac := digest.Mac{AccessKey: QiNiuAccessKey, SecretKey: []byte(QiNiuSecretKey)}
+	reCli := rs.New(&mac)
+	err := reCli.Delete(nil, QiNiuBucket, key)
+	if err != nil {
+		// 产生错误
+		log.Println("rs.Delete failed:", err)
+	}
+	return err
 }

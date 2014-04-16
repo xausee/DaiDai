@@ -9,6 +9,7 @@ import (
 	"os"
 	"path/filepath"
 	"strconv"
+	"strings"
 )
 
 type User struct {
@@ -704,11 +705,28 @@ func (user *User) PostEditInfo(uploadFile *os.File, userInfo models.User) revel.
 		fmt.Println(err)
 	}
 
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+	userInfo.Id, _ = strconv.Atoi(user.Session["userid"])
+
 	// 上传到七牛云储存
 	key, e := models.UploadToQiniu(filePath)
 	if e != nil {
 		fmt.Println("修改头像失败:", e)
 	} else {
+		// 删除原来的头像文件
+		oldUserInfo, _ := manager.GetUserById(userInfo.Id)
+		avatarUrl := oldUserInfo.AvatarUrl
+		urlArray := strings.SplitN(avatarUrl, "/", -1)
+		oldKey := urlArray[len(urlArray)-1]
+		derr := models.DeleteFileOnQiNiu(oldKey)
+		if derr != nil {
+			fmt.Println("删除原始头像文件失败:", derr)
+		}
+		// 保存新的头像地址
 		userInfo.AvatarUrl = models.QiNiuSpace + key
 		fmt.Println("头像地址：", userInfo.AvatarUrl)
 	}
@@ -720,13 +738,6 @@ func (user *User) PostEditInfo(uploadFile *os.File, userInfo models.User) revel.
 	}
 
 	// TODO： 直接使用 uploadFile 进行操作，放弃上面的方案
-
-	manager, err := models.NewDbManager()
-	if err != nil {
-		fmt.Println("链接数据库失败")
-	}
-	defer manager.Close()
-	userInfo.Id, _ = strconv.Atoi(user.Session["userid"])
 
 	err = manager.UpdateUserInfoById(userInfo.Id, userInfo)
 
