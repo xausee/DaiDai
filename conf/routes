@@ -8,6 +8,9 @@ GET     /add/                                   App.Add
 GET     /aboutus                                App.AboutUs 
 GET     /donate                                 App.Donate
 
+GET     /uploadpicture                          Admin.UploadPicture
+POST    /uploadpicture                          Admin.PostUploadPicture
+
 GET     /404                                    ErrorPages.Page404
 GET     /500                                    ErrorPages.Page500
 

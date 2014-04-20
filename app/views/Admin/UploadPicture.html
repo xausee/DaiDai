@@ -1,0 +1,60 @@
+{{set . "title" "图片上传"}}
+{{template "header.html" .}}
+<script>
+function getFilePath()
+{ 
+  f = document.getElementById("fileField")  
+  document.getElementById('Image').src = window.URL.createObjectURL(f.files[0]);
+  document.getElementById('fileField').value = window.URL.createObjectURL(f.files[0]);
+};
+</script>
+
+<div class="container">
+  <div class="row">
+  	<div class="col-xs-1"></div> 	
+  	<div class="col-xs-10">
+  	  <div class="panel panel-success">
+        <div class="panel-heading"><h3 class="panel-title">用于在小窗台显示的图片</h3></div>
+        <div class="panel-body">
+        <form role="form-horizontal" action="{{url "Admin.PostUploadPicture"}}" enctype="multipart/form-data" method="POST">          
+          <dl class="dl-horizontal text-success">
+          	<dt>图片文件</dt> 
+            <dd>
+              <img id="image1" class="img-thumbnail" alt="Responsive image">
+              </br>     
+              <input type="file" name="pictures" onchange="document.getElementById('image1').src=window.URL.createObjectURL(this.files[0])" />
+              </br>
+              <!-- <img id="image2" class="img-thumbnail" alt="Responsive image">
+              </br>     
+              <input type="file" name="pictures" onchange="document.getElementById('image2').src=window.URL.createObjectURL(this.files[0])" />
+              </br>
+              <img id="image3" class="img-thumbnail" alt="Responsive image">
+              </br>     
+              <input type="file" name="pictures" onchange="document.getElementById('image3').src=window.URL.createObjectURL(this.files[0])" />
+              </br>
+              <img id="image4" class="img-thumbnail" alt="Responsive image">
+              </br>     
+              <input type="file" name="pictures" onchange="document.getElementById('image4').src=window.URL.createObjectURL(this.files[0])" />
+              </br> -->
+            </dd> 
+            <dd>
+              <div class="form-group">
+            	  <label class="radio-inline">
+            	    <div class="form-group"><button type="submit" class="btn btn-primary" id="submit">上传</button></div> 
+            	  </label> 
+            	  <label class="radio-inline">
+                  <a href="{{url "App.Add"}}">取消</a>            	    
+            	  </label> 
+            	</div>  
+            </dd></br>
+          </dl>                  
+        </div>  
+        </form>     
+        </div>                       
+       </div>  
+    </div>
+  </div> 
+</div> 
+</div> 
+
+{{template "footer.html" .}}
