@@ -17,6 +17,17 @@
       </div> 
       <br>      
       
+      {{with $field := field "quotation.Author" .}} 
+      <div class="input-group {{$field.ErrorClass}}">            
+          <span class="input-group-addon">作者</span>    
+          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入作者" required> 
+          {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+          {{end}}        
+      </div> 
+      {{end}} 
+      <br>
+      
       {{with $field := field "quotation.Content" .}} 
       <div class="input-group {{$field.ErrorClass}}">         
         <span class="input-group-addon">内容</span>      
@@ -48,18 +59,7 @@
         {{end}}         
       </div> 
       {{end}}  
-      <br>  
-
-      {{with $field := field "quotation.Author" .}} 
-      <div class="input-group {{$field.ErrorClass}}">            
-          <span class="input-group-addon">作者</span>    
-          <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入作者" required> 
-          {{if $field.Error}} 
-          <span class="help-inline">{{$field.Error}}</span> 
-          {{end}}        
-      </div> 
-      {{end}} 
-      <br>
+      <br> 
 
       <div class="input-group">                  
         <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 

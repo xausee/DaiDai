@@ -40,18 +40,7 @@
         {{end}}         
       </div> 
       {{end}} 
-      <br>           
-      
-      {{with $field := field "modernPoem.Content" .}} 
-      <div class="input-group {{$field.ErrorClass}}">         
-        <span class="input-group-addon">内容</span>      
-        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="15"></textarea> 
-        {{if $field.Error}} 
-          <span class="help-inline">{{$field.Error}}</span> 
-        {{end}}         
-      </div> 
-      {{end}} 
-      <br>    
+      <br>      
 
       {{with $field := field "modernPoem.Author" .}} 
       <div class="input-group {{$field.ErrorClass}}">            
@@ -60,6 +49,17 @@
           {{if $field.Error}} 
           <span class="help-inline">{{$field.Error}}</span> 
           {{end}}        
+      </div> 
+      {{end}} 
+      <br>     
+      
+      {{with $field := field "modernPoem.Content" .}} 
+      <div class="input-group {{$field.ErrorClass}}">         
+        <span class="input-group-addon">内容</span>      
+        <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="15"></textarea> 
+        {{if $field.Error}} 
+          <span class="help-inline">{{$field.Error}}</span> 
+        {{end}}         
       </div> 
       {{end}} 
       <br>
