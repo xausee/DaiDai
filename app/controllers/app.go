@@ -10,10 +10,10 @@ type App struct {
 	*revel.Controller
 }
 
-func (c App) Index() revel.Result {
-	userid := c.Session["userid"]
+func (this App) Index() revel.Result {
+	userid := this.Session["userid"]
 	//不再使用邮件地址登陆，用昵称替代掉
-	nickName := c.Session["nickName"]
+	nickName := this.Session["nickName"]
 
 	manager, err := models.NewDbManager()
 	if err != nil {
@@ -22,37 +22,44 @@ func (c App) Index() revel.Result {
 	defer manager.Close()
 
 	// 获取摘抄最新15条数据
-	c.RenderQuotations(manager)
+	this.RenderQuotations(manager)
 
 	// 获取名人语录最新5条数据
-	c.RenderWitticism(manager)
+	this.RenderWitticism(manager)
 
 	// 获取古诗词最新15条数据
-	c.RenderAncientPoems(manager)
+	this.RenderAncientPoems(manager)
 
 	// 获取现代诗最新15条数据
-	c.RenderModernPoems(manager)
+	this.RenderModernPoems(manager)
 
 	// 获取散文最新15条数据
-	c.RenderEssays(manager)
+	this.RenderEssays(manager)
 
 	// 获取微小说最新15条数据
-	c.RenderHintFictions(manager)
+	this.RenderHintFictions(manager)
 
 	// 获取所有的推荐文章（15）篇
-	c.RenderRecommendArticles(manager)
+	this.RenderRecommendArticles(manager)
 
-	return c.Render(userid, nickName)
+	return this.Render(userid, nickName)
 }
 
-func (c App) Add() revel.Result {
-	userid := c.Session["userid"]
-	nickName := c.Session["nickName"]
+func (this App) Add() revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
 
-	return c.Render(userid, nickName)
+	return this.Render(userid, nickName)
 }
 
-func (c *App) RenderQuotations(manager *models.DbManager) error {
+func (this App) PostSearch(kywords string) revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
+
+	return this.Render(userid, nickName)
+}
+
+func (this *App) RenderQuotations(manager *models.DbManager) error {
 	qs, err := manager.GetAllQuotation()
 
 	// 倒序处理
@@ -72,12 +79,12 @@ func (c *App) RenderQuotations(manager *models.DbManager) error {
 		quotations = qs
 	}
 
-	c.RenderArgs["quotations"] = quotations
-	c.RenderArgs["moreQuotation"] = more
+	this.RenderArgs["quotations"] = quotations
+	this.RenderArgs["moreQuotation"] = more
 	return err
 }
 
-func (c *App) RenderWitticism(manager *models.DbManager) error {
+func (this *App) RenderWitticism(manager *models.DbManager) error {
 	ws, err := manager.GetAllWitticism()
 
 	// 倒序处理
@@ -101,26 +108,26 @@ func (c *App) RenderWitticism(manager *models.DbManager) error {
 	show := false
 	if count >= 4 {
 		show = true
-		c.RenderArgs["witticism1"] = witticisms[count-1]
-		c.RenderArgs["witticism2"] = witticisms[count-2]
-		c.RenderArgs["witticism3"] = witticisms[count-3]
-		c.RenderArgs["witticism4"] = witticisms[count-4]
+		this.RenderArgs["witticism1"] = witticisms[count-1]
+		this.RenderArgs["witticism2"] = witticisms[count-2]
+		this.RenderArgs["witticism3"] = witticisms[count-3]
+		this.RenderArgs["witticism4"] = witticisms[count-4]
 	}
 
-	c.RenderArgs["witticisms"] = witticisms
-	c.RenderArgs["showWitticism"] = show
-	c.RenderArgs["moreMitticism"] = more
+	this.RenderArgs["witticisms"] = witticisms
+	this.RenderArgs["showWitticism"] = show
+	this.RenderArgs["moreMitticism"] = more
 	return err
 }
 
-func (c *App) RenderAncientPoems(manager *models.DbManager) error {
+func (this *App) RenderAncientPoems(manager *models.DbManager) error {
 	poems, err := manager.GetAllAncientPoem()
-	c.RenderArgs["ancientPoems"] = poems
+	this.RenderArgs["ancientPoems"] = poems
 
 	return err
 }
 
-func (c *App) RenderModernPoems(manager *models.DbManager) error {
+func (this *App) RenderModernPoems(manager *models.DbManager) error {
 	ps, err := manager.GetAllModernPoem()
 
 	// 倒序处理
@@ -140,12 +147,12 @@ func (c *App) RenderModernPoems(manager *models.DbManager) error {
 		poems = ps
 	}
 
-	c.RenderArgs["modernPoems"] = poems
-	c.RenderArgs["moreModernPoem"] = more
+	this.RenderArgs["modernPoems"] = poems
+	this.RenderArgs["moreModernPoem"] = more
 	return err
 }
 
-func (c *App) RenderEssays(manager *models.DbManager) error {
+func (this *App) RenderEssays(manager *models.DbManager) error {
 	es, err := manager.GetAllEssay()
 
 	// 倒序处理
@@ -165,12 +172,12 @@ func (c *App) RenderEssays(manager *models.DbManager) error {
 		essays = es
 	}
 
-	c.RenderArgs["essays"] = essays
-	c.RenderArgs["moreEssay"] = more
+	this.RenderArgs["essays"] = essays
+	this.RenderArgs["moreEssay"] = more
 	return err
 }
 
-func (c *App) RenderHintFictions(manager *models.DbManager) error {
+func (this *App) RenderHintFictions(manager *models.DbManager) error {
 	hs, err := manager.GetAllHintFiction()
 
 	// 倒序处理
@@ -190,12 +197,12 @@ func (c *App) RenderHintFictions(manager *models.DbManager) error {
 		hintFictions = hs
 	}
 
-	c.RenderArgs["hintFictions"] = hintFictions
-	c.RenderArgs["moreHintFiction"] = more
+	this.RenderArgs["hintFictions"] = hintFictions
+	this.RenderArgs["moreHintFiction"] = more
 	return err
 }
 
-func (c *App) RenderRecommendArticles(manager *models.DbManager) error {
+func (this *App) RenderRecommendArticles(manager *models.DbManager) error {
 	as, err := manager.GetAllRecommendArticle()
 
 	// 倒序处理
@@ -204,20 +211,20 @@ func (c *App) RenderRecommendArticles(manager *models.DbManager) error {
 		as[i], as[count-i-1] = as[count-i-1], as[i]
 	}
 
-	c.RenderArgs["allRecommendArticles"] = as
+	this.RenderArgs["allRecommendArticles"] = as
 	return err
 }
 
-func (c App) AboutUs() revel.Result {
-	userid := c.Session["userid"]
-	nickName := c.Session["nickName"]
+func (this App) AboutUs() revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
 
-	return c.Render(userid, nickName)
+	return this.Render(userid, nickName)
 }
 
-func (c App) Donate() revel.Result {
-	userid := c.Session["userid"]
-	nickName := c.Session["nickName"]
+func (this App) Donate() revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
 
-	return c.Render(userid, nickName)
+	return this.Render(userid, nickName)
 }

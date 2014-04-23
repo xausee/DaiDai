@@ -75,11 +75,18 @@ onload =function(){
             <li><a href="/add">新增</a></li>
             {{end}}
           </ul> 
-          <form class="navbar-form navbar-right" role="search">
-            <div class="form-group">
-              <input type="text" class="form-control" placeholder="篇名、作者">
+          <form class="navbar-form navbar-right" action="{{url "App.PostSearch"}}" role="search">
+            {{with $field := field "keywords" .}}
+            <div class="form-group {{$field.ErrorClass}}">     
+              <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" placeholder="篇名、作者">
+              {{if $field.Error}} 
+              <span class="help-inline">{{$field.Error}}</span> 
+              {{end}}  
             </div>
-            <button type="submit" class="btn btn-default">搜索</button>
+            {{end}}
+            <button type="submit" class="btn btn-default">
+              <i class="glyphicon glyphicon-search"></i>
+            </button>
           </form>      
         </div>
       </nav>    
