@@ -79,6 +79,8 @@ func SavePicture(pictures []*os.File) (err error) {
 	dir = dir + "/" + "src/SanWenJia/public/img/"
 
 	for i, f := range pictures {
+		defer f.Close()
+
 		// 获取文件信息
 		fi, e := f.Stat()
 		if e != nil {
