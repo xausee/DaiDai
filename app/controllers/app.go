@@ -52,9 +52,20 @@ func (this App) Add() revel.Result {
 	return this.Render(userid, nickName)
 }
 
-func (this App) PostSearch(kywords string) revel.Result {
+func (this App) PostSearch(keywords string) revel.Result {
 	userid := this.Session["userid"]
 	nickName := this.Session["nickName"]
+
+	fmt.Println(keywords)
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	results, err := manager.Search(keywords)
+
+	fmt.Println(results)
 
 	return this.Render(userid, nickName)
 }
