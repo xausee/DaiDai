@@ -22,6 +22,77 @@ onload =function(){
  } 
 </script> 
 
+<script type="text/javascript">
+function searchList(type, pageNumber)
+{
+var xmlhttp;    
+if (type=="" || pageNumber=="")
+  {
+  document.getElementById("content").innerHTML="";
+  return;
+  }
+
+if (pageNumber==-1|| pageNumber==-2)
+{
+  $('.pagination>li').each(function()
+  {  
+    var status = $(this).prop("class")    
+    if (status == "active")
+    { 
+      var IdNumber = parseInt($(this).prop("id").substr(5)) 
+      if (pageNumber == -1)
+      {        
+        pageNumber = IdNumber -1                   
+      }
+      else
+      {        
+        pageNumber = IdNumber + 1 
+      }      
+    }
+  });
+} 
+// no li which class is active exist when click preious of next page link, just return. 
+if (pageNumber==-1|| pageNumber==-2){return}
+
+if (window.XMLHttpRequest)
+  {// code for IE7+, Firefox, Chrome, Opera, Safari
+  xmlhttp=new XMLHttpRequest();
+  }
+else
+  {// code for IE6, IE5
+  xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+  }
+xmlhttp.onreadystatechange=function()
+  {    
+  if (xmlhttp.readyState==4 && xmlhttp.status==200)
+    { 
+      // remove all pagination active class first    
+      $('.pagination>li').removeClass('active'); 
+      // remove disable regardless of exist
+      $('#previous').removeClass('disabled');
+      $('#next').removeClass('disabled'); 
+      // reach first or last page
+      if (pageNumber == 1)
+      {
+        $('#previous').addClass('disabled');            
+      }
+      if (pageNumber == {{.pageCount}})
+      {       
+        $('#next').addClass('disabled');      
+      }
+      // add active class to the clicked item
+      var id = "#"+"page_"+pageNumber
+      $(id).addClass('active');
+      // return result
+      document.getElementById("poemlist").innerHTML=xmlhttp.responseText;
+    }
+  } 
+
+xmlhttp.open("GET","{{url "ModernPoem.PageListWithTag" "" .type}}" + pageNumber, true);
+xmlhttp.send();
+}
+</script>
+
 <div class="container">   
   <div class="row">
     <div class="col-xs-1"></div>
@@ -84,7 +155,7 @@ onload =function(){
               {{end}}  
             </div>
             {{end}}
-            <button type="submit" class="btn btn-default">
+            <button type="submit" class="btn btn-default" onclick="searchList()">
               <i class="glyphicon glyphicon-search"></i>
             </button>
           </form>      

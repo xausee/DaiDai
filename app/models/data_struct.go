@@ -145,6 +145,7 @@ type HintFiction struct {
 
 type ArticleBasicInfo struct {
 	Id     string
+	Tag    string
 	Title  string
 	Author string
 }

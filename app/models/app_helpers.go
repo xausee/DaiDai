@@ -36,6 +36,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	for _, f := range re0 {
 		var info ArticleBasicInfo
 		info.Id = f.Id
+		info.Tag = "Essay"
 		info.Title = f.Title
 		info.Author = f.Author
 		results = append(results, info)
@@ -44,6 +45,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	for _, f := range re1 {
 		var info ArticleBasicInfo
 		info.Id = f.Id
+		info.Tag = "Essay"
 		info.Title = f.Title
 		info.Author = f.Author
 		results = append(results, info)
@@ -52,6 +54,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	for _, f := range rm0 {
 		var info ArticleBasicInfo
 		info.Id = f.Id
+		info.Tag = "ModernPoem"
 		info.Title = f.Title
 		info.Author = f.Author
 		results = append(results, info)
@@ -60,6 +63,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	for _, f := range rm1 {
 		var info ArticleBasicInfo
 		info.Id = f.Id
+		info.Tag = "ModernPoem"
 		info.Title = f.Title
 		info.Author = f.Author
 		results = append(results, info)
@@ -68,6 +72,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	for _, f := range rq0 {
 		var info ArticleBasicInfo
 		info.Id = f.Id
+		info.Tag = "Quotation"
 		//info.Title = f.Title
 		info.Author = f.Author
 		results = append(results, info)
@@ -76,6 +81,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	for _, f := range rq1 {
 		var info ArticleBasicInfo
 		info.Id = f.Id
+		info.Tag = "Quotation"
 		//info.Title = f.Title
 		info.Author = f.Author
 		results = append(results, info)
@@ -84,6 +90,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	for _, f := range rh0 {
 		var info ArticleBasicInfo
 		info.Id = f.Id
+		info.Tag = "HintFiction"
 		info.Title = f.Title
 		info.Author = f.Author
 		results = append(results, info)
@@ -92,6 +99,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	for _, f := range rh1 {
 		var info ArticleBasicInfo
 		info.Id = f.Id
+		info.Tag = "HintFiction"
 		info.Title = f.Title
 		info.Author = f.Author
 		results = append(results, info)

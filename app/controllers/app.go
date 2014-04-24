@@ -67,7 +67,11 @@ func (this App) PostSearch(keywords string) revel.Result {
 
 	fmt.Println(results)
 
-	return this.Render(userid, nickName)
+	this.RenderArgs["userid"] = userid
+	this.RenderArgs["nickName"] = nickName
+	this.RenderArgs["results"] = results
+
+	return this.Render()
 }
 
 func (this *App) RenderQuotations(manager *models.DbManager) error {
