@@ -4,7 +4,7 @@
     <div class="col-xs-10">
       <div class="panel panel-success">
       <div class="panel-heading"><h3 class="panel-title">搜索结果</h3></div>
-      <div class="panel-body">   
+      <div class="panel-body">
         {{if .noResults}}
         <div class="text-center text-warning">
           </br></br>
@@ -13,21 +13,40 @@
           </br></br>
         </div>
         {{end}} 
+        {{$keywords := .keywords}}
         {{range .results}}
-        <div class="row">
+        <div class="row">          
           {{if eq .Tag "Essay"}}
-          <div class="col-xs-9"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>
+          <div class="col-xs-9">
+            <a href="{{url "Essay.Show" .Id}}">              
+              {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+            </a> 
+          </div>
           {{end}} 
           {{if eq .Tag "ModernPoem"}}
-          <div class="col-xs-9"><a href="{{url "ModernPoem.Show" .Id}}">{{.Title}}</a></div>
+          <div class="col-xs-9">
+            <a href="{{url "ModernPoem.Show" .Id}}">
+             {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+            </a>
+          </div>
           {{end}} 
           {{if eq .Tag "Quotation"}}
-          <div class="col-xs-9"><a href="{{url "Quotation.Show" .Id}}">{{.Title}}</a></div>
+          <div class="col-xs-9">
+            <a href="{{url "Quotation.Show" .Id}}">
+              {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+            </a>
+          </div>
           {{end}} 
           {{if eq .Tag "HintFiction"}}
-          <div class="col-xs-9"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>
-          {{end}}    
-          <div class="col-xs-3 text-right"><span class="badge">{{.Author}}</div>
+          <div class="col-xs-9">
+            <a href="{{url "HintFiction.Show" .Id}}">
+            {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+            </a>
+          </div>
+          {{end}} 
+          <div class="col-xs-3 text-right"><span class="badge">
+            {{prev .Author $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Author $keywords}}
+          </div>
         </div> 
         {{end}}             
       </div>   

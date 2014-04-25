@@ -1,6 +1,9 @@
 package app
 
-import "github.com/revel/revel"
+import (
+	"github.com/revel/revel"
+	"strings"
+)
 
 func init() {
 	// Filters is the default set of global filters.
@@ -19,4 +22,13 @@ func init() {
 
 	// 注册模板里的字符串相加函数
 	revel.TemplateFuncs["concat"] = func(a, b string) string { return a + b }
+
+	// 注册模板里的字符串拆分函数
+	revel.TemplateFuncs["prev"] = func(input, key string) string {
+		return strings.SplitN(input, key, 2)[0]
+	}
+
+	revel.TemplateFuncs["next"] = func(input, key string) string {
+		return strings.SplitN(input, key, 2)[1]
+	}
 }

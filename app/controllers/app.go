@@ -74,6 +74,7 @@ func (this App) PostSearch(keywords string) revel.Result {
 	this.RenderArgs["nickName"] = nickName
 	this.RenderArgs["results"] = results
 	this.RenderArgs["noResults"] = noResults
+	this.RenderArgs["keywords"] = keywords
 
 	return this.Render()
 }
