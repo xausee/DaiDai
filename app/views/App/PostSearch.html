@@ -13,40 +13,80 @@
           </br></br>
         </div>
         {{end}} 
+
         {{$keywords := .keywords}}
         {{range .results}}
         <div class="row">          
           {{if eq .Tag "Essay"}}
           <div class="col-xs-9">
-            <a href="{{url "Essay.Show" .Id}}">              
-              {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+            <a href="{{url "Essay.Show" .Id}}">    
+              {{$text := prev .Title $keywords}}                     
+              {{if eq $text "no substring found"}} 
+                {{.Title}}
+              {{else if eq $keywords .Title}}        
+                <span style="color:red">{{$keywords}}</span>
+              {{else}}              
+                {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+              {{end}}        
             </a> 
           </div>
           {{end}} 
+
           {{if eq .Tag "ModernPoem"}}
           <div class="col-xs-9">
             <a href="{{url "ModernPoem.Show" .Id}}">
-             {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+              {{$text := prev .Title $keywords}}                     
+              {{if eq $text "no substring found"}} 
+                {{.Title}}
+              {{else if eq $keywords .Title}}        
+                <span style="color:red">{{$keywords}}</span>
+              {{else}}              
+                {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+              {{end}}    
             </a>
           </div>
           {{end}} 
+
           {{if eq .Tag "Quotation"}}
           <div class="col-xs-9">
             <a href="{{url "Quotation.Show" .Id}}">
-              {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+              {{$text := prev .Title $keywords}}                     
+              {{if eq $text "no substring found"}} 
+                {{.Title}}
+              {{else if eq $keywords .Title}}        
+                <span style="color:red">{{$keywords}}</span>
+              {{else}}              
+                {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+              {{end}}   
             </a>
           </div>
           {{end}} 
+
           {{if eq .Tag "HintFiction"}}
           <div class="col-xs-9">
             <a href="{{url "HintFiction.Show" .Id}}">
-            {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+              {{$text := prev .Title $keywords}}                     
+              {{if eq $text "no substring found"}} 
+                {{.Title}}
+              {{else if eq $keywords .Title}}        
+                <span style="color:red">{{$keywords}}</span>
+              {{else}}              
+                {{prev .Title $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Title $keywords}}
+              {{end}}    
             </a>
           </div>
           {{end}} 
+
           <div class="col-xs-3 text-right"><span class="badge">
-            {{prev .Author $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Author $keywords}}
-          </div>
+            {{$text := prev .Author $keywords}}                     
+            {{if eq $text "no substring found"}} 
+              {{.Author}}
+            {{else if eq $keywords .Author}}        
+              <span style="color:red">{{$keywords}}</span>
+            {{else}}              
+              {{prev .Author $keywords}}<span style="color:red">{{$keywords}}</span>{{next .Author $keywords}}
+            {{end}}
+          </div>    
         </div> 
         {{end}}             
       </div>   

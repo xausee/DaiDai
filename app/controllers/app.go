@@ -56,7 +56,6 @@ func (this App) PostSearch(keywords string) revel.Result {
 	userid := this.Session["userid"]
 	nickName := this.Session["nickName"]
 
-	fmt.Println(keywords)
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")

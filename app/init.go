@@ -25,10 +25,22 @@ func init() {
 
 	// 注册模板里的字符串拆分函数
 	revel.TemplateFuncs["prev"] = func(input, key string) string {
-		return strings.SplitN(input, key, 2)[0]
+		if input == key {
+			return input
+		} else if strings.Contains(input, key) {
+			return strings.SplitN(input, key, 2)[0]
+		} else {
+			return "no substring found"
+		}
 	}
 
 	revel.TemplateFuncs["next"] = func(input, key string) string {
-		return strings.SplitN(input, key, 2)[1]
+		if input == key {
+			return input
+		} else if strings.Contains(input, key) {
+			return strings.SplitN(input, key, 2)[1]
+		} else {
+			return "no substring found"
+		}
 	}
 }
