@@ -4,7 +4,14 @@
     <div class="col-xs-10">
       <div class="panel panel-success">
       <div class="panel-heading"><h3 class="panel-title">搜索结果</h3></div>
-      <div class="panel-body">     
+      <div class="panel-body">   
+        {{if .noResults}}
+        <div class="text-center text-warning">
+          </br></br>
+          抱歉，没搜到相关的文章，换个词再试试。
+          </br></br>
+        </div>
+        {{end}} 
         {{range .results}}
         <div class="row">
           {{if eq .Tag "Essay"}}

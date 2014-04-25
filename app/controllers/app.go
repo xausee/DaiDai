@@ -65,11 +65,15 @@ func (this App) PostSearch(keywords string) revel.Result {
 
 	results, err := manager.Search(keywords)
 
-	fmt.Println(results)
+	noResults := false
+	if len(results) == 0 {
+		noResults = true
+	}
 
 	this.RenderArgs["userid"] = userid
 	this.RenderArgs["nickName"] = nickName
 	this.RenderArgs["results"] = results
+	this.RenderArgs["noResults"] = noResults
 
 	return this.Render()
 }
