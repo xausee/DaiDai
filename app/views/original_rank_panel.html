@@ -3,7 +3,10 @@
   <div class="panel-body"> 
      {{range .allRecommendArticles}}
       <div class="row">
-        <div class="col-xs-9"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>    
+        <div class="col-xs-9">
+          <a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">
+            <span style="color:black">{{.Title}}</span>
+          </a></div>    
         <div class="col-xs-3 text-right"><span class="badge">{{.AuthorNickName}}</div>
       </div>  
     {{end}} 
