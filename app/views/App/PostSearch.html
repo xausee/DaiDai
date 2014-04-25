@@ -1,17 +1,30 @@
-{{range .results}}
-<div class="row">
-  {{if eq .Tag "Essay"}}
-  <div class="col-xs-9"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>
-  {{end}} 
-  {{if eq .Tag "ModernPoem"}}
-  <div class="col-xs-9"><a href="{{url "ModernPoem.Show" .Id}}">{{.Title}}</a></div>
-  {{end}} 
-  {{if eq .Tag "Quotation"}}
-  <div class="col-xs-9"><a href="{{url "Quotation.Show" .Id}}">{{.Title}}</a></div>
-  {{end}} 
-  {{if eq .Tag "HintFiction"}}
-  <div class="col-xs-9"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>
-  {{end}}    
-  <div class="col-xs-3 text-right"><span class="badge">{{.Author}}</div>
-</div> 
-{{end}} 
+<div class="container">    
+  <div class="row">
+    <div class="col-xs-1"></div> 
+    <div class="col-xs-10">
+      <div class="panel panel-success">
+      <div class="panel-heading"><h3 class="panel-title">搜索结果</h3></div>
+      <div class="panel-body">     
+        {{range .results}}
+        <div class="row">
+          {{if eq .Tag "Essay"}}
+          <div class="col-xs-9"><a href="{{url "Essay.Show" .Id}}">{{.Title}}</a></div>
+          {{end}} 
+          {{if eq .Tag "ModernPoem"}}
+          <div class="col-xs-9"><a href="{{url "ModernPoem.Show" .Id}}">{{.Title}}</a></div>
+          {{end}} 
+          {{if eq .Tag "Quotation"}}
+          <div class="col-xs-9"><a href="{{url "Quotation.Show" .Id}}">{{.Title}}</a></div>
+          {{end}} 
+          {{if eq .Tag "HintFiction"}}
+          <div class="col-xs-9"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>
+          {{end}}    
+          <div class="col-xs-3 text-right"><span class="badge">{{.Author}}</div>
+        </div> 
+        {{end}}             
+      </div>   
+    </div>         
+  </div>
+</div>
+
+

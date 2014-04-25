@@ -73,7 +73,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 		var info ArticleBasicInfo
 		info.Id = f.Id
 		info.Tag = "Quotation"
-		//info.Title = f.Title
+		info.Title = f.OriginalTitle
 		info.Author = f.Author
 		results = append(results, info)
 	}
@@ -82,7 +82,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 		var info ArticleBasicInfo
 		info.Id = f.Id
 		info.Tag = "Quotation"
-		//info.Title = f.Title
+		info.Title = f.OriginalTitle
 		info.Author = f.Author
 		results = append(results, info)
 	}
@@ -105,5 +105,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 		results = append(results, info)
 	}
 
-	return results, err
+	resultss := RemoveDuplicates(results)
+
+	return resultss, err
 }
