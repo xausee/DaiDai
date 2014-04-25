@@ -1,6 +1,10 @@
 {{range .hintFictionsOnOnePage}}
 <div class="row">
-  <div class="col-xs-9"><a href="{{url "HintFiction.Show" .Id}}">{{.Title}}</a></div>    
+  <div class="col-xs-9">
+  	<a href="{{url "HintFiction.Show" .Id}}">
+  	  <span style="color:black">{{.Title}}</span>
+  	</a>
+  </div>    
   <div class="col-xs-3 text-right"><span class="badge">{{.Author}}</div>
 </div> 
 {{end}} 

@@ -18,7 +18,11 @@
           <div class="panel-body">           
             {{range .watches}}
             <div class="row">           
-              <div class="col-xs-7"><a href="{{url "User.Index" .NickName}}">{{.NickName}}</a></div>           
+              <div class="col-xs-7">
+                <a href="{{url "User.Index" .NickName}}">                 
+                  <span style="color:black">{{.NickName}}</span>
+                </a>
+              </div>           
             </div>
             {{end}}
   
