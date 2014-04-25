@@ -72,38 +72,40 @@ xmlhttp.send();
 }
 </script>
 
-<div class="container">
-  <div class="row">
-    <div class="col-xs-1"></div> 
-    <div class="col-xs-10"> 
-      <div class="panel panel-success">      
-        <div class="panel-body">
-          <div id="poemlist">
-            {{range .poemsOnOnePage}}
-            <div class="row">
-              <div class="col-xs-9"><a href="{{url "ModernPoem.Show" .Id}}">{{.Title}}</a></div>    
-              <div class="col-xs-3 text-right"><span class="badge">{{.Author}}</div>
-            </div>  
-            {{end}}    
+<div id="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-1"></div> 
+      <div class="col-xs-10"> 
+        <div class="panel panel-success">      
+          <div class="panel-body">
+            <div id="poemlist">
+              {{range .poemsOnOnePage}}
+              <div class="row">
+                <div class="col-xs-9"><a href="{{url "ModernPoem.Show" .Id}}">{{.Title}}</a></div>    
+                <div class="col-xs-3 text-right"><span class="badge">{{.Author}}</div>
+              </div>  
+              {{end}}    
+              </div>
             </div>
-          </div>
-          <div class="text-center">                  
-            <ul class="pagination pagination-centered">
-              <li value="-1" id="previous" onclick="updateModernPoemPageList(this.value)"><a>上一页</a></li>
-              {{range .pages}}
-                {{if eq . 1}}
-                <li value={{.}} id=page_{{.}} class="active" onclick="updateModernPoemPageList(this.value)"><a>{{.}}</a></li>
-                {{else}}
-                <li value={{.}} id=page_{{.}} onclick="updateModernPoemPageList(this.value)"><a>{{.}}</a></li>
-                {{end}}
-              {{end}}              
-              <li value="-2" id="next" onclick="updateModernPoemPageList(this.value)"><a>下一页</a></li>
-            </ul>
-          </div>     
-        </div>            
-      </div>      
-    </div>     
-  </div>   
+            <div class="text-center">                  
+              <ul class="pagination pagination-centered">
+                <li value="-1" id="previous" onclick="updateModernPoemPageList(this.value)"><a>上一页</a></li>
+                {{range .pages}}
+                  {{if eq . 1}}
+                  <li value={{.}} id=page_{{.}} class="active" onclick="updateModernPoemPageList(this.value)"><a>{{.}}</a></li>
+                  {{else}}
+                  <li value={{.}} id=page_{{.}} onclick="updateModernPoemPageList(this.value)"><a>{{.}}</a></li>
+                  {{end}}
+                {{end}}              
+                <li value="-2" id="next" onclick="updateModernPoemPageList(this.value)"><a>下一页</a></li>
+              </ul>
+            </div>     
+          </div>            
+        </div>      
+      </div>     
+    </div>   
+  </div>
 </div>
 
 {{template "footer.html" .}}

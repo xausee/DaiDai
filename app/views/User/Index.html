@@ -78,123 +78,125 @@ xmlhttp.send();
 }
 </script>
 
-<div class="container">
-  <div class="row">
-  	<div class="col-xs-1"></div>
-  	<div class="col-xs-3">
-  	  <div class="panel panel-success" style="height:300px">  
-        <div class="panel-heading"><h3 class="panel-title text-center">基本信息</h3></div>      
-        <div class="panel-body"> 
-          <div class="text-center">          
-            <img src={{.avatarUrl}} alt="80x80" class="img-thumbnail"> 
-          </div></br>
-          <div class="text-center text-success"><p>{{.ownerNickName}}</p></div>  
-          </br> 
-          <div class="row"> 
-            <div class="col-xs-3">
-              <span class="badge">{{.wathCount}}</span>              
-              <a href="{{url "User.Watch" .ownerNickName}}">关注 </a>
-            </div>  
-            <div class="col-xs-3">     
-              <span class="badge">{{.fansCount}}</span>  
-              <a href="{{url "User.Fans" .ownerNickName}}">粉丝</a> 
-            </div> 
-            <div class="col-xs-3">
-              <span class="badge">{{.articleCollectionCount}}</span>         
-              <a href="{{url "User.ArticleCollection" .ownerNickName}}">收藏</a>
-            </div>
-            <div class="col-xs-3">
-              <span class="badge">{{.articleCount}}</span>
-              <a href="{{url "User.OriginalArticleList" .ownerNickName}}">原创 </a>  
-            </div> 
-          </div>             
-        </div>                        
-      </div> 
-
-      {{if .nickName}}
-      <div class="panel panel-success" style="height:60px">               
-        <div class="panel-body">
-          {{if .isWatched}}
-            <a href="{{url "User.DeleteWatch" .ownerNickName}}">取消关注</a>
-          {{else}} 
-            <a href="{{url "User.AddWatch" .ownerNickName}}">关注TA</a>  
-          {{end}}  
-        </div>                        
-      </div> 
-      {{else}}
-      <div class="panel panel-success" style="height:60px">               
-        <div class="panel-body text-success text-center"> 
-          <a href="{{url "Account.Register"}}">注册一下</a> 
-           </br>就可以关注TA了哦    
-        </div>                        
-      </div>
-      {{end}}
-
-      <div class="panel panel-success" style="height:210px"> 
-        <div class="panel-heading">
-          <h3 class="panel-title text-center">
-            最新留言<span class="glyphicon glyphicon-comment">
-          </h3>
-        </div>       
-        <div class="panel-body"> 
-          <sub>{{.lastMessage.Content}}</sub>                    
-          <div class="modal-footer"> 
-            <p class="text-center">
-              <a href="{{url "User.Message" .ownerNickName}}">更多留言<span class="badge">{{.messageCount}}</span></a>
-            </p>    
-          </div>        
-        </div>                        
-      </div> 
-    </div> 
-
-  	<div class="col-xs-7">
-  	  <div class="panel panel-success" style="height:610px">
-        <div class="panel-heading"><h3 class="panel-title">我的文章 [{{.articleCount}}]</h3></div>
-        <div class="panel-body"> 
-          <div class="text-right">  
-            {{if .isAuthor}}
-            <a href="{{url "User.AddArticle"}}">
-              <span class="glyphicon glyphicon-plus-sign"></span> 写作
-            </a>  
-            {{end}} 
-          </div>  
-          <div id="articlelist">    
-            {{$isAuthor := .isAuthor}}
-            {{range .articlesOnOnePage}}
-            <div class="row">           
-              <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>
-              <div class="col-xs-5 text-right">
-                <span class="badge text-right">{{.CreateTime}}</span> 
-                {{if $isAuthor}}                        
-                <a id="edit" href="{{url "User.EditArticle" .Id}}">
-                  <span class="glyphicon glyphicon-edit"></span> 编辑
-                </a>
-                <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
-                  <span class="glyphicon glyphicon-remove-sign"></span> 删除
-                </a>             
-                {{end}} 
+<div id="content">
+  <div class="container">
+    <div class="row">
+    	<div class="col-xs-1"></div>
+    	<div class="col-xs-3">
+    	  <div class="panel panel-success" style="height:300px">  
+          <div class="panel-heading"><h3 class="panel-title text-center">基本信息</h3></div>      
+          <div class="panel-body"> 
+            <div class="text-center">          
+              <img src={{.avatarUrl}} alt="80x80" class="img-thumbnail"> 
+            </div></br>
+            <div class="text-center text-success"><p>{{.ownerNickName}}</p></div>  
+            </br> 
+            <div class="row"> 
+              <div class="col-xs-3">
+                <span class="badge">{{.wathCount}}</span>              
+                <a href="{{url "User.Watch" .ownerNickName}}">关注 </a>
+              </div>  
+              <div class="col-xs-3">     
+                <span class="badge">{{.fansCount}}</span>  
+                <a href="{{url "User.Fans" .ownerNickName}}">粉丝</a> 
+              </div> 
+              <div class="col-xs-3">
+                <span class="badge">{{.articleCollectionCount}}</span>         
+                <a href="{{url "User.ArticleCollection" .ownerNickName}}">收藏</a>
               </div>
+              <div class="col-xs-3">
+                <span class="badge">{{.articleCount}}</span>
+                <a href="{{url "User.OriginalArticleList" .ownerNickName}}">原创 </a>  
+              </div> 
+            </div>             
+          </div>                        
+        </div> 
+  
+        {{if .nickName}}
+        <div class="panel panel-success" style="height:60px">               
+          <div class="panel-body">
+            {{if .isWatched}}
+              <a href="{{url "User.DeleteWatch" .ownerNickName}}">取消关注</a>
+            {{else}} 
+              <a href="{{url "User.AddWatch" .ownerNickName}}">关注TA</a>  
+            {{end}}  
+          </div>                        
+        </div> 
+        {{else}}
+        <div class="panel panel-success" style="height:60px">               
+          <div class="panel-body text-success text-center"> 
+            <a href="{{url "Account.Register"}}">注册一下</a> 
+             </br>就可以关注TA了哦    
+          </div>                        
+        </div>
+        {{end}}
+  
+        <div class="panel panel-success" style="height:210px"> 
+          <div class="panel-heading">
+            <h3 class="panel-title text-center">
+              最新留言<span class="glyphicon glyphicon-comment">
+            </h3>
+          </div>       
+          <div class="panel-body"> 
+            <sub>{{.lastMessage.Content}}</sub>                    
+            <div class="modal-footer"> 
+              <p class="text-center">
+                <a href="{{url "User.Message" .ownerNickName}}">更多留言<span class="badge">{{.messageCount}}</span></a>
+              </p>    
+            </div>        
+          </div>                        
+        </div> 
+      </div> 
+  
+    	<div class="col-xs-7">
+    	  <div class="panel panel-success" style="height:610px">
+          <div class="panel-heading"><h3 class="panel-title">我的文章 [{{.articleCount}}]</h3></div>
+          <div class="panel-body"> 
+            <div class="text-right">  
+              {{if .isAuthor}}
+              <a href="{{url "User.AddArticle"}}">
+                <span class="glyphicon glyphicon-plus-sign"></span> 写作
+              </a>  
+              {{end}} 
+            </div>  
+            <div id="articlelist">    
+              {{$isAuthor := .isAuthor}}
+              {{range .articlesOnOnePage}}
+              <div class="row">           
+                <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>
+                <div class="col-xs-5 text-right">
+                  <span class="badge text-right">{{.CreateTime}}</span> 
+                  {{if $isAuthor}}                        
+                  <a id="edit" href="{{url "User.EditArticle" .Id}}">
+                    <span class="glyphicon glyphicon-edit"></span> 编辑
+                  </a>
+                  <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
+                    <span class="glyphicon glyphicon-remove-sign"></span> 删除
+                  </a>             
+                  {{end}} 
+                </div>
+              </div>
+              {{end}}
             </div>
-            {{end}}
-          </div>
-
-          <div class="text-center">                  
-            <ul class="pagination pagination-centered">
-              <li value="-1" id="previous" onclick="updateUserArticleList(this.value)"><a>上一页</a></li>
-              {{range .pageSlice}}
-                {{if eq . 1}}
-                <li value={{.}} id=page_{{.}} class="active" onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
-                {{else}}
-                <li value={{.}} id=page_{{.}} onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
-                {{end}}
-              {{end}}                
-              <li value="-2" id="next" onclick="updateUserArticleList(this.value)"><a>下一页</a></li>
-            </ul>
-          </div>      
-        </div>                       
-       </div>  
-    </div>
-  </div>  
+  
+            <div class="text-center">                  
+              <ul class="pagination pagination-centered">
+                <li value="-1" id="previous" onclick="updateUserArticleList(this.value)"><a>上一页</a></li>
+                {{range .pageSlice}}
+                  {{if eq . 1}}
+                  <li value={{.}} id=page_{{.}} class="active" onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
+                  {{else}}
+                  <li value={{.}} id=page_{{.}} onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
+                  {{end}}
+                {{end}}                
+                <li value="-2" id="next" onclick="updateUserArticleList(this.value)"><a>下一页</a></li>
+              </ul>
+            </div>      
+          </div>                       
+         </div>  
+      </div>
+    </div>  
+  </div>
 </div>
 
 {{template "footer.html" .}}

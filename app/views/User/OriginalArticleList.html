@@ -77,58 +77,60 @@ xmlhttp.send();
 }
 </script>
 
-<div class="container">
-  <div class="row">
-    <div class="col-xs-1"></div>
-  	<div class="col-xs-10">
-  	  <div class="panel panel-success">
-        {{if .isAuthor}}
-          <div class="panel-heading"><h3 class="panel-title">我的文章 [{{.articleCount}}篇]</h3></div>
-        {{else}}
-          <div class="panel-heading">
-            <h3 class="panel-title">
-              <a href="{{url "User.Index" .ownerNickName}}">{{.ownerNickName}}</a>的文章
-            </h3>
-          </div>
-        {{end}}
-        <div class="panel-body"> 
-          <div id="articlelist">
-            {{$isAuthor := .isAuthor}}
-            {{range .articlesOnOnePage}}
-            <div class="row">           
-              <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>
-              <div class="col-xs-5 text-right">
-                <span class="badge text-right">{{.CreateTime}}</span> 
-                {{if $isAuthor}}                        
-                <a id="edit" href="{{url "User.EditArticle" .Id}}">
-                  <span class="glyphicon glyphicon-edit"></span> 编辑
-                </a>
-                <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
-                  <span class="glyphicon glyphicon-remove-sign"></span> 删除
-                </a>             
-                {{end}} 
-              </div>
+<div id="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-1"></div>
+    	<div class="col-xs-10">
+    	  <div class="panel panel-success">
+          {{if .isAuthor}}
+            <div class="panel-heading"><h3 class="panel-title">我的文章 [{{.articleCount}}篇]</h3></div>
+          {{else}}
+            <div class="panel-heading">
+              <h3 class="panel-title">
+                <a href="{{url "User.Index" .ownerNickName}}">{{.ownerNickName}}</a>的文章
+              </h3>
             </div>
-            {{end}}
-          </div>
-
-          <div class="text-center">                  
-            <ul class="pagination pagination-centered">
-              <li value="-1" id="previous" onclick="updateUserArticleList(this.value)"><a>上一页</a></li>
-              {{range .pageSlice}}
-                {{if eq . 1}}
-                <li value={{.}} id=page_{{.}} class="active" onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
-                {{else}}
-                <li value={{.}} id=page_{{.}} onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
-                {{end}}
-              {{end}}              
-              <li value="-2" id="next" onclick="updateUserArticleList(this.value)"><a>下一页</a></li>
-            </ul>
-          </div>      
-        </div>                       
-      </div>  
-    </div>
-  </div>  
+          {{end}}
+          <div class="panel-body"> 
+            <div id="articlelist">
+              {{$isAuthor := .isAuthor}}
+              {{range .articlesOnOnePage}}
+              <div class="row">           
+                <div class="col-xs-7"><a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">{{.Title}}</a></div>
+                <div class="col-xs-5 text-right">
+                  <span class="badge text-right">{{.CreateTime}}</span> 
+                  {{if $isAuthor}}                        
+                  <a id="edit" href="{{url "User.EditArticle" .Id}}">
+                    <span class="glyphicon glyphicon-edit"></span> 编辑
+                  </a>
+                  <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
+                    <span class="glyphicon glyphicon-remove-sign"></span> 删除
+                  </a>             
+                  {{end}} 
+                </div>
+              </div>
+              {{end}}
+            </div>
+  
+            <div class="text-center">                  
+              <ul class="pagination pagination-centered">
+                <li value="-1" id="previous" onclick="updateUserArticleList(this.value)"><a>上一页</a></li>
+                {{range .pageSlice}}
+                  {{if eq . 1}}
+                  <li value={{.}} id=page_{{.}} class="active" onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
+                  {{else}}
+                  <li value={{.}} id=page_{{.}} onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
+                  {{end}}
+                {{end}}              
+                <li value="-2" id="next" onclick="updateUserArticleList(this.value)"><a>下一页</a></li>
+              </ul>
+            </div>      
+          </div>                       
+        </div>  
+      </div>
+    </div>  
+  </div>
 </div>
 
 {{template "footer.html" .}}

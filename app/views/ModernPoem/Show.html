@@ -2,28 +2,30 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
-<div class="container">
-  <div class="row">
-    <div class="col-xs-1"></div>  
-    <div class="col-xs-10">
-      <pre class="text-center" style="font-size:15px">
-        <div class="text-center">{{.modernPoem.Title}}</div> 
-        <div class="text-center">{{.modernPoem.Author}}</div>
-        <div class="text-left">{{.modernPoem.Content}}</div>                 
-      </pre>
-    </div>     
-  </div>   
-  {{if eq .nickName "水蓝色"}}
-  <div class="row">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-10">
-      <ul class="nav navbar-nav navbar-right">
-        <li><a id="edit" href="{{url "ModernPoem.Edit" .modernPoem.Id}}">编辑</a></li> 
-        <li><a id="delete" href="{{url "ModernPoem.Delete" .modernPoem.Id}}">删除</a></li>
-      </ul>
-    </div> 
+<div id="content">
+  <div class="container">
+    <div class="row">
+      <div class="col-xs-1"></div>  
+      <div class="col-xs-10">
+        <pre class="text-center" style="font-size:15px">
+          <div class="text-center">{{.modernPoem.Title}}</div> 
+          <div class="text-center">{{.modernPoem.Author}}</div>
+          <div class="text-left">{{.modernPoem.Content}}</div>                 
+        </pre>
+      </div>     
+    </div>   
+    {{if eq .nickName "水蓝色"}}
+    <div class="row">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">
+        <ul class="nav navbar-nav navbar-right">
+          <li><a id="edit" href="{{url "ModernPoem.Edit" .modernPoem.Id}}">编辑</a></li> 
+          <li><a id="delete" href="{{url "ModernPoem.Delete" .modernPoem.Id}}">删除</a></li>
+        </ul>
+      </div> 
+    </div>
+    {{end}} 
   </div>
-  {{end}} 
-</div>
+ </div>
 
 {{template "footer.html" .}}
