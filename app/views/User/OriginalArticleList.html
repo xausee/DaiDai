@@ -121,7 +121,7 @@ xmlhttp.send();
               <ul class="pagination pagination-centered">
                 <li value="-1" id="previous" onclick="updateUserArticleList(this.value)"><a>上一页</a></li>
                 {{range .pageSlice}}
-                  {{if eq . 1}}
+                  {{if eq . 1}}                  
                   <li value={{.}} id=page_{{.}} class="active" onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>
                   {{else}}
                   <li value={{.}} id=page_{{.}} onclick="updateUserArticleList(this.value)"><a>{{.}}</a></li>

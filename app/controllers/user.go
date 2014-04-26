@@ -32,10 +32,10 @@ func (user *User) Index(nickName string) revel.Result {
 	articlesCount := len(articles)
 
 	var pageCount int
-	if (articlesCount % models.ArticlesInSinglePage) == 0 {
-		pageCount = articlesCount / models.ArticlesInSinglePage
+	if (articlesCount % models.ArticlesInUserHomePanel) == 0 {
+		pageCount = articlesCount / models.ArticlesInUserHomePanel
 	} else {
-		pageCount = articlesCount/models.ArticlesInSinglePage + 1
+		pageCount = articlesCount/models.ArticlesInUserHomePanel + 1
 	}
 
 	pageSlice := make([]int, 0)
