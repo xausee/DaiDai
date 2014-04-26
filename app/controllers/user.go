@@ -78,7 +78,7 @@ func (user *User) Index(nickName string) revel.Result {
 	user.RenderArgs["isWatched"] = isWatched
 	user.RenderArgs["fansCount"] = len(userInfo.Fans)
 	user.RenderArgs["wathCount"] = len(userInfo.Watch)
-	user.RenderArgs["avatarUrl"] = userInfo.AvatarUrl
+	user.RenderArgs["userAvatarUrl"] = userInfo.AvatarUrl
 	user.RenderArgs["articleCollectionCount"] = len(userInfo.ArticleCollection)
 	user.RenderArgs["messageCount"] = len(userInfo.Message)
 	user.RenderArgs["userid"] = user.Session["userid"]
