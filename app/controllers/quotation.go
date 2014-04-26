@@ -47,6 +47,7 @@ func (q *Quotation) Index() revel.Result {
 
 	q.RenderArgs["userid"] = q.Session["userid"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
+	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
 	q.RenderArgs["allQuotations"] = quotations
 	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
 	q.RenderArgs["pageCount"] = pageCount
@@ -91,6 +92,7 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 
 	q.RenderArgs["userid"] = q.Session["userid"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
+	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
 	q.RenderArgs["allQuotations"] = quotations
 	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
 	q.RenderArgs["pageCount"] = pageCount
@@ -118,6 +120,7 @@ func (q *Quotation) Edit(id string) revel.Result {
 
 	q.RenderArgs["userid"] = q.Session["userid"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
+	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
 	q.RenderArgs["originalQuotation"] = originalQuotation
 
 	return q.Render()
@@ -208,6 +211,7 @@ func (q *Quotation) Show(id string) revel.Result {
 
 	q.RenderArgs["userid"] = q.Session["userid"]
 	q.RenderArgs["nickName"] = q.Session["nickName"]
+	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
 	q.RenderArgs["quotation"] = quotation
 
 	return q.Render()
@@ -318,6 +322,8 @@ func (q *Quotation) Delete(id string) revel.Result {
 	}
 	defer manager.Close()
 	err = manager.DeleteQuotationById(id)
+
+	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
 
 	q.Render(userid, nickName)
 	return q.Redirect((*Quotation).Index)

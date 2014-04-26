@@ -47,6 +47,7 @@ func (mp *ModernPoem) Index() revel.Result {
 
 	mp.RenderArgs["userid"] = mp.Session["userid"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
+	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
 	mp.RenderArgs["allPoems"] = allPoems
 	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
 	mp.RenderArgs["pageCount"] = pageCount
@@ -91,6 +92,7 @@ func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
 
 	mp.RenderArgs["userid"] = mp.Session["userid"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
+	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
 	mp.RenderArgs["allPoems"] = allPoems
 	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
 	mp.RenderArgs["pageCount"] = pageCount
@@ -117,6 +119,7 @@ func (mp *ModernPoem) Edit(id string) revel.Result {
 
 	mp.RenderArgs["userid"] = mp.Session["userid"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
+	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
 	mp.RenderArgs["oringinalModernPoem"] = oringinalModernPoem
 
 	return mp.Render()
@@ -201,6 +204,7 @@ func (mp *ModernPoem) Show(id string) revel.Result {
 
 	mp.RenderArgs["userid"] = mp.Session["userid"]
 	mp.RenderArgs["nickName"] = mp.Session["nickName"]
+	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
 	mp.RenderArgs["modernPoem"] = modernPoem
 
 	return mp.Render()
@@ -311,6 +315,8 @@ func (mp *ModernPoem) Delete(id string) revel.Result {
 	}
 	defer manager.Close()
 	err = manager.DeleteModernPoemById(id)
+
+	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
 
 	mp.Render(userid, nickName)
 	return mp.Redirect((*ModernPoem).Index)

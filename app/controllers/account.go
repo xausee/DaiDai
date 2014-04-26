@@ -11,85 +11,100 @@ type Account struct {
 	*revel.Controller
 }
 
-func (c *Account) Register() revel.Result {
-	return c.Render()
+func (this *Account) Register() revel.Result {
+	return this.Render()
 }
 
-func (c *Account) RegisterSuccessful() revel.Result {
-	return c.Render()
+func (this *Account) RegisterSuccessful() revel.Result {
+	return this.Render()
 }
 
-func (c *Account) Login() revel.Result {
-	return c.Render()
+func (this *Account) Login() revel.Result {
+	return this.Render()
 }
 
-func (c *Account) Logout() revel.Result {
-	fmt.Println("登出用户昵称: ", c.Session["nickName"])
-	for k := range c.Session {
-		delete(c.Session, k)
+func (this *Account) Logout() revel.Result {
+	fmt.Println("登出用户昵称: ", this.Session["nickName"])
+	for k := range this.Session {
+		delete(this.Session, k)
 	}
-	return c.Redirect((*App).Index)
+	return this.Redirect((*App).Index)
 }
 
-func (c *Account) PostRegister(user *models.MockUser) revel.Result {
-	//c.Validation.Email(user.Email).Message("电子邮件格式无效")
-	c.Validation.Required(user.NickName).Message("用户昵称不能为空")
-	c.Validation.Required(user.Password).Message("密码不能为空")
-	c.Validation.MinSize(user.Password, 6).Message("密码长度不短于6位")
-	c.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
+func (this *Account) PostRegister(user *models.MockUser) revel.Result {
+	//this.Validation.Email(user.Email).Message("电子邮件格式无效")
+	this.Validation.Required(user.NickName).Message("用户昵称不能为空")
+	this.Validation.Required(user.Password).Message("密码不能为空")
+	this.Validation.MinSize(user.Password, 6).Message("密码长度不短于6位")
+	this.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
 
-	if c.Validation.HasErrors() {
-		c.Validation.Keep()
-		c.FlashParams()
-		return c.Redirect((*Account).Register)
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*Account).Register)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		c.Response.Status = 500
-		return c.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	err = manager.RegisterUser(user)
 	if err != nil {
-		// c.Validation.Keep()
-		// c.FlashParams()
-		c.Flash.Error(err.Error())
-		return c.Redirect((*Account).Register)
+		// this.Validation.Keep()
+		// this.FlashParams()
+		this.Flash.Error(err.Error())
+		return this.Redirect((*Account).Register)
 	}
 
-	return c.Redirect((*Account).RegisterSuccessful)
+	return this.Redirect((*Account).RegisterSuccessful)
 }
 
-func (c *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
-	c.Validation.Required(loginUser.NickName).Message("请输入昵称")
-	c.Validation.Required(loginUser.Password).Message("请输入密码")
+func (this *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
+	this.Validation.Required(loginUser.NickName).Message("请输入昵称")
+	this.Validation.Required(loginUser.Password).Message("请输入密码")
 
-	if c.Validation.HasErrors() {
-		c.Validation.Keep()
-		c.FlashParams()
-		return c.Redirect((*Account).Login)
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*Account).Login)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		c.Response.Status = 500
-		return c.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	var u *models.User
 	u, err = manager.LoginUser(loginUser)
 	if err != nil {
-		//c.Validation.Keep()
-		// c.FlashParams()
-		c.Flash.Error(err.Error())
-		return c.Redirect((*Account).Login)
+		//this.Validation.Keep()
+		// this.FlashParams()
+		this.Flash.Error(err.Error())
+		return this.Redirect((*Account).Login)
 	}
-	c.Session["userid"] = strconv.Itoa(u.Id)
-	c.Session["nickName"] = u.NickName
+
+	this.Session["userid"] = strconv.Itoa(u.Id)
+	this.Session["nickName"] = u.NickName
+
+	userInfo, e := manager.GetUserByNickName(u.NickName)
+	fmt.Println("头像地址: ", userInfo.AvatarUrl)
+	if e != nil {
+		return this.Redirect((*ErrorPages).Page404)
+	}
+
+	if userInfo.AvatarUrl == "" {
+		this.Session["avatarUrl"] = userInfo.AvatarUrl
+	} else {
+		this.Session["avatarUrl"] = userInfo.AvatarUrl
+
+	}
+
 	fmt.Println("使用昵称登陆: ", loginUser.NickName)
 
-	return c.Redirect((*App).Index)
+	return this.Redirect((*App).Index)
 }

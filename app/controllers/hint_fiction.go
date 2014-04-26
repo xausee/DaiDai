@@ -47,6 +47,7 @@ func (hf *HintFiction) Index() revel.Result {
 
 	hf.RenderArgs["userid"] = hf.Session["userid"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["avatarUrl"] = hf.Session["avatarUrl"]
 	hf.RenderArgs["allHintFinctions"] = hintFictions
 	hf.RenderArgs["hintFictionsOnOnePage"] = hintFictionsOnOnePage
 	hf.RenderArgs["pageCount"] = pageCount
@@ -66,6 +67,7 @@ func (hf *HintFiction) TypeIndex(tag string) revel.Result {
 
 	hf.RenderArgs["userid"] = hf.Session["userid"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["avatarUrl"] = hf.Session["avatarUrl"]
 	hf.RenderArgs["hintFictions"] = hintFictions
 
 	return hf.Render()
@@ -74,6 +76,7 @@ func (hf *HintFiction) TypeIndex(tag string) revel.Result {
 func (hf *HintFiction) Add() revel.Result {
 	hf.RenderArgs["userid"] = hf.Session["userid"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["avatarUrl"] = hf.Session["avatarUrl"]
 
 	return hf.Render()
 }
@@ -89,6 +92,7 @@ func (hf *HintFiction) Edit(id string) revel.Result {
 
 	hf.RenderArgs["userid"] = hf.Session["userid"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["avatarUrl"] = hf.Session["avatarUrl"]
 	hf.RenderArgs["oringinalHintFiction"] = oringinalHintFiction
 
 	return hf.Render()
@@ -173,6 +177,7 @@ func (hf *HintFiction) Show(id string) revel.Result {
 
 	hf.RenderArgs["userid"] = hf.Session["userid"]
 	hf.RenderArgs["nickName"] = hf.Session["nickName"]
+	hf.RenderArgs["avatarUrl"] = hf.Session["avatarUrl"]
 	hf.RenderArgs["hintFiction"] = hintFiction
 
 	return hf.Render()
@@ -236,6 +241,8 @@ func (hf *HintFiction) Delete(id string) revel.Result {
 	}
 	defer manager.Close()
 	err = manager.DeleteHintFictionById(id)
+
+	hf.RenderArgs["avatarUrl"] = hf.Session["avatarUrl"]
 
 	hf.Render(userid, nickName)
 	return hf.Redirect((*HintFiction).Index)

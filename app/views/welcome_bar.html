@@ -8,10 +8,11 @@
     </div>  
     <div class="col-xs-4">  
       <br> 
-      <ul class="nav navbar-nav navbar-right">            
+      <ul class="nav navbar-nav navbar-right">   
       {{if .nickName}} 
-        {{if .userid}}    
-        <li><a>您好，{{.nickName}}</a></li> 
+        {{if .userid}}
+        <li><img src={{.avatarUrl}} alt="头像" class="img-thumbnail" height="45" width="45"> </li>    
+        <li><a href="{{url "User.Index" .nickName}}">{{.nickName}}</a></li>         
         <li><a id="logout" href="{{url "Account.Logout" }}">退出</a></li>             
         <li class="dropdown">
           <a href="#" class="dropdown-toggle" data-toggle="dropdown">我的散文<b class="caret"></b></a>

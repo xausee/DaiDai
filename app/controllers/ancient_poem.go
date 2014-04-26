@@ -13,7 +13,9 @@ type AncientPoem struct {
 func (ap *AncientPoem) Add() revel.Result {
 	email := ap.Session["email"]
 	nickName := ap.Session["nickName"]
-	return ap.Render(email, nickName)
+	avatarUrl := ap.Session["avatarUrl"]
+
+	return ap.Render(email, nickName, avatarUrl)
 }
 
 func (ap *AncientPoem) PostAdd(ancientPoem *models.AncientPoem) revel.Result {

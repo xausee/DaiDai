@@ -47,6 +47,7 @@ func (e *Essay) Index() revel.Result {
 
 	e.RenderArgs["userid"] = e.Session["userid"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
+	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
 	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
 	e.RenderArgs["pageCount"] = pageCount
@@ -91,6 +92,7 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 
 	e.RenderArgs["userid"] = e.Session["userid"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
+	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
 	e.RenderArgs["allEssays"] = allEssays
 	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
 	e.RenderArgs["pageCount"] = pageCount
@@ -103,6 +105,9 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 func (e *Essay) Add() revel.Result {
 	userid := e.Session["userid"]
 	nickName := e.Session["nickName"]
+
+	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
+
 	return e.Render(userid, nickName)
 }
 
@@ -117,6 +122,8 @@ func (e *Essay) Edit(id string) revel.Result {
 	}
 	defer manager.Close()
 	oringinalEssay, _ := manager.GetEssayById(id)
+
+	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
 
 	return e.Render(userid, nickName, oringinalEssay)
 }
@@ -199,7 +206,9 @@ func (e *Essay) Show(id string) revel.Result {
 	// }
 	e.RenderArgs["userid"] = e.Session["userid"]
 	e.RenderArgs["nickName"] = e.Session["nickName"]
+	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
 	e.RenderArgs["essay"] = essay
+
 	return e.Render()
 }
 
@@ -308,6 +317,8 @@ func (e *Essay) Delete(id string) revel.Result {
 	}
 	defer manager.Close()
 	err = manager.DeleteEssayById(id)
+
+	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
 
 	e.Render(userid, nickName)
 	return e.Redirect((*Essay).Index)

@@ -29,6 +29,7 @@ func (ra *RecommondArticle) Recommond(articleAuthorNickName string, articleTitle
 
 	ra.RenderArgs["userid"] = ra.Session["userid"]
 	ra.RenderArgs["nickName"] = ra.Session["nickName"]
+	ra.RenderArgs["avatarUrl"] = ra.Session["avatarUrl"]
 
 	return ra.Redirect("/user/%s/article/%s", articleAuthorNickName, articleId)
 }
@@ -52,6 +53,7 @@ func (ra *RecommondArticle) DeleteRecommond(articleAuthorNickName string, articl
 
 	ra.RenderArgs["userid"] = ra.Session["userid"]
 	ra.RenderArgs["nickName"] = ra.Session["nickName"]
+	ra.RenderArgs["avatarUrl"] = ra.Session["avatarUrl"]
 
 	return ra.Redirect("/user/%s/article/%s", articleAuthorNickName, articleId)
 }

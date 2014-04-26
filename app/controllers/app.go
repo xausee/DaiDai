@@ -14,6 +14,7 @@ func (this App) Index() revel.Result {
 	userid := this.Session["userid"]
 	//不再使用邮件地址登陆，用昵称替代掉
 	nickName := this.Session["nickName"]
+	avatarUrl := this.Session["avatarUrl"]
 
 	manager, err := models.NewDbManager()
 	if err != nil {
@@ -42,19 +43,21 @@ func (this App) Index() revel.Result {
 	// 获取所有的推荐文章（15）篇
 	this.RenderRecommendArticles(manager)
 
-	return this.Render(userid, nickName)
+	return this.Render(userid, nickName, avatarUrl)
 }
 
 func (this App) Add() revel.Result {
 	userid := this.Session["userid"]
 	nickName := this.Session["nickName"]
+	avatarUrl := this.Session["avatarUrl"]
 
-	return this.Render(userid, nickName)
+	return this.Render(userid, nickName, avatarUrl)
 }
 
 func (this App) PostSearch(keywords string) revel.Result {
 	userid := this.Session["userid"]
 	nickName := this.Session["nickName"]
+	avatarUrl := this.Session["avatarUrl"]
 
 	manager, err := models.NewDbManager()
 	if err != nil {
@@ -71,6 +74,7 @@ func (this App) PostSearch(keywords string) revel.Result {
 
 	this.RenderArgs["userid"] = userid
 	this.RenderArgs["nickName"] = nickName
+	this.RenderArgs["keywords"] = avatarUrl
 	this.RenderArgs["results"] = results
 	this.RenderArgs["noResults"] = noResults
 	this.RenderArgs["keywords"] = keywords
@@ -237,13 +241,15 @@ func (this *App) RenderRecommendArticles(manager *models.DbManager) error {
 func (this App) AboutUs() revel.Result {
 	userid := this.Session["userid"]
 	nickName := this.Session["nickName"]
+	avatarUrl := this.Session["avatarUrl"]
 
-	return this.Render(userid, nickName)
+	return this.Render(userid, nickName, avatarUrl)
 }
 
 func (this App) Donate() revel.Result {
 	userid := this.Session["userid"]
 	nickName := this.Session["nickName"]
+	avatarUrl := this.Session["avatarUrl"]
 
-	return this.Render(userid, nickName)
+	return this.Render(userid, nickName, avatarUrl)
 }

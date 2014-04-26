@@ -83,6 +83,7 @@ func (user *User) Index(nickName string) revel.Result {
 	user.RenderArgs["messageCount"] = len(userInfo.Message)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 	user.RenderArgs["allArticles"] = articles
 	user.RenderArgs["articleCount"] = len(articles)
 	user.RenderArgs["articlesOnOnePage"] = articlesOnOnePage
@@ -137,6 +138,7 @@ func (user *User) OriginalArticleList(nickName string) revel.Result {
 	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 	user.RenderArgs["allArticles"] = articles
 	user.RenderArgs["articleCount"] = len(articles)
 	user.RenderArgs["articlesOnOnePage"] = articlesOnOnePage
@@ -272,6 +274,7 @@ func (user *User) Info(nickName string) revel.Result {
 	user.RenderArgs["isAuthor"] = isAuthor
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 	user.RenderArgs["userInfo"] = userInfo
 
 	return user.Render()
@@ -298,6 +301,7 @@ func (user *User) Message(nickName string) revel.Result {
 	user.RenderArgs["messageCount"] = len(messages)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Render()
 }
@@ -323,6 +327,7 @@ func (user *User) Fans(nickName string) revel.Result {
 	user.RenderArgs["fansCount"] = len(fans)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Render()
 }
@@ -348,6 +353,7 @@ func (user *User) Watch(nickName string) revel.Result {
 	user.RenderArgs["watchesCount"] = len(watches)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Render()
 }
@@ -373,6 +379,7 @@ func (user *User) AddWatch(nickName string) revel.Result {
 	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s", nickName)
 }
@@ -397,6 +404,7 @@ func (user *User) DeleteWatch(nickName string) revel.Result {
 	user.RenderArgs["ownerNickName"] = nickName
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s", nickName)
 }
@@ -419,6 +427,7 @@ func (user *User) PostMessage(nickName string, message models.Comment) revel.Res
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s/message", nickName)
 }
@@ -432,6 +441,7 @@ func (user *User) Friend(id string) revel.Result {
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Render()
 }
@@ -445,6 +455,7 @@ func (user *User) AddArticle() revel.Result {
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Render()
 }
@@ -474,6 +485,7 @@ func (user *User) PostAddArticle(article *models.UserArticle) revel.Result {
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	// 使用的是article的指针， AddUserArticle里面给article ID赋值后
 	// 可调用下面controller(ShowArticle) 访问新增的article
@@ -501,6 +513,7 @@ func (user *User) ArticleCollection(nickName string) revel.Result {
 	user.RenderArgs["articlCollectionCount"] = len(articlCollection)
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Render()
 }
@@ -524,6 +537,7 @@ func (user *User) AddToArticleCollection(articleAuthorNickName string, articleTi
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s/article/%s", articleAuthorNickName, articleId)
 }
@@ -547,6 +561,7 @@ func (user *User) DeleteFromArticleCollection(articleAuthorNickName string, arti
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s/article/%s", articleAuthorNickName, articleId)
 }
@@ -565,6 +580,7 @@ func (user *User) EditArticle(articleid string) revel.Result {
 	user.RenderArgs["oldArticle"] = article
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Render()
 }
@@ -586,6 +602,7 @@ func (user *User) PostEditArticle(oldArticleId string, newArticle models.UserArt
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s/article/%s", authorNickName, newArticle.Id)
 }
@@ -624,6 +641,7 @@ func (user *User) ShowArticle(nickName string, articleid string) revel.Result {
 	user.RenderArgs["isCurrentUser"] = isCurrentUser
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 	user.RenderArgs["article"] = article
 	user.RenderArgs["commentCount"] = len(article.Comments)
 
@@ -653,6 +671,7 @@ func (user *User) PostArticleComment(authorNickName string, articleid string, co
 	user.RenderArgs["article"] = article
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s/article/%s", authorNickName, articleid)
 }
@@ -674,6 +693,7 @@ func (user *User) EditInfo(nickName string) revel.Result {
 	user.RenderArgs["user"] = userInfo
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Render()
 }
@@ -743,6 +763,7 @@ func (user *User) PostEditInfo(uploadFile *os.File, userInfo models.User) revel.
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s/info", user.Session["nickName"])
 }
@@ -758,6 +779,7 @@ func (user *User) DeleteArticle(articleid string) revel.Result {
 
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s", user.Session["nickName"])
 }
