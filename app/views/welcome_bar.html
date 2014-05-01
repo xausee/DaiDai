@@ -2,7 +2,7 @@
   <div class="row">
     <div class="col-xs-4"></div>
     <div class="col-xs-3">
-      <div class="page-header text-center text-primary">
+      <div class="page-header text-center">
         <strong>做 一 个 有 态 度 的 读 者</strong>      
       </div>
     </div>  
@@ -12,15 +12,15 @@
       {{if .nickName}} 
         {{if .userid}}
         <li><img src={{.avatarUrl}} alt="头像" class="img-thumbnail" height="45" width="45"> </li>    
-        <li><a href="{{url "User.Index" .nickName}}">{{.nickName}}</a></li>         
-        <li><a id="logout" href="{{url "Account.Logout" }}">退出</a></li>             
+        <li><a href="{{url "User.Index" .nickName}}">{{.nickName}}</a></li>  
+        <li><a id="logout" href="{{url "Account.Logout" }}">退出</a></li>         
         <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown">我的散文<b class="caret"></b></a>
-          <ul class="dropdown-menu">           
+          <a href="#" class="dropdown-toggle" data-toggle="dropdown">更多<b class="caret"></b></a>
+          <ul class="dropdown-menu"> 
             <li><a href="{{url "User.Index" .nickName}}">主页</a></li> 
-            <li><a href="{{url "User.Info" .nickName}}">个人信息</a></li> 
+            <li><a href="{{url "User.Info" .nickName}}">个人信息</a></li>             
           </ul>
-        </li>
+        </li>         
         {{end}}
       {{else}}
         <li><a href="/login">登陆</a></li>
