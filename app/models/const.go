@@ -8,4 +8,6 @@ const (
 	QiNiuBucket             = "sanwenjia"
 	QiNiuAccessKey          = "ZJ-KESjY89JYeZGT3dCvgQIngru-Qnkzt9PScvH1"
 	QiNiuSecretKey          = "gRmeHtZ20UhTsUh0AfnlMHcUstwK7fR3vW-BSQQe"
+	DefaultBoyAvatarUrl     = "http://sanwenjia.qiniudn.com/boy.PNG"
+	DefaultGirlAvatarUrl    = "http://sanwenjia.qiniudn.com/girl.PNG"
 )

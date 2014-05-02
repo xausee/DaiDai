@@ -98,10 +98,13 @@ func (this *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 	}
 
 	if userInfo.AvatarUrl == "" {
-		this.Session["avatarUrl"] = userInfo.AvatarUrl
+		if userInfo.Gender == "男" {
+			this.Session["avatarUrl"] = models.DefaultBoyAvatarUrl
+		} else {
+			this.Session["avatarUrl"] = models.DefaultGirlAvatarUrl
+		}
 	} else {
 		this.Session["avatarUrl"] = userInfo.AvatarUrl
-
 	}
 
 	fmt.Println("使用昵称登陆: ", loginUser.NickName)

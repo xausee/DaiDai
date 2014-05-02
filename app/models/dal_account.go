@@ -31,6 +31,12 @@ func (manager *DbManager) RegisterUser(mu *MockUser) error {
 	u.Gender = mu.Gender
 	u.Password, _ = bcrypt.GenerateFromPassword([]byte(mu.Password), bcrypt.DefaultCost)
 
+	if u.Gender == "男" {
+		u.AvatarUrl = DefaultBoyAvatarUrl
+	} else {
+		u.AvatarUrl = DefaultGirlAvatarUrl
+	}
+
 	err := uc.Insert(u)
 
 	return err

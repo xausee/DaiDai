@@ -668,6 +668,9 @@ func (user *User) PostArticleComment(authorNickName string, articleid string, co
 		comment.Author.NickName = user.Session["nickName"]
 	}
 
+	// 增加头像地址
+	comment.Author.AvatarUrl = user.Session["avatarUrl"]
+
 	// 添加新的评论
 	err = manager.AddArticleComment(article, comment)
 
