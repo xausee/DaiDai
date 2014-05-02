@@ -423,6 +423,9 @@ func (user *User) PostMessage(nickName string, message models.Comment) revel.Res
 		message.Author.NickName = user.Session["nickName"]
 	}
 
+	// 增加头像地址
+	message.Author.AvatarUrl = user.Session["avatarUrl"]
+
 	err = manager.UpdateMessageByNickName(nickName, message)
 
 	user.RenderArgs["userid"] = user.Session["userid"]
