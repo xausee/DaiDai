@@ -24,7 +24,7 @@ func (manager *DbManager) Search(keywords string) (results []ArticleBasicInfo, e
 	rq0 := []Quotation{}
 	rq1 := []Quotation{}
 	uc = manager.session.DB(DbName).C(QuotationCollection)
-	err = uc.Find(bson.M{"title": Items{"$regex": keywords}}).All(&rq0)
+	err = uc.Find(bson.M{"originaltitle": Items{"$regex": keywords}}).All(&rq0)
 	err = uc.Find(bson.M{"author": Items{"$regex": keywords}}).All(&rq1)
 
 	rh0 := []HintFiction{}
