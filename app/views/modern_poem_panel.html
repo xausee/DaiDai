@@ -6,12 +6,12 @@
   <div class="panel-body">     
     {{range .modernPoems}}
       <div class="row">
-        <div class="col-xs-9">
+        <div class="col-xs-8">
           <a  href="{{url "ModernPoem.Show" .Id}}">
             <span style="color:black">{{.Title}}</span>
           </a>
         </div>    
-        <div class="col-xs-3 text-right">{{.Author}}</div>
+        <div class="col-xs-4 text-right">{{.Author}}</div>
       </div>  
     {{end}}
     {{if .moreModernPoem}}

@@ -6,12 +6,12 @@
   <div class="panel-body"> 
     {{range .quotations}}
       <div class="row">
-        <div class="col-xs-9">
+        <div class="col-xs-8">
           <a href="{{url "Quotation.Show" .Id}}">            
             <span style="color:black">{{.OriginalTitle}}</span>
           </a>
         </div>    
-        <div class="col-xs-3 text-right">{{.Author}}</div>
+        <div class="col-xs-4 text-right">{{.Author}}</div>
       </div>  
     {{end}}     
     {{if .moreQuotation}}   
