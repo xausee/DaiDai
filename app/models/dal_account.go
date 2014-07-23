@@ -49,12 +49,14 @@ func (manager *DbManager) LoginUser(lu *LoginUser) (user *User, err error) {
 	if i == 0 {
 		fmt.Println("此账号不存在")
 		err = errors.New("此账号不存在")
+		return
 	}
 
 	uc.Find(bson.M{"nickname": lu.NickName}).One(&user)
 
 	if user.Password == nil {
 		err = errors.New("获取密码错误")
+		return
 	}
 
 	err = bcrypt.CompareHashAndPassword(user.Password, []byte(lu.Password))
