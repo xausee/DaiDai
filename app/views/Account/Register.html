@@ -5,7 +5,7 @@
 <div class="container"> 
   <div class="col-md-3"></div>
   <div class="col-md-6"> 
-    <div class="panel-primary" style="height:250px">
+    <div class="panel-primary">
       <div class="panel-heading text-center">散文家欢迎您的加入</div>     
         <div class="panel-body">         
           <form class="form-horizontal" role="form" action="{{url "Account.PostRegister"}}" method="POST"> 
@@ -26,7 +26,7 @@
             <div class="form-group {{$field.ErrorClass}}"> 
               <label class="col-sm-3 control-label" for="{{$field.Id}}">昵称</label> 
               <div class="col-sm-6"> 
-                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="昵称" required> 
+                <input type="text" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="昵称"> 
                 {{if $field.Error}} 
                 <span class="help-inline">{{$field.Error}}</span> 
                 {{end}} 
@@ -50,7 +50,7 @@
             <div class="form-group {{$field.ErrorClass}}"> 
               <label class="col-sm-3 control-label" for="{{$field.Id}}">密码</label> 
               <div class="col-sm-6"> 
-                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="密码" required>       
+                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="密码">       
                 {{if $field.Error}} 
                 <span class="help-inline">{{$field.Error}}</span> 
                 {{end}}         
@@ -62,7 +62,7 @@
             <div class="form-group {{$field.ErrorClass}}"> 
               <label class="col-sm-3 control-label" for="{{$field.Id}}">重复密码</label> 
               <div class="col-sm-6"> 
-                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码" required> 
+                <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复密码"> 
                 {{if $field.Error}} 
                 <span class="help-inline">{{$field.Error}}</span> 
                 {{end}} 

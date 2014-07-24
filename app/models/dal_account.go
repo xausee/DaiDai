@@ -12,7 +12,7 @@ func (manager *DbManager) RegisterUser(mu *MockUser) error {
 
 	i, _ := uc.Find(bson.M{"nickname": mu.NickName}).Count()
 	if i != 0 {
-		return errors.New("用户昵称已经被使用")
+		return errors.New("该用户名已被注册")
 	}
 
 	// i, _ = uc.Find(bson.M{"email": mu.Email}).Count()
@@ -47,8 +47,8 @@ func (manager *DbManager) LoginUser(lu *LoginUser) (user *User, err error) {
 
 	i, _ := uc.Find(bson.M{"nickname": lu.NickName}).Count()
 	if i == 0 {
-		fmt.Println("此账号不存在")
-		err = errors.New("此账号不存在")
+		fmt.Println("该用户不存在")
+		err = errors.New("该用户不存在")
 		return
 	}
 

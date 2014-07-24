@@ -35,6 +35,7 @@ func (this *Account) PostRegister(user *models.MockUser) revel.Result {
 	//this.Validation.Email(user.Email).Message("电子邮件格式无效")
 	this.Validation.Required(user.NickName).Message("用户昵称不能为空")
 	this.Validation.Required(user.Password).Message("密码不能为空")
+	this.Validation.Required(user.ConfirmPassword).Message("确认密码不能为空")
 	this.Validation.MinSize(user.Password, 6).Message("密码长度不短于6位")
 	this.Validation.Required(user.ConfirmPassword == user.Password).Message("两次输入的密码不一致")
 
@@ -53,9 +54,16 @@ func (this *Account) PostRegister(user *models.MockUser) revel.Result {
 
 	err = manager.RegisterUser(user)
 	if err != nil {
-		// this.Validation.Keep()
-		// this.FlashParams()
-		this.Flash.Error(err.Error())
+		this.Validation.Clear()
+
+		// 添加错误信息，显示在页面的用户名下面
+		var e revel.ValidationError
+		e.Message = err.Error()
+		e.Key = "user.NickName"
+		this.Validation.Errors = append(this.Validation.Errors, &e)
+
+		this.Validation.Keep()
+		this.FlashParams()
 		return this.Redirect((*Account).Register)
 	}
 
@@ -81,10 +89,22 @@ func (this *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 
 	var u *models.User
 	u, err = manager.LoginUser(loginUser)
+
 	if err != nil {
-		//this.Validation.Keep()
-		// this.FlashParams()
-		this.Flash.Error(err.Error())
+		this.Validation.Clear()
+
+		// 添加错误提示信息，显示在页面的用户名/密码下面
+		var e revel.ValidationError
+		if err.Error() == "该用户不存在" {
+			e.Key = "loginUser.NickName"
+		} else {
+			e.Key = "loginUser.Password"
+		}
+		e.Message = err.Error()
+		this.Validation.Errors = append(this.Validation.Errors, &e)
+
+		this.Validation.Keep()
+		this.FlashParams()
 		return this.Redirect((*Account).Login)
 	}
 
