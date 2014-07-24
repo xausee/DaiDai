@@ -1,7 +1,6 @@
 package app
 
 import (
-	"fmt"
 	"github.com/revel/revel"
 	"strings"
 )
@@ -49,7 +48,6 @@ func init() {
 	revel.TemplateFuncs["StringLimit"] = func(str string, length int) string {
 		if len(str) > length {
 			r, s := "", strings.Split(str, "")
-			fmt.Println(s)
 			for i, e := range s {
 				if i == length {
 					break
