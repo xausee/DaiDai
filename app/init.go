@@ -1,6 +1,7 @@
 package app
 
 import (
+	"fmt"
 	"github.com/revel/revel"
 	"strings"
 )
@@ -41,6 +42,41 @@ func init() {
 			return strings.SplitN(input, key, 2)[1]
 		} else {
 			return "no substring found"
+		}
+	}
+
+	// 注册模板里的字符串长度限制函数
+	revel.TemplateFuncs["StringLimit"] = func(str string, length int) string {
+		if len(str) > length {
+			r, s := "", strings.Split(str, "")
+			fmt.Println(s)
+			for i, e := range s {
+				if i == length {
+					break
+				}
+				r += e
+			}
+			return r + "......"
+		} else {
+			return str
+		}
+	}
+
+	// 注册模板里的字符串长度限制函数
+	revel.TemplateFuncs["StringLimitIncludeLineBreak"] = func(str string, length, charsInALine int) string {
+		if len(str) > length {
+			repeatedStr := "\r\n" + strings.Repeat(" ", charsInALine)
+			str := strings.Replace(str, "\r\n", repeatedStr, -1)
+			r, s := "", strings.Split(str, "")
+			for i, e := range s {
+				if i == length {
+					break
+				}
+				r += e
+			}
+			return r + "......"
+		} else {
+			return str
 		}
 	}
 }

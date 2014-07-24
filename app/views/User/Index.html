@@ -128,7 +128,7 @@ xmlhttp.send();
         {{else}}
         <div class="panel panel-success" style="height:60px">               
           <div class="panel-body text-success text-center"> 
-            <a href="{{url "Account.Register"}}">注册一下</a> 
+            <a cladd="btn-primary" href="{{url "Account.Register"}}">注册一下</a> 
              </br>就可以关注TA了哦    
           </div>                        
         </div>
@@ -141,7 +141,10 @@ xmlhttp.send();
             </h3>
           </div>       
           <div class="panel-body"> 
-            <sub>{{.lastMessage.Content}}</sub>                    
+            {{$lastMessage := StringLimitIncludeLineBreak .lastMessage.Content 50 16}}
+            {{nl2br $lastMessage}}  
+            <!-- {{$lastMessage := StringLimit .lastMessage.Content 30}}
+            {{nl2br $lastMessage}}  -->                                    
             <div class="modal-footer"> 
               <p class="text-center">
                 <a href="{{url "User.Message" .ownerNickName}}">更多留言<span class="badge">{{.messageCount}}</span></a>
