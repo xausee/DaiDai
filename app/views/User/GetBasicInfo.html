@@ -1,0 +1,15 @@
+<dl class="dl-horizontal text-success">
+    <dt>头像</dt> <dd><img src={{.userInfo.AvatarUrl}} class="img-thumbnail" alt="头像" height="150" width="150"></dd></br>
+    <dt>昵称</dt> <dd>{{.userInfo.NickName}}</dd></br>
+    <dt>笔名</dt> <dd>{{.userInfo.PenName}}</dd></br>
+    <dt>性别</dt> <dd>{{.userInfo.Gender}}</dd></br>
+    <dt>邮箱</dt> <dd>{{.userInfo.Email}}</dd></br>
+    <dt>生日</dt> <dd>{{.userInfo.Birth}}</dd></br>
+    <dt>喜欢的作者</dt> <dd>{{.userInfo.FavoriteAuthor}}</dd></br>
+    <dt>酷爱的书籍</dt> <dd>{{.userInfo.FavoriteBook}}</dd></br>
+    <dt>兴趣爱好</dt> <dd>{{.userInfo.Intrest}}</dd></br>
+    <dt>个人简介</dt> <dd>{{.userInfo.Introduction}}</dd></br>
+    {{if .isAuthor}}
+    <dt></dt> <dd><a href="{{url "User.EditInfo" .nickName}}">编辑</a></dd></br>
+    {{end}}
+</dl>

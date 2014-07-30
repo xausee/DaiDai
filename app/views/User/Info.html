@@ -20,32 +20,43 @@ else
   xmlhttp.onreadystatechange=function()
   {    
   if (xmlhttp.readyState==4 && xmlhttp.status==200)
-    { 
-      // remove all pagination active class first    
-      $('.pagination>li').removeClass('active'); 
+    {       
       // remove disable regardless of exist
-      $('#previous').removeClass('disabled');
-      $('#next').removeClass('disabled'); 
-      // reach first or last page
-      if (type == 1)
+      $('#basic').removeClass('active');
+      $('#setting').removeClass('active'); 
+      $('#extra').removeClass('active'); 
+      // reach first or last page      
+      if (type == "1")
       {
-        $('#previous').addClass('disabled');            
+        $('#basic').addClass('active');            
       }
-      if (type == {{.pageCount}})
+      if (type == "2")
       {       
-        $('#next').addClass('disabled');      
+        $('#setting').addClass('active');      
       }
-      // add active class to the clicked item
-      var id = "#"+"page_"+pageNumber
-      $(id).addClass('active');
+      if (type == "3")
+      {       
+        $('#extra').addClass('active');      
+      }
       // return result
       document.getElementById("userInfoPanel").innerHTML=xmlhttp.responseText;
     }
+  }  
+  // Seems xmlhttp.open can not be executed in switch case staement?
+  if (type=='1')
+  {
+    xmlhttp.open("GET","{{url "User.GetBasicInfo" .userInfo.NickName}}", true);    
   }
-xmlhttp.open("GET","{{url "User.PageList" .userInfo.NickName ""}}" + type, true);
+  if (type=='2')
+  {
+    xmlhttp.open("GET","{{url "User.SetProfile" .userInfo.NickName}}", true);    
+  }
+  if (type=='3')
+  {
+    xmlhttp.open("GET","{{url "User.GetExtraProfile" .userInfo.NickName}}", true);    
+  }  
 xmlhttp.send();
 }
-
 </script>
 
 <div id="content">
@@ -58,9 +69,9 @@ xmlhttp.send();
           <div class="panel-body">  
             <div class="col-md-2"> 
               <ul class="nav nav-pills nav-stacked">
-                <li value="-1" id="previous" onclick="updateUserInfoPanel(this.value)"><a>基本资料</a></li>
-                <li class="active"><a href="#">账号设置</a></li>
-                <li><a href="#">额外资料</a></li>
+                <li value="1" id="basic" onclick="updateUserInfoPanel(this.value)"><a>基本资料</a></li>
+                <li value="2" id="setting" class="active" onclick="updateUserInfoPanel(this.value)"><a>账号设置</a></li>
+                <li value="3" id="extra" onclick="updateUserInfoPanel(this.value)"><a>额外资料</a></li>
               </ul>
             </div>  
 

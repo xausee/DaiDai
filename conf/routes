@@ -23,6 +23,9 @@ GET     /logout                                 Account.Logout
 
 GET     /user/:nickName                         User.Index
 GET     /user/:nickName/info                    User.Info
+GET     /user/profile/basicinfo                 User.GetBasicInfo
+GET     /user/profilesetting                    User.SetProfile
+GET     /user/extraprofile                      User.GetExtraProfile
 GET     /user/:nickName/editinfo                User.EditInfo
 Post    /user/:nickName/editinfo                User.PostEditInfo
 GET     /user/article/add                       User.AddArticle 

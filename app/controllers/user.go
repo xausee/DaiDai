@@ -280,6 +280,78 @@ func (user *User) Info(nickName string) revel.Result {
 	return user.Render()
 }
 
+func (user *User) GetBasicInfo(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	userInfo, _ := manager.GetUserByNickName(nickName)
+
+	// 判断访问该页面的用户是否是本人
+	var isAuthor bool
+	if user.Session["nickName"] == nickName {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
+	user.RenderArgs["userInfo"] = userInfo
+
+	return user.Render()
+}
+
+func (user *User) SetProfile(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	userInfo, _ := manager.GetUserByNickName(nickName)
+
+	// 判断访问该页面的用户是否是本人
+	var isAuthor bool
+	if user.Session["nickName"] == nickName {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
+	user.RenderArgs["userInfo"] = userInfo
+
+	return user.Render()
+}
+
+func (user *User) GetExtraProfile(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	userInfo, _ := manager.GetUserByNickName(nickName)
+
+	// 判断访问该页面的用户是否是本人
+	var isAuthor bool
+	if user.Session["nickName"] == nickName {
+		isAuthor = true
+	}
+
+	user.RenderArgs["isAuthor"] = isAuthor
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
+	user.RenderArgs["userInfo"] = userInfo
+
+	return user.Render()
+}
+
 func (user *User) Message(nickName string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
