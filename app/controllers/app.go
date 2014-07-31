@@ -253,3 +253,7 @@ func (this App) Donate() revel.Result {
 
 	return this.Render(userid, nickName, avatarUrl)
 }
+
+func (this App) NotAuthorized() revel.Result {
+	return this.Render()
+}

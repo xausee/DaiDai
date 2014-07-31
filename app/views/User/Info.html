@@ -69,8 +69,10 @@ xmlhttp.send();
           <div class="panel-body">  
             <div class="col-md-2"> 
               <ul class="nav nav-pills nav-stacked">
-                <li value="1" id="basic" onclick="updateUserInfoPanel(this.value)"><a>基本资料</a></li>
-                <li value="2" id="setting" class="active" onclick="updateUserInfoPanel(this.value)"><a>账号设置</a></li>
+                <li value="1" id="basic" class="active" onclick="updateUserInfoPanel(this.value)"><a>基本资料</a></li>
+                {{if .isAuthor}}
+                  <li value="2" id="setting" onclick="updateUserInfoPanel(this.value)"><a>账号设置</a></li>
+                {{end}}
                 <li value="3" id="extra" onclick="updateUserInfoPanel(this.value)"><a>额外资料</a></li>
               </ul>
             </div>  
@@ -89,7 +91,7 @@ xmlhttp.send();
                   <dt>兴趣爱好</dt> <dd>{{.userInfo.Intrest}}</dd></br>
                   <dt>个人简介</dt> <dd>{{.userInfo.Introduction}}</dd></br>
                   {{if .isAuthor}}
-                  <dt></dt> <dd><a href="{{url "User.EditInfo" .nickName}}">编辑</a></dd></br>
+                  <dt></dt> <dd><a href="{{url "User.SetProfile" .nickName}}">编辑</a></dd></br>
                   {{end}}
                 </dl>
               <div> 

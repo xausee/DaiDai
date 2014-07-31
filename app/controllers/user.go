@@ -280,6 +280,7 @@ func (user *User) Info(nickName string) revel.Result {
 	return user.Render()
 }
 
+// 缺省显示，加载的数据跟controller Info 一样
 func (user *User) GetBasicInfo(nickName string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
@@ -311,19 +312,94 @@ func (user *User) SetProfile(nickName string) revel.Result {
 	}
 	defer manager.Close()
 
-	userInfo, _ := manager.GetUserByNickName(nickName)
-
-	// 判断访问该页面的用户是否是本人
-	var isAuthor bool
-	if user.Session["nickName"] == nickName {
-		isAuthor = true
+	// 游客身份转到没授权页面
+	if user.Session["nickName"] == "" {
+		return user.Redirect((*App).NotAuthorized)
 	}
 
-	user.RenderArgs["isAuthor"] = isAuthor
+	// 已注册用户，但不是本人，跳到其主页面
+	if nickName != user.Session["nickName"] {
+		return user.Redirect("/user/%s", user.Session["nickName"])
+	}
+
+	userInfo, _ := manager.GetUserByNickName(nickName)
+
+	user.RenderArgs["user"] = userInfo
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
-	user.RenderArgs["userInfo"] = userInfo
+
+	return user.Render()
+}
+
+func (user *User) PostSetProfile(uploadFile *os.File, userInfo models.User) revel.Result {
+	// 使用revel requst formfile获取文件数据
+	file, handler, err := user.Request.FormFile("uploadFile")
+	if err != nil {
+		fmt.Println(err)
+	}
+	// 读取所有数据
+	data, err := ioutil.ReadAll(file)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	// 获取当前路径
+	dir, patherr := filepath.Abs(filepath.Dir(os.Args[0]))
+	if patherr != nil {
+		log.Fatal(patherr)
+	}
+
+	// 文件路径
+	filePath := dir + "/" + handler.Filename
+
+	// 保存到文件
+	err = ioutil.WriteFile(filePath, data, 0777)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+	userInfo.Id, _ = strconv.Atoi(user.Session["userid"])
+
+	// 上传到七牛云储存
+	key, e := models.UploadToQiniu(filePath)
+	if e != nil {
+		fmt.Println("修改头像失败:", e)
+	} else {
+		// 删除原来的头像文件
+		oldUserInfo, _ := manager.GetUserById(userInfo.Id)
+		avatarUrl := oldUserInfo.AvatarUrl
+		urlArray := strings.SplitN(avatarUrl, "/", -1)
+		oldKey := urlArray[len(urlArray)-1]
+		derr := models.DeleteFileOnQiNiu(oldKey)
+		if derr != nil {
+			fmt.Println("删除原始头像文件失败:", derr)
+		}
+		// 保存新的头像地址
+		userInfo.AvatarUrl = models.QiNiuSpace + key
+		fmt.Println("头像地址：", userInfo.AvatarUrl)
+	}
+
+	// 删除临时头像文件
+	err = os.Remove(filePath)
+	if err != nil {
+		fmt.Println("删除临时头像文件失败:", err)
+	}
+
+	// TODO： 直接使用 uploadFile 进行操作，放弃上面的方案
+
+	err = manager.UpdateUserInfoById(userInfo.Id, userInfo)
+
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
+
+	return user.Redirect("/user/%s/info", user.Session["nickName"])
 
 	return user.Render()
 }
@@ -752,98 +828,6 @@ func (user *User) PostArticleComment(authorNickName string, articleid string, co
 	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s/article/%s", authorNickName, articleid)
-}
-
-func (user *User) EditInfo(nickName string) revel.Result {
-	manager, err := models.NewDbManager()
-	if err != nil {
-		fmt.Println("链接数据库失败")
-	}
-	defer manager.Close()
-
-	// 如果不是本人，则不能访问此页面，跳到其主页面
-	if nickName != user.Session["nickName"] {
-		return user.Redirect("/user/%s", user.Session["userid"])
-	}
-
-	userInfo, _ := manager.GetUserByNickName(nickName)
-
-	user.RenderArgs["user"] = userInfo
-	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["nickName"] = user.Session["nickName"]
-	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
-
-	return user.Render()
-}
-
-func (user *User) PostEditInfo(uploadFile *os.File, userInfo models.User) revel.Result {
-	// 使用revel requst formfile获取文件数据
-	file, handler, err := user.Request.FormFile("uploadFile")
-	if err != nil {
-		fmt.Println(err)
-	}
-	// 读取所有数据
-	data, err := ioutil.ReadAll(file)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	// 获取当前路径
-	dir, patherr := filepath.Abs(filepath.Dir(os.Args[0]))
-	if patherr != nil {
-		log.Fatal(patherr)
-	}
-
-	// 文件路径
-	filePath := dir + "/" + handler.Filename
-
-	// 保存到文件
-	err = ioutil.WriteFile(filePath, data, 0777)
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	manager, err := models.NewDbManager()
-	if err != nil {
-		fmt.Println("链接数据库失败")
-	}
-	defer manager.Close()
-	userInfo.Id, _ = strconv.Atoi(user.Session["userid"])
-
-	// 上传到七牛云储存
-	key, e := models.UploadToQiniu(filePath)
-	if e != nil {
-		fmt.Println("修改头像失败:", e)
-	} else {
-		// 删除原来的头像文件
-		oldUserInfo, _ := manager.GetUserById(userInfo.Id)
-		avatarUrl := oldUserInfo.AvatarUrl
-		urlArray := strings.SplitN(avatarUrl, "/", -1)
-		oldKey := urlArray[len(urlArray)-1]
-		derr := models.DeleteFileOnQiNiu(oldKey)
-		if derr != nil {
-			fmt.Println("删除原始头像文件失败:", derr)
-		}
-		// 保存新的头像地址
-		userInfo.AvatarUrl = models.QiNiuSpace + key
-		fmt.Println("头像地址：", userInfo.AvatarUrl)
-	}
-
-	// 删除临时头像文件
-	err = os.Remove(filePath)
-	if err != nil {
-		fmt.Println("删除临时头像文件失败:", err)
-	}
-
-	// TODO： 直接使用 uploadFile 进行操作，放弃上面的方案
-
-	err = manager.UpdateUserInfoById(userInfo.Id, userInfo)
-
-	user.RenderArgs["userid"] = user.Session["userid"]
-	user.RenderArgs["nickName"] = user.Session["nickName"]
-	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
-
-	return user.Redirect("/user/%s/info", user.Session["nickName"])
 }
 
 func (user *User) DeleteArticle(articleid string) revel.Result {

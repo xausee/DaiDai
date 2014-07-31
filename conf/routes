@@ -7,6 +7,7 @@ GET     /                                       App.Index
 GET     /add/                                   App.Add
 GET     /aboutus                                App.AboutUs 
 GET     /donate                                 App.Donate
+GET     /notauthorized                          App.NotAuthorized
 
 GET     /uploadpicture                          Admin.UploadPicture
 POST    /uploadpicture                          Admin.PostUploadPicture
@@ -24,10 +25,9 @@ GET     /logout                                 Account.Logout
 GET     /user/:nickName                         User.Index
 GET     /user/:nickName/info                    User.Info
 GET     /user/profile/basicinfo                 User.GetBasicInfo
-GET     /user/profilesetting                    User.SetProfile
-GET     /user/extraprofile                      User.GetExtraProfile
-GET     /user/:nickName/editinfo                User.EditInfo
-Post    /user/:nickName/editinfo                User.PostEditInfo
+GET     /user/profile/setting                   User.SetProfile
+Post    /user/profile/setting                   User.PostSetProfile
+GET     /user/profile/extra                     User.GetExtraProfile
 GET     /user/article/add                       User.AddArticle 
 POST    /user/article/add                       User.PostAddArticle
 GET     /user/:nickName/articlelist             User.OriginalArticleList
