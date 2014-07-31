@@ -1,6 +1,8 @@
 package models
 
 import (
+	"code.google.com/p/go.crypto/bcrypt"
+	"errors"
 	"fmt"
 	"labix.org/v2/mgo/bson"
 	"time"
@@ -26,6 +28,53 @@ func (manager *DbManager) GetUserByNickName(nickName string) (userInfo User, err
 	}
 
 	return userInfo, err
+}
+
+func (manager *DbManager) VerifyPasswordByNickName(nickName, password string) (user *User, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	i, _ := uc.Find(bson.M{"nickname": nickName}).Count()
+	if i == 0 {
+		fmt.Println("该用户不存在")
+		err = errors.New("该用户不存在")
+		return
+	}
+
+	uc.Find(bson.M{"nickname": nickName}).One(&user)
+
+	if user.Password == nil {
+		err = errors.New("获取密码错误")
+		return
+	}
+
+	err = bcrypt.CompareHashAndPassword(user.Password, []byte(password))
+	if err != nil {
+		fmt.Println("密码不正确,请重新输入原始密码")
+		err = errors.New("密码不正确,请重新输入原始密码")
+	}
+	return
+}
+
+func (manager *DbManager) UpdateUserPasswordById(userid int, newPassword string) (err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	var oldUserInfo User
+	err = uc.Find(bson.M{"id": userid}).One(&oldUserInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+
+	// 仅仅修改密码字段
+	tempInfo := oldUserInfo
+	encryptedPassword, _ := bcrypt.GenerateFromPassword([]byte(newPassword), bcrypt.DefaultCost)
+	tempInfo.Password = encryptedPassword
+
+	err = uc.Update(oldUserInfo, tempInfo)
+	if err != nil {
+		fmt.Println("修改密码失败")
+	}
+
+	return err
 }
 
 func (manager *DbManager) UpdateUserInfoById(userid int, newUserInfo User) (err error) {

@@ -25,6 +25,8 @@ GET     /logout                                 Account.Logout
 GET     /user/:nickName                         User.Index
 GET     /user/:nickName/info                    User.Info
 GET     /user/profile/basicinfo                 User.GetBasicInfo
+GET     /user/profile/password                  User.SetPassword
+Post    /user/profile/password                  User.PostSetPassword
 GET     /user/profile/setting                   User.SetProfile
 Post    /user/profile/setting                   User.PostSetProfile
 GET     /user/profile/extra                     User.GetExtraProfile

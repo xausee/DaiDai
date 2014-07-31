@@ -305,6 +305,101 @@ func (user *User) GetBasicInfo(nickName string) revel.Result {
 	return user.Render()
 }
 
+func (user *User) SetPassword(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	// 游客身份转到没授权页面
+	if user.Session["nickName"] == "" {
+		return user.Redirect((*App).NotAuthorized)
+	}
+
+	// 已注册用户，但不是本人，跳到其主页面
+	if nickName != user.Session["nickName"] {
+		return user.Redirect("/user/%s", user.Session["nickName"])
+	}
+
+	userInfo, _ := manager.GetUserByNickName(nickName)
+
+	user.RenderArgs["user"] = userInfo
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
+
+	return user.Render()
+}
+
+func (user *User) UpdateSuccess() revel.Result {
+	return user.Render()
+}
+
+func (user *User) PostSetPassword(oringinalPassword string, userInfo models.MockUser) revel.Result {
+	user.Validation.Required(oringinalPassword).Message("原始密码不能为空")
+	user.Validation.Required(userInfo.Password).Message("新密码不能为空")
+	user.Validation.Required(userInfo.ConfirmPassword).Message("确认密码不能为空")
+	user.Validation.MinSize(userInfo.Password, 6).Message("密码长度不短于6位")
+	user.Validation.Required(userInfo.ConfirmPassword == userInfo.Password).Message("两次输入的密码不一致")
+	//user.Validation.Required(userInfo.ConfirmPassword != oringinalPassword).Message("新密码不能跟原始密码相同")
+
+	nickName := user.Session["nickName"]
+	if user.Validation.HasErrors() {
+		user.Validation.Keep()
+		user.FlashParams()
+		return user.Redirect("/user/profile/password?nickName=%s", nickName)
+	}
+
+	manager, err := models.NewDbManager()
+	if err != nil {
+		user.Response.Status = 500
+		return user.RenderError(err)
+	}
+	defer manager.Close()
+
+	var u *models.User
+	u, err = manager.VerifyPasswordByNickName(nickName, oringinalPassword)
+	if err != nil {
+		user.Validation.Clear()
+
+		// 添加错误信息，显示在页面的原始密码下面
+		var e revel.ValidationError
+		e.Message = err.Error()
+		e.Key = "userInfo.Password"
+		user.Validation.Errors = append(user.Validation.Errors, &e)
+
+		user.Validation.Keep()
+		user.FlashParams()
+		return user.Redirect("/user/profile/password?nickName=%s", nickName)
+	}
+
+	err = manager.UpdateUserPasswordById(u.Id, userInfo.Password)
+	if err != nil {
+		user.Validation.Clear()
+
+		// 添加错误信息，显示在页面的用户名下面
+		var e revel.ValidationError
+		e.Message = err.Error()
+		e.Key = "userInfo.ConfirmPassword"
+		user.Validation.Errors = append(user.Validation.Errors, &e)
+
+		user.Validation.Keep()
+		user.FlashParams()
+		return user.Redirect("/user/profile/password?nickName=%s", nickName)
+	}
+
+	//return user.Redirect((*User).UpdateSuccess)
+
+	user.RenderArgs["userid"] = user.Session["userid"]
+	user.RenderArgs["nickName"] = user.Session["nickName"]
+	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
+
+	fmt.Println(user.Session["nickName"])
+
+	return user.Redirect("/user/%s/info", user.Session["nickName"])
+}
+
 func (user *User) SetProfile(nickName string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
@@ -400,8 +495,6 @@ func (user *User) PostSetProfile(uploadFile *os.File, userInfo models.User) reve
 	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
 	return user.Redirect("/user/%s/info", user.Session["nickName"])
-
-	return user.Render()
 }
 
 func (user *User) GetExtraProfile(nickName string) revel.Result {

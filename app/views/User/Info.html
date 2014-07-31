@@ -23,18 +23,23 @@ else
     {       
       // remove disable regardless of exist
       $('#basic').removeClass('active');
+      $('#password').removeClass('active');  
       $('#setting').removeClass('active'); 
       $('#extra').removeClass('active'); 
-      // reach first or last page      
+      // set clicked link class to active   
       if (type == "1")
       {
         $('#basic').addClass('active');            
       }
       if (type == "2")
       {       
-        $('#setting').addClass('active');      
+        $('#password').addClass('active');      
       }
       if (type == "3")
+      {       
+        $('#setting').addClass('active');      
+      }
+      if (type == "4")
       {       
         $('#extra').addClass('active');      
       }
@@ -49,9 +54,13 @@ else
   }
   if (type=='2')
   {
-    xmlhttp.open("GET","{{url "User.SetProfile" .userInfo.NickName}}", true);    
+    xmlhttp.open("GET","{{url "User.SetPassword" .userInfo.NickName}}", true);    
   }
   if (type=='3')
+  {
+    xmlhttp.open("GET","{{url "User.SetProfile" .userInfo.NickName}}", true);    
+  }
+  if (type=='4')
   {
     xmlhttp.open("GET","{{url "User.GetExtraProfile" .userInfo.NickName}}", true);    
   }  
@@ -71,9 +80,10 @@ xmlhttp.send();
               <ul class="nav nav-pills nav-stacked">
                 <li value="1" id="basic" class="active" onclick="updateUserInfoPanel(this.value)"><a>基本资料</a></li>
                 {{if .isAuthor}}
-                  <li value="2" id="setting" onclick="updateUserInfoPanel(this.value)"><a>账号设置</a></li>
+                  <li value="2" id="password" onclick="updateUserInfoPanel(this.value)"><a>密码设置</a></li>
+                  <li value="3" id="setting" onclick="updateUserInfoPanel(this.value)"><a>账号设置</a></li>
                 {{end}}
-                <li value="3" id="extra" onclick="updateUserInfoPanel(this.value)"><a>额外资料</a></li>
+                <li value="4" id="extra" onclick="updateUserInfoPanel(this.value)"><a>额外资料</a></li>
               </ul>
             </div>  
 
@@ -89,10 +99,7 @@ xmlhttp.send();
                   <dt>喜欢的作者</dt> <dd>{{.userInfo.FavoriteAuthor}}</dd></br>
                   <dt>酷爱的书籍</dt> <dd>{{.userInfo.FavoriteBook}}</dd></br>
                   <dt>兴趣爱好</dt> <dd>{{.userInfo.Intrest}}</dd></br>
-                  <dt>个人简介</dt> <dd>{{.userInfo.Introduction}}</dd></br>
-                  {{if .isAuthor}}
-                  <dt></dt> <dd><a href="{{url "User.SetProfile" .nickName}}">编辑</a></dd></br>
-                  {{end}}
+                  <dt>个人简介</dt> <dd>{{.userInfo.Introduction}}</dd></br>                  
                 </dl>
               <div> 
             </div>     
