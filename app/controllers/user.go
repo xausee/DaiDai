@@ -344,6 +344,9 @@ func (user *User) PostSetPassword(oringinalPassword string, userInfo models.Mock
 	user.Validation.Required(userInfo.ConfirmPassword == userInfo.Password).Message("两次输入的密码不一致")
 	//user.Validation.Required(userInfo.ConfirmPassword != oringinalPassword).Message("新密码不能跟原始密码相同")
 
+	fmt.Println(oringinalPassword)
+	fmt.Println(userInfo.Password)
+	fmt.Println(userInfo.ConfirmPassword)
 	nickName := user.Session["nickName"]
 	if user.Validation.HasErrors() {
 		user.Validation.Keep()
