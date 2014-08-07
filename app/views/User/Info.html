@@ -4,7 +4,7 @@
 <script>
 function updateUserInfoPanel(type)
 {
-  var xmlhttp;  
+  var xmlhttp;    
 
 if (window.XMLHttpRequest)
   {
@@ -53,7 +53,7 @@ else
     xmlhttp.open("GET","{{url "User.GetBasicInfo" .userInfo.NickName}}", true);    
   }
   if (type=='2')
-  {
+  {    
     xmlhttp.open("GET","{{url "User.SetPassword" .userInfo.NickName}}", true);    
   }
   if (type=='3')
@@ -63,6 +63,17 @@ else
   if (type=='4')
   {
     xmlhttp.open("GET","{{url "User.GetExtraProfile" .userInfo.NickName}}", true);    
+  }  
+  var traget=document.getElementById('userInfoPanel');    
+    traget.style.display=""; 
+  if (type=='2')
+  {
+    var traget=document.getElementById('userInfoPanel');    
+    traget.style.display="none"; 
+
+    var traget=document.getElementById('setpassword');
+    //alert(traget)
+    traget.style.display="";        
   }  
 xmlhttp.send();
 }
@@ -111,7 +122,6 @@ alert('aaaaaaaaaa')
 $(document).ready(function() {
   // Attach a submit handler to the form
   $( "#setPasswordForm" ).submit(function( event ) {
-    alert("搜索提交")
     // Stop form from submitting normally
     event.preventDefault();
     // Get some values from elements on the page:
@@ -136,6 +146,14 @@ $(document).ready(function() {
    });
   });
 });
+
+$(document).ready(function() {
+$( "#setPasswordForm" ).on( "submit", function( event ) {
+  alert("222222222")
+event.preventDefault();
+});
+});
+
 </script>
 
 <div id="result">
@@ -160,66 +178,67 @@ $(document).ready(function() {
                 <li value="4" id="extra" onclick="updateUserInfoPanel(this.value)"><a>额外资料</a></li>
               </ul>
             </div>  
+            <div class="col-md-8">    
+              <div id="setpassword" style="display:none">          
+              <form id="setPasswordForm"  role="form-horizontal" action="{{url "User.PostSetPassword"}}" method="POST">  
+                <dl class="dl-horizontal text-success"> 
+                  <dt>原始密码</dt>
+                  <dd>      
+                    {{with $field := field "oringinalPassword" .}} 
+                    <div class="form-group {{$field.ErrorClass}}">          
+                      <div class="col-sm-6"> 
+                        <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入原始密码">       
+                        {{if $field.Error}} 
+                        <span class="help-inline">{{$field.Error}}</span> 
+                        {{end}}         
+                      </div> 
+                    </div> 
+                    {{end}} 
+                  </dd></br>   
+              
+                  <dt>新密码</dt>
+                   <dd>      
+                    {{with $field := field "userInfo.Password" .}} 
+                    <div class="form-group {{$field.ErrorClass}}">         
+                      <div class="col-sm-6"> 
+                        <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入新密码">       
+                        {{if $field.Error}} 
+                        <span class="help-inline">{{$field.Error}}</span> 
+                        {{end}}         
+                      </div> 
+                    </div> 
+                    {{end}} 
+                  </dd></br>   
+              
+                  <dt>重复新密码</dt>
+                   <dd>      
+                    {{with $field := field "userInfo.ConfirmPassword" .}} 
+                    <div class="form-group {{$field.ErrorClass}}">        
+                      <div class="col-sm-6"> 
+                        <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复输入新密码">       
+                        {{if $field.Error}} 
+                        <span class="help-inline">{{$field.Error}}</span> 
+                        {{end}}         
+                      </div> 
+                    </div> 
+                    {{end}} 
+                  </dd></br>   
+                  
+                  <dt></dt>  
+                  <dd>
+                    <div class="form-group">
+                      <label class="radio-inline">
+                        <div class="form-group">
+                          <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                        </div>
+                      </label>         
+                    </div>  
+                  </dd>
+                </dl>                  
+              </form>
+              </div>  
 
-            <div class="col-md-8">
-              <div id="userInfoPanel"> 
-                <form id="setPasswordForm" role="form-horizontal" action="{{url "User.PostSetPassword"}}" method="POST">  
-      <dl class="dl-horizontal text-success"> 
-        <dt>原始密码</dt>
-        <dd>      
-          {{with $field := field "oringinalPassword" .}} 
-          <div class="form-group {{$field.ErrorClass}}">          
-            <div class="col-sm-6"> 
-              <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入原始密码">       
-              {{if $field.Error}} 
-              <span class="help-inline">{{$field.Error}}</span> 
-              {{end}}         
-            </div> 
-          </div> 
-          {{end}} 
-        </dd></br>   
-    
-        <dt>新密码</dt>
-         <dd>      
-          {{with $field := field "userInfo.Password" .}} 
-          <div class="form-group {{$field.ErrorClass}}">         
-            <div class="col-sm-6"> 
-              <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入新密码">       
-              {{if $field.Error}} 
-              <span class="help-inline">{{$field.Error}}</span> 
-              {{end}}         
-            </div> 
-          </div> 
-          {{end}} 
-        </dd></br>   
-    
-        <dt>重复新密码</dt>
-         <dd>      
-          {{with $field := field "userInfo.ConfirmPassword" .}} 
-          <div class="form-group {{$field.ErrorClass}}">        
-            <div class="col-sm-6"> 
-              <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复输入新密码">       
-              {{if $field.Error}} 
-              <span class="help-inline">{{$field.Error}}</span> 
-              {{end}}         
-            </div> 
-          </div> 
-          {{end}} 
-        </dd></br>   
-        
-        <dt></dt>  
-        <dd>
-          <div class="form-group">
-            <label class="radio-inline">
-              <div class="form-group">
-                <button type="submit" class="btn btn-primary" id="submit">保存</button>
-              </div>
-            </label>         
-          </div>  
-        </dd>
-      </dl>                  
-    </form> 
-
+              <div id="userInfoPanel">
                 <dl class="dl-horizontal text-success">
             	    <dt>头像</dt> <dd><img src={{.userInfo.AvatarUrl}} class="img-thumbnail" alt="头像" height="150" width="150"></dd></br>
                   <dt>昵称</dt> <dd>{{.userInfo.NickName}}</dd></br>
@@ -233,6 +252,7 @@ $(document).ready(function() {
                   <dt>个人简介</dt> <dd>{{.userInfo.Introduction}}</dd></br>                  
                 </dl>
               <div> 
+
             </div>     
           </div>                       
          </div>  
