@@ -50,75 +50,42 @@ else
   // Seems xmlhttp.open can not be executed in switch case staement?
   if (type=='1')
   {
+    document.getElementById('userInfoPanel').style.display="";      
+    document.getElementById('setPasswordFormDiv').style.display="none"; 
+    document.getElementById('setPasswordResult').style.display="none";
     xmlhttp.open("GET","{{url "User.GetBasicInfo" .userInfo.NickName}}", true);    
   }
   if (type=='2')
-  {    
+  {  
+    // 目前提交的是该页面上的表单，通过js控制表单的显示和隐藏
+    // TODO: 使用jquery提交此动态密码设置表单 
+    document.getElementById('userInfoPanel').style.display="none";      
+    document.getElementById('setPasswordFormDiv').style.display=""; 
+    document.getElementById('setPasswordResult').style.display="none";
+    $( "#setPasswordResult" ).empty().append("");      
+    
     xmlhttp.open("GET","{{url "User.SetPassword" .userInfo.NickName}}", true);    
   }
   if (type=='3')
   {
+    document.getElementById('userInfoPanel').style.display="";      
+    document.getElementById('setPasswordFormDiv').style.display="none"; 
+    document.getElementById('setPasswordResult').style.display="none";
     xmlhttp.open("GET","{{url "User.SetProfile" .userInfo.NickName}}", true);    
   }
   if (type=='4')
   {
+    document.getElementById('userInfoPanel').style.display="";      
+    document.getElementById('setPasswordFormDiv').style.display="none"; 
+    document.getElementById('setPasswordResult').style.display="none";
     xmlhttp.open("GET","{{url "User.GetExtraProfile" .userInfo.NickName}}", true);    
-  }  
-  var traget=document.getElementById('userInfoPanel');    
-    traget.style.display=""; 
-  if (type=='2')
-  {
-    var traget=document.getElementById('userInfoPanel');    
-    traget.style.display="none"; 
-
-    var traget=document.getElementById('setpassword');
-    //alert(traget)
-    traget.style.display="";        
-  }  
+  }    
 xmlhttp.send();
 }
 </script>
 
-<script type="text/javascript">
-  $(document).ready(function() {
-  // process the form
-  $('#dsadasd').submit(function(event) {
-alert("dsfdsf")
-alert($('input[name=oringinalPassword]').val())
-    // get the form data
-    // there are many ways to get this data using jQuery (you can use the class or id also)
-    var formData = {
-      'oringinalPassword'        : $('input[name=oringinalPassword]').val(),
-      'password'       : $('input[name=userInfo.Password]').val(),
-      'confirmPassword'  : $('input[name=userInfo.ConfirmPassword]').val()
-    };
-alert('aaaaaaaaaa')
-    // process the form
-    $.ajax({
-      type    : 'POST', // define the type of HTTP verb we want to use (POST for our form)
-      url     : 'process.php', // the url where we want to POST
-      data    : formData, // our data object
-      dataType  : 'json', // what type of data do we expect back from the server
-                        encode          : true
-    })
-      // using the done promise callback
-      .done(function(data) {
-        alert('ssssssssssss')
-
-        // log data to the console so we can see
-        console.log(data); 
-
-        // here we will handle errors and validation messages
-      });
-
-    // stop the form from submitting the normal way and refreshing the page
-    event.preventDefault();
-  });
-
-});
-</script>
-
 <script>
+// 提交密码设置表单
 $(document).ready(function() {
   // Attach a submit handler to the form
   $( "#setPasswordForm" ).submit(function( event ) {
@@ -126,39 +93,28 @@ $(document).ready(function() {
     event.preventDefault();
     // Get some values from elements on the page:
     var $form = $( this ),
-    oringinalPasswordd = $form.find('input[name=oringinalPassword]').val(),
-    passwordd       = $form.find('input[id=userInfo_Password]').val(),
-    confirmPasswordd  = $form.find('input[id=userInfo_ConfirmPassword]').val()
+    op = $form.find('input[name=oringinalPassword]').val(),
+    p  = $form.find('input[id=userInfo_Password]').val(),
+    cp = $form.find('input[id=userInfo_ConfirmPassword]').val()
 
     url = $form.attr( "action" );
-    // Send the data using post
-    alert(oringinalPasswordd)
-    alert(passwordd)
-    alert(oringinalPasswordd)
-    alert(url)
-    var posting = $.post( url, { nickName: oringinalPasswordd, password: passwordd, confirmPassword: confirmPasswordd} );
+    // Send the data using post 
+    var posting = $.post( url, { "oringinalPassword": op, "userInfo.Password": p, "userInfo.ConfirmPassword": cp} );
     // Put the results in a div
-    posting.done(function( data ) {    
-    alert( "返回结果: " + data );  
-    var content = $( data ).find( "#content" );
-    alert(content)
-    $( "#result" ).empty().append($( data ));
-   });
+    posting.done(function( data ) { 
+    document.getElementById('setPasswordFormDiv').style.display="none"; 
+    document.getElementById('setPasswordResult').style.display="";  
+
+    // 清除表单数据
+    document.getElementById('oringinalPassword').value=""; 
+    document.getElementById('userInfo_Password').value="";
+    document.getElementById('userInfo_ConfirmPassword').value="";   
+    
+    $( "#setPasswordResult" ).empty().append($( data ));     
+   });       
   });
 });
-
-$(document).ready(function() {
-$( "#setPasswordForm" ).on( "submit", function( event ) {
-  alert("222222222")
-event.preventDefault();
-});
-});
-
 </script>
-
-<div id="result">
-  <div id="content"></div>
-</div> 
 
 <div id="content">  
   <div class="container">
@@ -175,68 +131,69 @@ event.preventDefault();
                   <li value="3" id="setting" onclick="updateUserInfoPanel(this.value)"><a>信息变更</a></li>
                   <li value="2" id="password" onclick="updateUserInfoPanel(this.value)"><a>密码设置</a></li>
                 {{end}}
-                <li value="4" id="extra" onclick="updateUserInfoPanel(this.value)"><a>额外资料</a></li>
+                <!-- <li value="4" id="extra" onclick="updateUserInfoPanel(this.value)"><a>额外资料</a></li> -->
               </ul>
             </div>  
-            <div class="col-md-8">    
-              <div id="setpassword" style="display:none">          
-              <form id="setPasswordForm"  role="form-horizontal" action="{{url "User.PostSetPassword"}}" method="POST">  
-                <dl class="dl-horizontal text-success"> 
-                  <dt>原始密码</dt>
-                  <dd>      
-                    {{with $field := field "oringinalPassword" .}} 
-                    <div class="form-group {{$field.ErrorClass}}">          
-                      <div class="col-sm-6"> 
-                        <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入原始密码">       
-                        {{if $field.Error}} 
-                        <span class="help-inline">{{$field.Error}}</span> 
-                        {{end}}         
+            <div class="col-md-8">              
+              <div id="setPasswordFormDiv" style="display:none">                                   
+                <form id="setPasswordForm"  role="form-horizontal" action="{{url "User.PostSetPassword"}}" method="POST">  
+                  <dl class="dl-horizontal text-success"> 
+                    <dt>原始密码</dt>
+                    <dd>      
+                      {{with $field := field "oringinalPassword" .}} 
+                      <div class="form-group {{$field.ErrorClass}}">          
+                        <div class="col-sm-6"> 
+                          <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入原始密码">       
+                          {{if $field.Error}} 
+                          <span class="help-inline">{{$field.Error}}</span> 
+                          {{end}}         
+                        </div> 
                       </div> 
-                    </div> 
-                    {{end}} 
-                  </dd></br>   
-              
-                  <dt>新密码</dt>
-                   <dd>      
-                    {{with $field := field "userInfo.Password" .}} 
-                    <div class="form-group {{$field.ErrorClass}}">         
-                      <div class="col-sm-6"> 
-                        <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入新密码">       
-                        {{if $field.Error}} 
-                        <span class="help-inline">{{$field.Error}}</span> 
-                        {{end}}         
+                      {{end}} 
+                    </dd></br>   
+                
+                    <dt>新密码</dt>
+                     <dd>      
+                      {{with $field := field "userInfo.Password" .}} 
+                      <div class="form-group {{$field.ErrorClass}}">         
+                        <div class="col-sm-6"> 
+                          <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="请输入新密码">       
+                          {{if $field.Error}} 
+                          <span class="help-inline">{{$field.Error}}</span> 
+                          {{end}}         
+                        </div> 
                       </div> 
-                    </div> 
-                    {{end}} 
-                  </dd></br>   
-              
-                  <dt>重复新密码</dt>
-                   <dd>      
-                    {{with $field := field "userInfo.ConfirmPassword" .}} 
-                    <div class="form-group {{$field.ErrorClass}}">        
-                      <div class="col-sm-6"> 
-                        <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复输入新密码">       
-                        {{if $field.Error}} 
-                        <span class="help-inline">{{$field.Error}}</span> 
-                        {{end}}         
+                      {{end}} 
+                    </dd></br>   
+                
+                    <dt>重复新密码</dt>
+                     <dd>      
+                      {{with $field := field "userInfo.ConfirmPassword" .}} 
+                      <div class="form-group {{$field.ErrorClass}}">        
+                        <div class="col-sm-6"> 
+                          <input type="password" class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" placeholder="重复输入新密码">       
+                          {{if $field.Error}} 
+                          <span class="help-inline">{{$field.Error}}</span> 
+                          {{end}}         
+                        </div> 
                       </div> 
-                    </div> 
-                    {{end}} 
-                  </dd></br>   
-                  
-                  <dt></dt>  
-                  <dd>
-                    <div class="form-group">
-                      <label class="radio-inline">
-                        <div class="form-group">
-                          <button type="submit" class="btn btn-primary" id="submit">保存</button>
-                        </div>
-                      </label>         
-                    </div>  
-                  </dd>
-                </dl>                  
-              </form>
+                      {{end}} 
+                    </dd></br>   
+                    
+                    <dt></dt>  
+                    <dd>
+                      <div class="form-group">
+                        <label class="radio-inline">
+                          <div class="form-group">
+                            <button type="submit" class="btn btn-primary" id="submit">保存</button>
+                          </div>
+                        </label>         
+                      </div>  
+                    </dd>
+                  </dl>                  
+                </form>
               </div>  
+              <div id="setPasswordResult" style="display:none"></div>   
 
               <div id="userInfoPanel">
                 <dl class="dl-horizontal text-success">

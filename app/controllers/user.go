@@ -344,9 +344,6 @@ func (user *User) PostSetPassword(oringinalPassword string, userInfo models.Mock
 	user.Validation.Required(userInfo.ConfirmPassword == userInfo.Password).Message("两次输入的密码不一致")
 	//user.Validation.Required(userInfo.ConfirmPassword != oringinalPassword).Message("新密码不能跟原始密码相同")
 
-	fmt.Println(oringinalPassword)
-	fmt.Println(userInfo.Password)
-	fmt.Println(userInfo.ConfirmPassword)
 	nickName := user.Session["nickName"]
 	if user.Validation.HasErrors() {
 		user.Validation.Keep()
@@ -369,7 +366,7 @@ func (user *User) PostSetPassword(oringinalPassword string, userInfo models.Mock
 		// 添加错误信息，显示在页面的原始密码下面
 		var e revel.ValidationError
 		e.Message = err.Error()
-		e.Key = "userInfo.Password"
+		e.Key = "oringinalPassword"
 		user.Validation.Errors = append(user.Validation.Errors, &e)
 
 		user.Validation.Keep()
@@ -381,7 +378,7 @@ func (user *User) PostSetPassword(oringinalPassword string, userInfo models.Mock
 	if err != nil {
 		user.Validation.Clear()
 
-		// 添加错误信息，显示在页面的用户名下面
+		// 添加错误信息，显示在表单下面
 		var e revel.ValidationError
 		e.Message = err.Error()
 		e.Key = "userInfo.ConfirmPassword"
@@ -392,15 +389,11 @@ func (user *User) PostSetPassword(oringinalPassword string, userInfo models.Mock
 		return user.Redirect("/user/profile/password?nickName=%s", nickName)
 	}
 
-	//return user.Redirect((*User).UpdateSuccess)
-
 	user.RenderArgs["userid"] = user.Session["userid"]
 	user.RenderArgs["nickName"] = user.Session["nickName"]
 	user.RenderArgs["avatarUrl"] = user.Session["avatarUrl"]
 
-	fmt.Println(user.Session["nickName"])
-
-	return user.Redirect("/user/%s/info", user.Session["nickName"])
+	return user.Redirect((*User).UpdateSuccess)
 }
 
 func (user *User) SetProfile(nickName string) revel.Result {
