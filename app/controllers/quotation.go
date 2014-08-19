@@ -11,7 +11,7 @@ type Quotation struct {
 	*revel.Controller
 }
 
-func (q *Quotation) Index() revel.Result {
+func (this *Quotation) Index() revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -45,18 +45,18 @@ func (q *Quotation) Index() revel.Result {
 		quotationsOnOnePage = quotations
 	}
 
-	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["nickName"] = q.Session["nickName"]
-	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
-	q.RenderArgs["allQuotations"] = quotations
-	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
-	q.RenderArgs["pageCount"] = pageCount
-	q.RenderArgs["pages"] = pages
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["allQuotations"] = quotations
+	this.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["pages"] = pages
 
-	return q.Render()
+	return this.Render()
 }
 
-func (q *Quotation) TypeIndex(tag string) revel.Result {
+func (this *Quotation) TypeIndex(tag string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -90,134 +90,134 @@ func (q *Quotation) TypeIndex(tag string) revel.Result {
 		quotationsOnOnePage = quotations
 	}
 
-	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["nickName"] = q.Session["nickName"]
-	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
-	q.RenderArgs["allQuotations"] = quotations
-	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
-	q.RenderArgs["pageCount"] = pageCount
-	q.RenderArgs["type"] = tag
-	q.RenderArgs["pages"] = pages
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["allQuotations"] = quotations
+	this.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["type"] = tag
+	this.RenderArgs["pages"] = pages
 
-	return q.Render()
+	return this.Render()
 }
 
-func (q *Quotation) Add() revel.Result {
-	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["nickName"] = q.Session["nickName"]
+func (this *Quotation) Add() revel.Result {
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
 
-	return q.Render()
+	return this.Render()
 }
 
-func (q *Quotation) Edit(id string) revel.Result {
+func (this *Quotation) Edit(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
-		q.Response.Status = 500
-		return q.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	originalQuotation, _ := manager.GetQuotationById(id)
 
-	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["nickName"] = q.Session["nickName"]
-	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
-	q.RenderArgs["originalQuotation"] = originalQuotation
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["originalQuotation"] = originalQuotation
 
-	return q.Render()
+	return this.Render()
 }
 
-func (q *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
-	q.Validation.Required(quotation.Tag).Message("请选择一个标签")
-	q.Validation.Required(quotation.Content).Message("摘录内容不能为空")
-	q.Validation.Required(quotation.Author).Message("作者不能为空")
+func (this *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
+	this.Validation.Required(quotation.Tag).Message("请选择一个标签")
+	this.Validation.Required(quotation.Content).Message("摘录内容不能为空")
+	this.Validation.Required(quotation.Author).Message("作者不能为空")
 
 	fmt.Println("摘录标签： ", quotation.Tag)
 	fmt.Println("摘录被容： ", quotation.Content)
 	fmt.Println("原文： ", quotation.Original)
 	fmt.Println("作者： ", quotation.Author)
 
-	if q.Validation.HasErrors() {
-		q.Validation.Keep()
-		q.FlashParams()
-		return q.Redirect((*Quotation).Add)
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*Quotation).Add)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		q.Response.Status = 500
-		return q.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	err = manager.AddQuotation(quotation)
 	if err != nil {
-		// q.Validation.Keep()
-		// q.FlashParams()
-		q.Flash.Error(err.Error())
-		return q.Redirect((*Quotation).Add)
+		// this.Validation.Keep()
+		// this.FlashParams()
+		this.Flash.Error(err.Error())
+		return this.Redirect((*Quotation).Add)
 	}
 
-	return q.Redirect((*App).Add)
+	return this.Redirect((*App).Add)
 }
 
-func (q *Quotation) PostEdit(originalQuotationID string, newQuotation *models.Quotation) revel.Result {
-	q.Validation.Required(newQuotation.Tag).Message("请选择一个标签")
-	q.Validation.Required(newQuotation.Content).Message("摘录内容不能为空")
-	q.Validation.Required(newQuotation.Author).Message("作者不能为空")
+func (this *Quotation) PostEdit(originalQuotationID string, newQuotation *models.Quotation) revel.Result {
+	this.Validation.Required(newQuotation.Tag).Message("请选择一个标签")
+	this.Validation.Required(newQuotation.Content).Message("摘录内容不能为空")
+	this.Validation.Required(newQuotation.Author).Message("作者不能为空")
 
 	fmt.Println("摘录标签： ", newQuotation.Tag)
 	fmt.Println("摘录被容： ", newQuotation.Content)
 	fmt.Println("原文： ", newQuotation.Original)
 	fmt.Println("作者： ", newQuotation.Author)
 
-	if q.Validation.HasErrors() {
-		q.Validation.Keep()
-		q.FlashParams()
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
 		fmt.Println("error in validation ")
-		return q.Redirect((*Quotation).Edit)
+		return this.Redirect((*Quotation).Edit)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		q.Response.Status = 500
-		return q.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	err = manager.UpdateQuotation(originalQuotationID, newQuotation)
 	if err != nil {
-		// q.Validation.Keep()
-		// q.FlashParams()
-		q.Flash.Error(err.Error())
+		// this.Validation.Keep()
+		// this.FlashParams()
+		this.Flash.Error(err.Error())
 		fmt.Println("error in update quotation ")
-		return q.Redirect((*Quotation).Edit)
+		return this.Redirect((*Quotation).Edit)
 	}
 
-	return q.Redirect((*Quotation).Index)
+	return this.Redirect((*Quotation).Index)
 }
 
-func (q *Quotation) Show(id string) revel.Result {
+func (this *Quotation) Show(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
-		q.Response.Status = 500
-		return q.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	quotation, _ := manager.GetQuotationById(id)
 	// if err != nil {
-	// 	q.Flash.Error(err.Error())
-	// 	//return q.Redirect((*Essay).Add)
+	// 	this.Flash.Error(err.Error())
+	// 	//return this.Redirect((*Essay).Add)
 	// }
 
-	q.RenderArgs["userid"] = q.Session["userid"]
-	q.RenderArgs["nickName"] = q.Session["nickName"]
-	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
-	q.RenderArgs["quotation"] = quotation
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["quotation"] = quotation
 
-	return q.Render()
+	return this.Render()
 }
 
-func (q *Quotation) PageList(pageNumber string) revel.Result {
+func (this *Quotation) PageList(pageNumber string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -256,15 +256,15 @@ func (q *Quotation) PageList(pageNumber string) revel.Result {
 	fmt.Println("pageCount:", pageCount)
 	fmt.Println("pageNumber:", pageNumber)
 
-	q.RenderArgs["allQuotations"] = allQuotations
-	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
-	q.RenderArgs["pageCount"] = pageCount
-	q.RenderArgs["pageNumber"] = pageNumber
+	this.RenderArgs["allQuotations"] = allQuotations
+	this.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["pageNumber"] = pageNumber
 
-	return q.Render()
+	return this.Render()
 }
 
-func (q *Quotation) PageListWithTag(uPageNumber string, tag string) revel.Result {
+func (this *Quotation) PageListWithTag(uPageNumber string, tag string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -303,28 +303,28 @@ func (q *Quotation) PageListWithTag(uPageNumber string, tag string) revel.Result
 	fmt.Println("pageCount:", pageCount)
 	fmt.Println("uPageNumber:", uPageNumber)
 
-	q.RenderArgs["allQuotations"] = allQuotations
-	q.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
-	q.RenderArgs["pageCount"] = pageCount
-	q.RenderArgs["uPageNumber"] = uPageNumber
+	this.RenderArgs["allQuotations"] = allQuotations
+	this.RenderArgs["quotationsOnOnePage"] = quotationsOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["uPageNumber"] = uPageNumber
 
-	return q.Render()
+	return this.Render()
 }
 
-func (q *Quotation) Delete(id string) revel.Result {
-	userid := q.Session["userid"]
-	nickName := q.Session["nickName"]
+func (this *Quotation) Delete(id string) revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		q.Response.Status = 500
-		return q.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	err = manager.DeleteQuotationById(id)
 
-	q.RenderArgs["avatarUrl"] = q.Session["avatarUrl"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	q.Render(userid, nickName)
-	return q.Redirect((*Quotation).Index)
+	this.Render(userid, nickName)
+	return this.Redirect((*Quotation).Index)
 }

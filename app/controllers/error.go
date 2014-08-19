@@ -8,10 +8,10 @@ type ErrorPages struct {
 	*revel.Controller
 }
 
-func (e ErrorPages) Page404() revel.Result {
-	return e.Render()
+func (this ErrorPages) Page404() revel.Result {
+	return this.Render()
 }
 
-func (e ErrorPages) Page500() revel.Result {
-	return e.Render()
+func (this ErrorPages) Page500() revel.Result {
+	return this.Render()
 }

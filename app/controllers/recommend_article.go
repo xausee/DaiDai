@@ -10,7 +10,7 @@ type RecommondArticle struct {
 	*revel.Controller
 }
 
-func (ra *RecommondArticle) Recommond(articleAuthorNickName string, articleTitle string, articleId string) revel.Result {
+func (this *RecommondArticle) Recommond(articleAuthorNickName string, articleTitle string, articleId string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -27,14 +27,14 @@ func (ra *RecommondArticle) Recommond(articleAuthorNickName string, articleTitle
 		fmt.Println("推荐文章失败")
 	}
 
-	ra.RenderArgs["userid"] = ra.Session["userid"]
-	ra.RenderArgs["nickName"] = ra.Session["nickName"]
-	ra.RenderArgs["avatarUrl"] = ra.Session["avatarUrl"]
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	return ra.Redirect("/user/%s/article/%s", articleAuthorNickName, articleId)
+	return this.Redirect("/user/%s/article/%s", articleAuthorNickName, articleId)
 }
 
-func (ra *RecommondArticle) DeleteRecommond(articleAuthorNickName string, articleTitle string, articleId string) revel.Result {
+func (this *RecommondArticle) DeleteRecommond(articleAuthorNickName string, articleTitle string, articleId string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -51,9 +51,9 @@ func (ra *RecommondArticle) DeleteRecommond(articleAuthorNickName string, articl
 		fmt.Println("推荐文章失败")
 	}
 
-	ra.RenderArgs["userid"] = ra.Session["userid"]
-	ra.RenderArgs["nickName"] = ra.Session["nickName"]
-	ra.RenderArgs["avatarUrl"] = ra.Session["avatarUrl"]
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	return ra.Redirect("/user/%s/article/%s", articleAuthorNickName, articleId)
+	return this.Redirect("/user/%s/article/%s", articleAuthorNickName, articleId)
 }

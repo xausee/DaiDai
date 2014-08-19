@@ -10,7 +10,7 @@ type Witticism struct {
 	*revel.Controller
 }
 
-func (w *Witticism) Index() revel.Result {
+func (this *Witticism) Index() revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -19,56 +19,56 @@ func (w *Witticism) Index() revel.Result {
 
 	witticisms, err := manager.GetAllWitticism()
 
-	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["nickName"] = w.Session["nickName"]
-	w.RenderArgs["avatarUrl"] = w.Session["avatarUrl"]
-	w.RenderArgs["witticisms"] = witticisms
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["witticisms"] = witticisms
 
-	return w.Render()
+	return this.Render()
 }
 
-func (w *Witticism) Add() revel.Result {
-	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["nickName"] = w.Session["nickName"]
-	w.RenderArgs["avatarUrl"] = w.Session["avatarUrl"]
+func (this *Witticism) Add() revel.Result {
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	return w.Render()
+	return this.Render()
 }
 
-func (w *Witticism) Edit(id string) revel.Result {
+func (this *Witticism) Edit(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
-		w.Response.Status = 500
-		return w.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	originalWitticism, _ := manager.GetWitticismById(id)
 
-	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["nickName"] = w.Session["nickName"]
-	w.RenderArgs["avatarUrl"] = w.Session["avatarUrl"]
-	w.RenderArgs["originalWitticism"] = originalWitticism
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["originalWitticism"] = originalWitticism
 
-	return w.Render()
+	return this.Render()
 }
 
-func (w *Witticism) PostAdd(witticism *models.Witticism) revel.Result {
-	w.Validation.Required(witticism.Content).Message("慧语内容不能为空")
-	w.Validation.Required(witticism.Author).Message("作者不能为空")
+func (this *Witticism) PostAdd(witticism *models.Witticism) revel.Result {
+	this.Validation.Required(witticism.Content).Message("慧语内容不能为空")
+	this.Validation.Required(witticism.Author).Message("作者不能为空")
 
 	fmt.Println("慧语被容： ", witticism.Content)
 	fmt.Println("作者： ", witticism.Author)
 
-	if w.Validation.HasErrors() {
-		w.Validation.Keep()
-		w.FlashParams()
-		return w.Redirect((*Witticism).Add)
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*Witticism).Add)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		w.Response.Status = 500
-		return w.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
@@ -76,80 +76,80 @@ func (w *Witticism) PostAdd(witticism *models.Witticism) revel.Result {
 	if err != nil {
 		// q.Validation.Keep()
 		// q.FlashParams()
-		w.Flash.Error(err.Error())
-		return w.Redirect((*Witticism).Add)
+		this.Flash.Error(err.Error())
+		return this.Redirect((*Witticism).Add)
 	}
 
-	return w.Redirect((*App).Add)
+	return this.Redirect((*App).Add)
 }
 
-func (w *Witticism) PostEdit(originalWitticismID string, newWitticism *models.Witticism) revel.Result {
-	w.Validation.Required(newWitticism.Content).Message("内容不能为空")
-	w.Validation.Required(newWitticism.Author).Message("作者不能为空")
+func (this *Witticism) PostEdit(originalWitticismID string, newWitticism *models.Witticism) revel.Result {
+	this.Validation.Required(newWitticism.Content).Message("内容不能为空")
+	this.Validation.Required(newWitticism.Author).Message("作者不能为空")
 
 	fmt.Println("内容： ", newWitticism.Content)
 	fmt.Println("作者： ", newWitticism.Author)
 
-	if w.Validation.HasErrors() {
-		w.Validation.Keep()
-		w.FlashParams()
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
 		fmt.Println("error in validation ")
-		return w.Redirect((*Witticism).Edit)
+		return this.Redirect((*Witticism).Edit)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		w.Response.Status = 500
-		return w.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	err = manager.UpdateWitticism(originalWitticismID, newWitticism)
 	if err != nil {
-		w.Validation.Keep()
-		w.FlashParams()
-		w.Flash.Error(err.Error())
+		this.Validation.Keep()
+		this.FlashParams()
+		this.Flash.Error(err.Error())
 		fmt.Println("error in update Witticism ")
-		return w.Redirect((*Witticism).Edit)
+		return this.Redirect((*Witticism).Edit)
 	}
 
-	return w.Redirect((*Witticism).Index)
+	return this.Redirect((*Witticism).Index)
 }
 
-func (w *Witticism) Show(id string) revel.Result {
+func (this *Witticism) Show(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
-		w.Response.Status = 500
-		return w.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	witticism, _ := manager.GetWitticismById(id)
 	fmt.Println("作者： ", witticism.Author)
 	// if err != nil {
-	// 	w.Flash.Error(err.Error())
-	// 	//return w.Redirect((*Essay).Add)
+	// 	this.Flash.Error(err.Error())
+	// 	//return this.Redirect((*Essay).Add)
 	// }
 
-	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["nickName"] = w.Session["nickName"]
-	w.RenderArgs["avatarUrl"] = w.Session["avatarUrl"]
-	w.RenderArgs["witticism"] = witticism
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["witticism"] = witticism
 
-	return w.Render()
+	return this.Render()
 }
 
-func (w *Witticism) Delete(id string) revel.Result {
+func (this *Witticism) Delete(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
-		w.Response.Status = 500
-		return w.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	err = manager.DeleteWitticismById(id)
 
-	w.RenderArgs["userid"] = w.Session["userid"]
-	w.RenderArgs["nickName"] = w.Session["nickName"]
-	w.RenderArgs["avatarUrl"] = w.Session["avatarUrl"]
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	return w.Redirect((*Witticism).Index)
+	return this.Redirect((*Witticism).Index)
 }

@@ -11,7 +11,7 @@ type ModernPoem struct {
 	*revel.Controller
 }
 
-func (mp *ModernPoem) Index() revel.Result {
+func (this *ModernPoem) Index() revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -45,18 +45,18 @@ func (mp *ModernPoem) Index() revel.Result {
 		poemsOnOnePage = allPoems
 	}
 
-	mp.RenderArgs["userid"] = mp.Session["userid"]
-	mp.RenderArgs["nickName"] = mp.Session["nickName"]
-	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
-	mp.RenderArgs["allPoems"] = allPoems
-	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
-	mp.RenderArgs["pageCount"] = pageCount
-	mp.RenderArgs["pages"] = pages
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["allPoems"] = allPoems
+	this.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["pages"] = pages
 
-	return mp.Render()
+	return this.Render()
 }
 
-func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
+func (this *ModernPoem) TypeIndex(tag string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -90,127 +90,127 @@ func (mp *ModernPoem) TypeIndex(tag string) revel.Result {
 		poemsOnOnePage = allPoems
 	}
 
-	mp.RenderArgs["userid"] = mp.Session["userid"]
-	mp.RenderArgs["nickName"] = mp.Session["nickName"]
-	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
-	mp.RenderArgs["allPoems"] = allPoems
-	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
-	mp.RenderArgs["pageCount"] = pageCount
-	mp.RenderArgs["type"] = tag
-	mp.RenderArgs["pageSlice"] = pageSlice
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["allPoems"] = allPoems
+	this.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["type"] = tag
+	this.RenderArgs["pageSlice"] = pageSlice
 
-	return mp.Render()
+	return this.Render()
 }
 
-func (mp *ModernPoem) Add() revel.Result {
-	userid := mp.Session["userid"]
-	nickName := mp.Session["nickName"]
-	return mp.Render(userid, nickName)
+func (this *ModernPoem) Add() revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
+	return this.Render(userid, nickName)
 }
 
-func (mp *ModernPoem) Edit(id string) revel.Result {
+func (this *ModernPoem) Edit(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
-		mp.Response.Status = 500
-		return mp.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	oringinalModernPoem, _ := manager.GetModernPoemById(id)
 
-	mp.RenderArgs["userid"] = mp.Session["userid"]
-	mp.RenderArgs["nickName"] = mp.Session["nickName"]
-	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
-	mp.RenderArgs["oringinalModernPoem"] = oringinalModernPoem
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["oringinalModernPoem"] = oringinalModernPoem
 
-	return mp.Render()
+	return this.Render()
 }
 
-func (mp *ModernPoem) PostAdd(modernPoem *models.ModernPoem) revel.Result {
-	mp.Validation.Required(modernPoem.Tag).Message("请选择一个标签")
-	mp.Validation.Required(modernPoem.Content).Message("摘录内容不能为空")
-	mp.Validation.Required(modernPoem.Author).Message("作者不能为空")
+func (this *ModernPoem) PostAdd(modernPoem *models.ModernPoem) revel.Result {
+	this.Validation.Required(modernPoem.Tag).Message("请选择一个标签")
+	this.Validation.Required(modernPoem.Content).Message("摘录内容不能为空")
+	this.Validation.Required(modernPoem.Author).Message("作者不能为空")
 
 	fmt.Println("诗歌标签： ", modernPoem.Tag)
 	fmt.Println("诗歌标题： ", modernPoem.Title)
 	fmt.Println("诗歌内容： ", modernPoem.Content)
 	fmt.Println("作者： ", modernPoem.Author)
 
-	if mp.Validation.HasErrors() {
-		mp.Validation.Keep()
-		mp.FlashParams()
-		return mp.Redirect((*ModernPoem).Add)
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*ModernPoem).Add)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		mp.Response.Status = 500
-		return mp.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	err = manager.AddModernPeom(modernPoem)
 	if err != nil {
-		mp.Flash.Error(err.Error())
-		return mp.Redirect((*ModernPoem).Add)
+		this.Flash.Error(err.Error())
+		return this.Redirect((*ModernPoem).Add)
 	}
 
-	return mp.Redirect((*App).Add)
+	return this.Redirect((*App).Add)
 }
 
-func (mp *ModernPoem) PostEdit(originalModernPoemID string, newModernPoem *models.ModernPoem) revel.Result {
-	mp.Validation.Required(newModernPoem.Tag).Message("请选择一个标签")
-	mp.Validation.Required(newModernPoem.Content).Message("摘录内容不能为空")
-	mp.Validation.Required(newModernPoem.Author).Message("作者不能为空")
+func (this *ModernPoem) PostEdit(originalModernPoemID string, newModernPoem *models.ModernPoem) revel.Result {
+	this.Validation.Required(newModernPoem.Tag).Message("请选择一个标签")
+	this.Validation.Required(newModernPoem.Content).Message("摘录内容不能为空")
+	this.Validation.Required(newModernPoem.Author).Message("作者不能为空")
 
 	fmt.Println("诗歌标签： ", newModernPoem.Tag)
 	fmt.Println("诗歌标题： ", newModernPoem.Title)
 	fmt.Println("诗歌内容： ", newModernPoem.Content)
 	fmt.Println("作者： ", newModernPoem.Author)
 
-	if mp.Validation.HasErrors() {
-		mp.Validation.Keep()
-		mp.FlashParams()
-		return mp.Redirect((*ModernPoem).Edit)
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*ModernPoem).Edit)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		mp.Response.Status = 500
-		return mp.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	err = manager.UpdateModernPeom(originalModernPoemID, newModernPoem)
 	if err != nil {
-		mp.Flash.Error(err.Error())
-		return mp.Redirect((*ModernPoem).Edit)
+		this.Flash.Error(err.Error())
+		return this.Redirect((*ModernPoem).Edit)
 	}
 
-	return mp.Redirect((*ModernPoem).Index)
+	return this.Redirect((*ModernPoem).Index)
 }
 
-func (mp *ModernPoem) Show(id string) revel.Result {
+func (this *ModernPoem) Show(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
-		mp.Response.Status = 500
-		return mp.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	modernPoem, _ := manager.GetModernPoemById(id)
 	// if err != nil {
-	// 	mp.Flash.Error(err.Error())
-	// 	//return mp.Redirect((*Essay).Add)
+	// 	this.Flash.Error(err.Error())
+	// 	//return this.Redirect((*Essay).Add)
 	// }
 
-	mp.RenderArgs["userid"] = mp.Session["userid"]
-	mp.RenderArgs["nickName"] = mp.Session["nickName"]
-	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
-	mp.RenderArgs["modernPoem"] = modernPoem
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["modernPoem"] = modernPoem
 
-	return mp.Render()
+	return this.Render()
 }
 
-func (mp *ModernPoem) PageList(pageNumber string) revel.Result {
+func (this *ModernPoem) PageList(pageNumber string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -249,15 +249,15 @@ func (mp *ModernPoem) PageList(pageNumber string) revel.Result {
 	fmt.Println("pageCount:", pageCount)
 	fmt.Println("pageNumber:", pageNumber)
 
-	mp.RenderArgs["allPoems"] = allPoems
-	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
-	mp.RenderArgs["pageCount"] = pageCount
-	mp.RenderArgs["pageNumber"] = pageNumber
+	this.RenderArgs["allPoems"] = allPoems
+	this.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["pageNumber"] = pageNumber
 
-	return mp.Render()
+	return this.Render()
 }
 
-func (mp *ModernPoem) PageListWithTag(uPageNumber string, tag string) revel.Result {
+func (this *ModernPoem) PageListWithTag(uPageNumber string, tag string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -296,28 +296,28 @@ func (mp *ModernPoem) PageListWithTag(uPageNumber string, tag string) revel.Resu
 	fmt.Println("pageCount:", pageCount)
 	fmt.Println("uPageNumber:", uPageNumber)
 
-	mp.RenderArgs["allPoems"] = allPoems
-	mp.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
-	mp.RenderArgs["pageCount"] = pageCount
-	mp.RenderArgs["uPageNumber"] = uPageNumber
+	this.RenderArgs["allPoems"] = allPoems
+	this.RenderArgs["poemsOnOnePage"] = poemsOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["uPageNumber"] = uPageNumber
 
-	return mp.Render()
+	return this.Render()
 }
 
-func (mp *ModernPoem) Delete(id string) revel.Result {
-	userid := mp.Session["userid"]
-	nickName := mp.Session["nickName"]
+func (this *ModernPoem) Delete(id string) revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		mp.Response.Status = 500
-		return mp.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	err = manager.DeleteModernPoemById(id)
 
-	mp.RenderArgs["avatarUrl"] = mp.Session["avatarUrl"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	mp.Render(userid, nickName)
-	return mp.Redirect((*ModernPoem).Index)
+	this.Render(userid, nickName)
+	return this.Redirect((*ModernPoem).Index)
 }

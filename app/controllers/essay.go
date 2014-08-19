@@ -11,7 +11,7 @@ type Essay struct {
 	*revel.Controller
 }
 
-func (e *Essay) Index() revel.Result {
+func (this *Essay) Index() revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -45,18 +45,18 @@ func (e *Essay) Index() revel.Result {
 		essaysOnOnePage = allEssays
 	}
 
-	e.RenderArgs["userid"] = e.Session["userid"]
-	e.RenderArgs["nickName"] = e.Session["nickName"]
-	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
-	e.RenderArgs["allEssays"] = allEssays
-	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
-	e.RenderArgs["pageCount"] = pageCount
-	e.RenderArgs["pageSlice"] = pageSlice
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["allEssays"] = allEssays
+	this.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["pageSlice"] = pageSlice
 
-	return e.Render()
+	return this.Render()
 }
 
-func (e *Essay) TypeIndex(tag string) revel.Result {
+func (this *Essay) TypeIndex(tag string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -90,129 +90,129 @@ func (e *Essay) TypeIndex(tag string) revel.Result {
 		essaysOnOnePage = allEssays
 	}
 
-	e.RenderArgs["userid"] = e.Session["userid"]
-	e.RenderArgs["nickName"] = e.Session["nickName"]
-	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
-	e.RenderArgs["allEssays"] = allEssays
-	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
-	e.RenderArgs["pageCount"] = pageCount
-	e.RenderArgs["type"] = tag
-	e.RenderArgs["pageSlice"] = pageSlice
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["allEssays"] = allEssays
+	this.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["type"] = tag
+	this.RenderArgs["pageSlice"] = pageSlice
 
-	return e.Render()
+	return this.Render()
 }
 
-func (e *Essay) Add() revel.Result {
-	userid := e.Session["userid"]
-	nickName := e.Session["nickName"]
+func (this *Essay) Add() revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
 
-	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	return e.Render(userid, nickName)
+	return this.Render(userid, nickName)
 }
 
-func (e *Essay) Edit(id string) revel.Result {
-	userid := e.Session["userid"]
-	nickName := e.Session["nickName"]
+func (this *Essay) Edit(id string) revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		e.Response.Status = 500
-		return e.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	oringinalEssay, _ := manager.GetEssayById(id)
 
-	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	return e.Render(userid, nickName, oringinalEssay)
+	return this.Render(userid, nickName, oringinalEssay)
 }
 
-func (e *Essay) PostAdd(essay *models.Essay) revel.Result {
-	e.Validation.Required(essay.Tag).Message("请选择一个标签")
-	e.Validation.Required(essay.Content).Message("散文内容不能为空")
-	e.Validation.Required(essay.Author).Message("作者不能为空")
+func (this *Essay) PostAdd(essay *models.Essay) revel.Result {
+	this.Validation.Required(essay.Tag).Message("请选择一个标签")
+	this.Validation.Required(essay.Content).Message("散文内容不能为空")
+	this.Validation.Required(essay.Author).Message("作者不能为空")
 
 	fmt.Println("散文标签： ", essay.Tag)
 	fmt.Println("散文标题： ", essay.Title)
 	fmt.Println("散文内容： ", essay.Content)
 	fmt.Println("作者： ", essay.Author)
 
-	if e.Validation.HasErrors() {
-		e.Validation.Keep()
-		e.FlashParams()
-		return e.Redirect((*Essay).Add)
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*Essay).Add)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		e.Response.Status = 500
-		return e.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	err = manager.AddEssay(essay)
 	if err != nil {
-		e.Flash.Error(err.Error())
-		return e.Redirect((*Essay).Add)
+		this.Flash.Error(err.Error())
+		return this.Redirect((*Essay).Add)
 	}
 
-	return e.Redirect((*App).Add)
+	return this.Redirect((*App).Add)
 }
 
-func (e *Essay) PostEdit(originalEssayID string, newEssay *models.Essay) revel.Result {
-	e.Validation.Required(newEssay.Tag).Message("请选择一个标签")
-	e.Validation.Required(newEssay.Content).Message("摘录内容不能为空")
-	e.Validation.Required(newEssay.Author).Message("作者不能为空")
+func (this *Essay) PostEdit(originalEssayID string, newEssay *models.Essay) revel.Result {
+	this.Validation.Required(newEssay.Tag).Message("请选择一个标签")
+	this.Validation.Required(newEssay.Content).Message("摘录内容不能为空")
+	this.Validation.Required(newEssay.Author).Message("作者不能为空")
 
 	fmt.Println("散文标签： ", newEssay.Tag)
 	fmt.Println("散文标题： ", newEssay.Title)
 	fmt.Println("散文内容： ", newEssay.Content)
 	fmt.Println("作者： ", newEssay.Author)
 
-	if e.Validation.HasErrors() {
-		e.Validation.Keep()
-		e.FlashParams()
-		return e.Redirect((*Essay).Edit)
+	if this.Validation.HasErrors() {
+		this.Validation.Keep()
+		this.FlashParams()
+		return this.Redirect((*Essay).Edit)
 	}
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		e.Response.Status = 500
-		return e.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 
 	err = manager.UpdateEssay(originalEssayID, newEssay)
 	if err != nil {
-		e.Flash.Error(err.Error())
-		return e.Redirect((*Essay).Edit)
+		this.Flash.Error(err.Error())
+		return this.Redirect((*Essay).Edit)
 	}
 
-	return e.Redirect((*Essay).Index)
+	return this.Redirect((*Essay).Index)
 }
 
-func (e *Essay) Show(id string) revel.Result {
+func (this *Essay) Show(id string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
-		e.Response.Status = 500
-		return e.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	essay, _ := manager.GetEssayById(id)
 	// if err != nil {
-	// 	e.Flash.Error(err.Error())
-	// 	//return e.Redirect((*Essay).Add)
+	// 	this.Flash.Error(err.Error())
+	// 	//return this.Redirect((*Essay).Add)
 	// }
-	e.RenderArgs["userid"] = e.Session["userid"]
-	e.RenderArgs["nickName"] = e.Session["nickName"]
-	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
-	e.RenderArgs["essay"] = essay
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+	this.RenderArgs["essay"] = essay
 
-	return e.Render()
+	return this.Render()
 }
 
-func (e *Essay) PageList(pageNumber string) revel.Result {
+func (this *Essay) PageList(pageNumber string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -251,15 +251,15 @@ func (e *Essay) PageList(pageNumber string) revel.Result {
 	fmt.Println("pageCount:", pageCount)
 	fmt.Println("pageNumber:", pageNumber)
 
-	e.RenderArgs["allEssays"] = allEssays
-	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
-	e.RenderArgs["pageCount"] = pageCount
-	e.RenderArgs["pageNumber"] = pageNumber
+	this.RenderArgs["allEssays"] = allEssays
+	this.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["pageNumber"] = pageNumber
 
-	return e.Render()
+	return this.Render()
 }
 
-func (e *Essay) PageListWithTag(uPageNumber string, tag string) revel.Result {
+func (this *Essay) PageListWithTag(uPageNumber string, tag string) revel.Result {
 	manager, err := models.NewDbManager()
 	if err != nil {
 		fmt.Println("链接数据库失败")
@@ -298,28 +298,28 @@ func (e *Essay) PageListWithTag(uPageNumber string, tag string) revel.Result {
 	fmt.Println("pageCount:", pageCount)
 	fmt.Println("uPageNumber:", uPageNumber)
 
-	e.RenderArgs["allEssays"] = allEssays
-	e.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
-	e.RenderArgs["pageCount"] = pageCount
-	e.RenderArgs["uPageNumber"] = uPageNumber
+	this.RenderArgs["allEssays"] = allEssays
+	this.RenderArgs["essaysOnOnePage"] = essaysOnOnePage
+	this.RenderArgs["pageCount"] = pageCount
+	this.RenderArgs["uPageNumber"] = uPageNumber
 
-	return e.Render()
+	return this.Render()
 }
 
-func (e *Essay) Delete(id string) revel.Result {
-	userid := e.Session["userid"]
-	nickName := e.Session["nickName"]
+func (this *Essay) Delete(id string) revel.Result {
+	userid := this.Session["userid"]
+	nickName := this.Session["nickName"]
 
 	manager, err := models.NewDbManager()
 	if err != nil {
-		e.Response.Status = 500
-		return e.RenderError(err)
+		this.Response.Status = 500
+		return this.RenderError(err)
 	}
 	defer manager.Close()
 	err = manager.DeleteEssayById(id)
 
-	e.RenderArgs["avatarUrl"] = e.Session["avatarUrl"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
-	e.Render(userid, nickName)
-	return e.Redirect((*Essay).Index)
+	this.Render(userid, nickName)
+	return this.Redirect((*Essay).Index)
 }
