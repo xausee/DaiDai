@@ -48,5 +48,6 @@ func (this *AncientPoem) PostAdd(ancientPoem *models.AncientPoem) revel.Result {
 		return this.Redirect((*AncientPoem).Add)
 	}
 
-	return this.Redirect((*App).Add)
+	// 返回到管理员首页
+	return this.Redirect((*Admin).Index)
 }

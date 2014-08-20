@@ -157,7 +157,8 @@ func (this *Quotation) PostAdd(quotation *models.Quotation) revel.Result {
 		return this.Redirect((*Quotation).Add)
 	}
 
-	return this.Redirect((*App).Add)
+	// 返回到管理员首页
+	return this.Redirect((*Admin).Index)
 }
 
 func (this *Quotation) PostEdit(originalQuotationID string, newQuotation *models.Quotation) revel.Result {

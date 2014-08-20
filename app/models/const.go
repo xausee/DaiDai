@@ -1,5 +1,21 @@
 package models
 
+type Role int
+
+const (
+	// AnonymousRole Role = iota
+	// UserRole
+	// AdminRole
+
+	AnonymousRole = "AnonymousRole"
+	UserRole      = "UserRole"
+	AdminRole     = "AdminRole"
+)
+
+const (
+	CSessionRole = "CSessionRole"
+)
+
 const (
 	ArticlesInHomePanel     = 15
 	ArticlesInUserHomePanel = 20

@@ -4,10 +4,17 @@
 
 module:testrunner
 GET     /                                       App.Index
-GET     /add/                                   App.Add
 GET     /aboutus                                App.AboutUs 
 GET     /donate                                 App.Donate
 GET     /notauthorized                          App.NotAuthorized
+
+GET     /admin                                  Admin.Index
+GET     /admin/register                         Admin.Register
+POST    /admin/register                         Admin.PostRegister
+GET     /admin/registersuccess                  Admin.RegisterSuccess
+GET     /admin/login                            Admin.Login
+POST    /admin/login                            Admin.PostLogin
+GET     /admin/logout                           Admin.Logout
 
 GET     /uploadpicture                          Admin.UploadPicture
 POST    /uploadpicture                          Admin.PostUploadPicture

@@ -157,7 +157,8 @@ func (this *Essay) PostAdd(essay *models.Essay) revel.Result {
 		return this.Redirect((*Essay).Add)
 	}
 
-	return this.Redirect((*App).Add)
+	// 返回到管理员首页
+	return this.Redirect((*App).Index)
 }
 
 func (this *Essay) PostEdit(originalEssayID string, newEssay *models.Essay) revel.Result {

@@ -80,7 +80,8 @@ func (this *Witticism) PostAdd(witticism *models.Witticism) revel.Result {
 		return this.Redirect((*Witticism).Add)
 	}
 
-	return this.Redirect((*App).Add)
+	// 返回到管理员首页
+	return this.Redirect((*Admin).Index)
 }
 
 func (this *Witticism) PostEdit(originalWitticismID string, newWitticism *models.Witticism) revel.Result {

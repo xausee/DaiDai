@@ -154,7 +154,8 @@ func (this *ModernPoem) PostAdd(modernPoem *models.ModernPoem) revel.Result {
 		return this.Redirect((*ModernPoem).Add)
 	}
 
-	return this.Redirect((*App).Add)
+	// 返回到管理员首页
+	return this.Redirect((*Admin).Index)
 }
 
 func (this *ModernPoem) PostEdit(originalModernPoemID string, newModernPoem *models.ModernPoem) revel.Result {

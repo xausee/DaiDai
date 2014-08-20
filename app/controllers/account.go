@@ -129,5 +129,8 @@ func (this *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 
 	fmt.Println("使用昵称登陆: ", loginUser.NickName)
 
+	// 使用session保存用户权限
+	this.Session[models.CSessionRole] = models.UserRole
+
 	return this.Redirect((*App).Index)
 }

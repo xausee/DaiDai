@@ -46,14 +46,6 @@ func (this App) Index() revel.Result {
 	return this.Render(userid, nickName, avatarUrl)
 }
 
-func (this App) Add() revel.Result {
-	userid := this.Session["userid"]
-	nickName := this.Session["nickName"]
-	avatarUrl := this.Session["avatarUrl"]
-
-	return this.Render(userid, nickName, avatarUrl)
-}
-
 func (this App) PostSearch(keywords string) revel.Result {
 	userid := this.Session["userid"]
 	nickName := this.Session["nickName"]

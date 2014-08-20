@@ -1,7 +1,6 @@
 {{set . "title" "新增条目"}}
 {{template "header.html" .}}
 
-{{if eq .nickName "水蓝色"}}
 <div class="container"> 
   <div class="row">
     <div class="col-xs-1"></div>
@@ -9,7 +8,7 @@
       <br> 
       <ul class="nav navbar-nav navbar-right">  
         <!-- <li><a href="/add/ancientpoem">新增古诗词</a></li> -->   
-        <li><a href="{{url "App.Index" }}">返回首页</a></li>     
+        <li><a href="{{url "App.Index" }}">转到首页</a></li>     
         <li><a href="{{url "Essay.Add"}}">新增散文</a></li>
         <li><a href="{{url "ModernPoem.Add"}}">新增现代诗</a></li>
         <li><a href="{{url "Quotation.Add"}}">新增摘录</a></li>
@@ -20,12 +19,5 @@
     </div>    
   </div> 
 </div> 
-{{else}}
-<div class="row text-center text-warning">
-  <br><br><br><br>
-  抱歉，您没有访问该页面的权限，只有管理员才可查看该页面。
-  <br><br><br><br>
-</div>     
-{{end}}
 
 {{template "footer.html" .}}

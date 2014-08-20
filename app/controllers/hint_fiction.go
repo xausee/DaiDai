@@ -127,7 +127,8 @@ func (this *HintFiction) PostAdd(hintFiction *models.HintFiction) revel.Result {
 		return this.Redirect((*HintFiction).Add)
 	}
 
-	return this.Redirect((*App).Add)
+	// 返回到管理员首页
+	return this.Redirect((*Admin).Index)
 }
 
 func (this *HintFiction) PostEdit(originalHintFictionID string, newHintFiction *models.HintFiction) revel.Result {
