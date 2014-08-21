@@ -40,6 +40,15 @@ func (manager *DbManager) GetAllUser() (userInfo []User, err error) {
 	return userInfo, err
 }
 
+func (manager *DbManager) SearchUser(keywords string) (users []User, err error) {
+	type Items map[string]string
+
+	uc := manager.session.DB(DbName).C(UserCollection)
+	err = uc.Find(bson.M{"nickname": Items{"$regex": keywords}}).All(&users)
+
+	return users, err
+}
+
 func (manager *DbManager) VerifyPasswordByNickName(nickName, password string) (user *User, err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 
