@@ -6,7 +6,6 @@ import (
 	"github.com/revel/revel"
 	"os"
 	"strconv"
-	"strings"
 )
 
 type Admin struct {
@@ -286,10 +285,8 @@ func checkAuthentication(c *revel.Controller) revel.Result {
 		userRole = models.Role(value)
 	}
 
-	//获取紧接着要调用的Action的名称
-	action := strings.ToLower(c.Action)
 	//获取相关action的权限定义
-	if requiredRole, isExists := authMap[action]; isExists {
+	if requiredRole, isExists := authMap[c.Action]; isExists {
 		//判断权限，如果权限不够, 跳转到首页
 		if userRole < requiredRole {
 			return c.Redirect((*App).Index)
