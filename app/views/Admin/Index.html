@@ -1,23 +1,6 @@
 {{set . "title" "新增条目"}}
 {{template "header.html" .}}
 
-<div class="container"> 
-  <div class="row">
-    <div class="col-xs-1"></div>
-    <div class="col-xs-8">  
-      <br> 
-      <ul class="nav navbar-nav navbar-right">  
-        <!-- <li><a href="/add/ancientpoem">新增古诗词</a></li> -->   
-        <li><a href="{{url "App.Index" }}">转到首页</a></li>     
-        <li><a href="{{url "Essay.Add"}}">新增散文</a></li>
-        <li><a href="{{url "ModernPoem.Add"}}">新增现代诗</a></li>
-        <li><a href="{{url "Quotation.Add"}}">新增摘录</a></li>
-        <li><a href="{{url "HintFiction.Add"}}">新增微小说</a></li>
-        <li><a href="{{url "Admin.UploadPicture"}}">上传图片</a></li>  
-        <li><a href="{{url "Witticism.Add"}}">新增慧语</a></li>              
-      </ul>  
-    </div>    
-  </div> 
-</div> 
+{{template "admin_navigate_bar.html" .}}
 
 {{template "footer.html" .}}

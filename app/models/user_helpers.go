@@ -29,6 +29,16 @@ func (manager *DbManager) GetUserByNickName(nickName string) (userInfo User, err
 
 	return userInfo, err
 }
+func (manager *DbManager) GetAllUser() (userInfo []User, err error) {
+	uc := manager.session.DB(DbName).C(UserCollection)
+
+	err = uc.Find(nil).All(&userInfo)
+	if err != nil {
+		fmt.Println("查询用户信息失败")
+	}
+
+	return userInfo, err
+}
 
 func (manager *DbManager) VerifyPasswordByNickName(nickName, password string) (user *User, err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)

@@ -103,9 +103,11 @@ func (this *ModernPoem) TypeIndex(tag string) revel.Result {
 }
 
 func (this *ModernPoem) Add() revel.Result {
-	userid := this.Session["userid"]
-	nickName := this.Session["nickName"]
-	return this.Render(userid, nickName)
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+
+	return this.Render()
 }
 
 func (this *ModernPoem) Edit(id string) revel.Result {

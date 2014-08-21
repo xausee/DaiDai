@@ -149,6 +149,10 @@ func (this *Admin) PostLogin(loginUser *models.LoginUser) revel.Result {
 }
 
 func (this *Admin) UploadPicture() revel.Result {
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+
 	return this.Render()
 }
 
@@ -164,6 +168,54 @@ func (this *Admin) PostUploadPicture(pictures []*os.File) revel.Result {
 	}
 
 	return this.Redirect((*Admin).UploadPicture)
+}
+
+func (this *Admin) UserManage() revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	var users []models.User
+	users, err = manager.GetAllUser()
+
+	if err != nil {
+		return this.RenderError(err)
+	}
+
+	this.RenderArgs["users"] = users
+	this.RenderArgs["userid"] = this.Session["userid"]
+	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
+
+	return this.Render()
+}
+
+func (this *Admin) SearchUserByNickName(nickName string) revel.Result {
+
+	return this.Render()
+}
+
+func (this *Admin) PostSearchUserByNickName(keywords string) revel.Result {
+	fmt.Println("搜索用户：", keywords)
+	manager, err := models.NewDbManager()
+	if err != nil {
+		this.Response.Status = 500
+		return this.RenderError(err)
+	}
+	defer manager.Close()
+
+	var users []models.User
+	users, err = manager.SearchUser(keywords)
+
+	if err != nil {
+		return this.RenderError(err)
+	}
+
+	this.RenderArgs["users"] = users
+	return this.Render()
 }
 
 func initAuthMap() map[string]models.Role {
@@ -185,6 +237,9 @@ func initAuthMap() map[string]models.Role {
 	authMap["Admin.Logout"] = models.AdminRole
 	authMap["Admin.UploadPicture"] = models.AdminRole
 	authMap["Admin.PostUploadPicture"] = models.AdminRole
+	authMap["Admin.UserManage"] = models.AdminRole
+	authMap["Admin.SearchUserByNickName"] = models.AdminRole
+	authMap["Admin.PostSearchUserByNickName"] = models.AdminRole
 
 	authMap["ErrorPages.Page404"] = models.AnonymousRole
 	authMap["ErrorPages.Page500"] = models.AnonymousRole

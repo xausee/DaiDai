@@ -105,6 +105,7 @@ func (this *Quotation) TypeIndex(tag string) revel.Result {
 func (this *Quotation) Add() revel.Result {
 	this.RenderArgs["userid"] = this.Session["userid"]
 	this.RenderArgs["nickName"] = this.Session["nickName"]
+	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]
 
 	return this.Render()
 }

@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"io"
+	"labix.org/v2/mgo/bson"
 	"os"
 	"path/filepath"
 	"strconv"
@@ -111,4 +112,13 @@ func SavePicture(pictures []*os.File) (err error) {
 		err = e
 	}
 	return err
+}
+
+func (manager *DbManager) SearchUser(keywords string) (users []User, err error) {
+	type Items map[string]string
+
+	uc := manager.session.DB(DbName).C(UserCollection)
+	err = uc.Find(bson.M{"nickname": Items{"$regex": keywords}}).All(&users)
+
+	return users, err
 }
