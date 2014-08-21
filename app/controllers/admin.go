@@ -81,8 +81,9 @@ func (this *Admin) PostRegister(user *models.MockUser) revel.Result {
 }
 
 func (this *Admin) PostLogin(loginUser *models.LoginUser) revel.Result {
-	this.Validation.Required(loginUser.NickName).Message("请输入昵称")
+	this.Validation.Required(loginUser.NickName).Message("请输入管理员账号")
 	this.Validation.Required(loginUser.Password).Message("请输入密码")
+	this.Validation.Required(loginUser.NickName == "水蓝色").Message("管理员账号不正确")
 
 	if this.Validation.HasErrors() {
 		this.Validation.Keep()
@@ -115,7 +116,7 @@ func (this *Admin) PostLogin(loginUser *models.LoginUser) revel.Result {
 
 		this.Validation.Keep()
 		this.FlashParams()
-		return this.Redirect((*Account).Login)
+		return this.Redirect((*Admin).Login)
 	}
 
 	this.Session["userid"] = strconv.Itoa(u.Id)
