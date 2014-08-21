@@ -33,8 +33,9 @@ func (this *Admin) Login() revel.Result {
 	return this.Render()
 }
 
+// 该action不实际使用，共用account的logout
 func (this *Admin) Logout() revel.Result {
-	fmt.Println("登出用户昵称: ", this.Session["nickName"])
+	fmt.Println("登出管理员账号: ", this.Session["nickName"])
 	for k := range this.Session {
 		delete(this.Session, k)
 	}
@@ -140,7 +141,8 @@ func (this *Admin) PostLogin(loginUser *models.LoginUser) revel.Result {
 	fmt.Println("使用管理员账号登陆: ", loginUser.NickName)
 
 	// 使用session保存管理员权限
-	this.Session[models.CSessionRole] = models.AdminRole
+	// session 里保存的只能是字符串，所以需要先将其转换字符串
+	this.Session[models.CSessionRole] = strconv.Itoa(int(models.AdminRole))
 
 	// 登陆成功，跳转到管理员首页
 	return this.Redirect((*Admin).Index)
@@ -164,31 +166,132 @@ func (this *Admin) PostUploadPicture(pictures []*os.File) revel.Result {
 	return this.Redirect((*Admin).UploadPicture)
 }
 
-func initAuthMap() {
-	authMap := make(map[string]string)
+func initAuthMap() map[string]models.Role {
+	authMap := make(map[string]models.Role)
 	authMap["account.login"] = models.AnonymousRole
 	authMap["account.logout"] = models.UserRole
-	authMap["admin.index"] = models.AdminRole
+
+	authMap["App.Index"] = models.AnonymousRole
+	authMap["App.AboutUs"] = models.AnonymousRole
+	authMap["App.Donate"] = models.AnonymousRole
+	authMap["App.NotAuthorized"] = models.AnonymousRole
+
+	authMap["Admin.Index"] = models.AdminRole
+	authMap["Admin.Register"] = models.AdminRole
+	authMap["Admin.PostRegister"] = models.AdminRole
+	authMap["Admin.RegisterSuccess"] = models.AdminRole
+	authMap["Admin.Login"] = models.AnonymousRole
+	authMap["Admin.PostLogin"] = models.AnonymousRole
+	authMap["Admin.Logout"] = models.AdminRole
+	authMap["Admin.UploadPicture"] = models.AdminRole
+	authMap["Admin.PostUploadPicture"] = models.AdminRole
+
+	authMap["ErrorPages.Page404"] = models.AnonymousRole
+	authMap["ErrorPages.Page500"] = models.AnonymousRole
+
+	authMap["Account.Register"] = models.AnonymousRole
+	authMap["Account.RegisterSuccessful"] = models.AnonymousRole
+	authMap["Account.Login"] = models.AnonymousRole
+	authMap["Account.PostLogin"] = models.AnonymousRole
+	authMap["Account.Logout"] = models.AnonymousRole
+
+	authMap["User.Index"] = models.AnonymousRole
+	authMap["User.Info"] = models.AnonymousRole
+	authMap["User.GetBasicInfo"] = models.AnonymousRole
+	authMap["User.SetPassword"] = models.UserRole
+	authMap["User.PostSetPassword"] = models.UserRole
+	authMap["User.SetProfile"] = models.UserRole
+	authMap["User.PostSetProfile"] = models.UserRole
+	authMap["User.GetExtraProfile"] = models.AnonymousRole
+	authMap["User.AddArticle "] = models.UserRole
+	authMap["User.PostAddArticle"] = models.UserRole
+	authMap["User.OriginalArticleList"] = models.AnonymousRole
+	authMap["User.ShowArticle"] = models.AnonymousRole
+	authMap["User.PostArticleComment"] = models.AnonymousRole
+	authMap["User.EditArticle"] = models.UserRole
+	authMap["User.PostEditArticle"] = models.UserRole
+	authMap["User.Message"] = models.AnonymousRole
+	authMap["User.Fans"] = models.AnonymousRole
+	authMap["User.Watch"] = models.AnonymousRole
+	authMap["User.ArticleCollection"] = models.AnonymousRole
+	authMap["User.PageList"] = models.AnonymousRole
+	authMap["User.PageList"] = models.AnonymousRole
+	authMap["User.Friend"] = models.AnonymousRole
+
+	authMap["Quotation.Index"] = models.AnonymousRole
+	authMap["Quotation.TypeIndex"] = models.AnonymousRole
+	authMap["Quotation.Add"] = models.AdminRole
+	authMap["Quotation.PostAdd"] = models.AdminRole
+	authMap["Quotation.Edit"] = models.AdminRole
+	authMap["Quotation.PostEdit"] = models.AdminRole
+	authMap["Quotation.Show"] = models.AnonymousRole
+	authMap["Quotation.PageList"] = models.AnonymousRole
+	authMap["Quotation.PageListWithTag"] = models.AnonymousRole
+
+	authMap["Witticism.Index"] = models.AnonymousRole
+	authMap["Witticism.Add"] = models.AdminRole
+	authMap["Witticism.PostAdd"] = models.AdminRole
+	authMap["Witticism.Edit"] = models.AdminRole
+	authMap["Witticism.PostEdit"] = models.AdminRole
+	authMap["Witticism.Show"] = models.AnonymousRole
+
+	authMap["AncientPoem.Add"] = models.AdminRole
+	authMap["AncientPoem.PostAdd"] = models.AdminRole
+
+	authMap["ModernPoem.Index"] = models.AnonymousRole
+	authMap["ModernPoem.TypeIndex"] = models.AnonymousRole
+	authMap["ModernPoem.Add"] = models.AdminRole
+	authMap["ModernPoem.PostAdd"] = models.AdminRole
+	authMap["ModernPoem.Edit"] = models.AdminRole
+	authMap["ModernPoem.PostEdit"] = models.AdminRole
+	authMap["ModernPoem.Show"] = models.AnonymousRole
+	authMap["ModernPoem.PageList"] = models.AnonymousRole
+	authMap["ModernPoem.PageListWithTag"] = models.AnonymousRole
+
+	authMap["Essay.Index"] = models.AnonymousRole
+	authMap["Essay.TypeIndex"] = models.AnonymousRole
+	authMap["Essay.Add"] = models.AdminRole
+	authMap["Essay.PostAdd"] = models.AdminRole
+	authMap["Essay.Edit"] = models.AdminRole
+	authMap["Essay.PostEdit"] = models.AdminRole
+	authMap["Essay.Show"] = models.AnonymousRole
+	authMap["Essay.PageList"] = models.AnonymousRole
+	authMap["Essay.PageListWithTag"] = models.AnonymousRole
+
+	authMap["HintFiction.Index"] = models.AnonymousRole
+	authMap["HintFiction.TypeIndex"] = models.AnonymousRole
+	authMap["HintFiction.Add"] = models.AdminRole
+	authMap["HintFiction.PostAdd"] = models.AdminRole
+	authMap["HintFiction.Edit"] = models.AdminRole
+	authMap["HintFiction.PostEdit"] = models.AdminRole
+	authMap["HintFiction.Show"] = models.AnonymousRole
+	authMap["HintFiction.PageList"] = models.AnonymousRole
+
+	return authMap
 }
 
 func checkAuthentication(c *revel.Controller) revel.Result {
-	authMap := make(map[string]string)
-	authMap["account.login"] = models.AnonymousRole
-	authMap["account.logout"] = models.UserRole
-	authMap["admin.index"] = models.AdminRole
+	fmt.Println(c.Action)
+	authMap := initAuthMap()
 	//获取当前登陆用户的角色信息
-	userRole, isExists := c.Session[models.CSessionRole]
+
+	// session 里保存的只能是字符串，所以需要类型转换
+	var userRole models.Role
+	userRoleStr, isExists := c.Session[models.CSessionRole]
+
 	if !isExists {
 		userRole = models.AnonymousRole
+	} else {
+		value, _ := strconv.Atoi(userRoleStr)
+		userRole = models.Role(value)
 	}
 
 	//获取紧接着要调用的Action的名称
 	action := strings.ToLower(c.Action)
 	//获取相关action的权限定义
 	if requiredRole, isExists := authMap[action]; isExists {
-		//判断权限，如果权限要求不相符
-		if requiredRole != userRole {
-			//跳转到首页
+		//判断权限，如果权限不够, 跳转到首页
+		if userRole < requiredRole {
 			return c.Redirect((*App).Index)
 		}
 	}

@@ -24,7 +24,16 @@ func (this *Account) Login() revel.Result {
 }
 
 func (this *Account) Logout() revel.Result {
-	fmt.Println("登出用户昵称: ", this.Session["nickName"])
+	value, _ := strconv.Atoi(this.Session[models.CSessionRole])
+	var role models.Role = models.Role(value)
+
+	// 管理员登出action与普通用户的共用
+	if role == models.AdminRole {
+		fmt.Println("登出管理员账号: ", this.Session["nickName"])
+	} else {
+		fmt.Println("登出用户昵称: ", this.Session["nickName"])
+	}
+
 	for k := range this.Session {
 		delete(this.Session, k)
 	}
@@ -130,7 +139,8 @@ func (this *Account) PostLogin(loginUser *models.LoginUser) revel.Result {
 	fmt.Println("使用昵称登陆: ", loginUser.NickName)
 
 	// 使用session保存用户权限
-	this.Session[models.CSessionRole] = models.UserRole
+	// session 里保存的只能是字符串，所以需要先将其转换字符串
+	this.Session[models.CSessionRole] = strconv.Itoa(int(models.UserRole))
 
 	return this.Redirect((*App).Index)
 }

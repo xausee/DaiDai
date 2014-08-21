@@ -205,6 +205,22 @@ func (this *Essay) Show(id string) revel.Result {
 	// 	this.Flash.Error(err.Error())
 	// 	//return this.Redirect((*Essay).Add)
 	// }
+
+	// session 里保存的是字符串，所以需要类型转换
+	var admin = false
+	var role models.Role
+	roleStr, isExists := this.Session[models.CSessionRole]
+
+	if isExists {
+		value, _ := strconv.Atoi(roleStr)
+		role = models.Role(value)
+
+		if role == models.AdminRole {
+			admin = true
+		}
+	}
+
+	this.RenderArgs["admin"] = admin
 	this.RenderArgs["userid"] = this.Session["userid"]
 	this.RenderArgs["nickName"] = this.Session["nickName"]
 	this.RenderArgs["avatarUrl"] = this.Session["avatarUrl"]

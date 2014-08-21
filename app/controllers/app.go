@@ -43,7 +43,11 @@ func (this App) Index() revel.Result {
 	// 获取所有的推荐文章（15）篇
 	this.RenderRecommendArticles(manager)
 
-	return this.Render(userid, nickName, avatarUrl)
+	this.RenderArgs["userid"] = userid
+	this.RenderArgs["nickName"] = nickName
+	this.RenderArgs["avatarUrl"] = avatarUrl
+
+	return this.Render()
 }
 
 func (this App) PostSearch(keywords string) revel.Result {
@@ -66,7 +70,7 @@ func (this App) PostSearch(keywords string) revel.Result {
 
 	this.RenderArgs["userid"] = userid
 	this.RenderArgs["nickName"] = nickName
-	this.RenderArgs["keywords"] = avatarUrl
+	this.RenderArgs["avatarUrl"] = avatarUrl
 	this.RenderArgs["results"] = results
 	this.RenderArgs["noResults"] = noResults
 	this.RenderArgs["keywords"] = keywords

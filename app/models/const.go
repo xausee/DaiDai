@@ -3,13 +3,9 @@ package models
 type Role int
 
 const (
-	// AnonymousRole Role = iota
-	// UserRole
-	// AdminRole
-
-	AnonymousRole = "AnonymousRole"
-	UserRole      = "UserRole"
-	AdminRole     = "AdminRole"
+	AnonymousRole Role = iota
+	UserRole
+	AdminRole
 )
 
 const (

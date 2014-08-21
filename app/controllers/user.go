@@ -64,6 +64,9 @@ func (this *User) Index(nickName string) revel.Result {
 	this.RenderArgs["isAuthor"] = isAuthor
 	if len(userInfo.Message) != 0 {
 		this.RenderArgs["lastMessage"] = userInfo.Message[len(userInfo.Message)-1]
+	} else {
+		c := new(models.Comment)
+		this.RenderArgs["lastMessage"] = c
 	}
 
 	isWatched := false
@@ -873,9 +876,24 @@ func (this *User) ShowArticle(nickName string, articleid string) revel.Result {
 		}
 	}
 
+	// session 里保存的是字符串，所以需要类型转换
+	var admin = false
+	var role models.Role
+	roleStr, isExists := this.Session[models.CSessionRole]
+
+	if isExists {
+		value, _ := strconv.Atoi(roleStr)
+		role = models.Role(value)
+
+		if role == models.AdminRole {
+			admin = true
+		}
+	}
+
 	// 查询该文章是否已经被管理员推荐到首页
 	isRecommonded := manager.IsArticleRecommend(articleid)
 
+	this.RenderArgs["admin"] = admin
 	this.RenderArgs["isRecommonded"] = isRecommonded
 	this.RenderArgs["isInArticleCollection"] = isInArticleCollection
 	this.RenderArgs["isCurrentUser"] = isCurrentUser
