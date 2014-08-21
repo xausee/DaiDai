@@ -1,3 +1,27 @@
+<script type="text/javascript"> 
+onload =function(){ 
+  // check thru all <a> elements inside <li> inside .navbar-nav
+  $('#navigation_bar>li>a').each(function(){ 
+    // get current path name
+    var path = window.location.pathname  //.split('/').pop(); 
+    // get last path name of <li>
+    var part_path = $(this).prop("href").split('/').pop()
+    if (part_path == ""){
+      $("#home").addClass("active");
+    }else{ 
+      // include part_path?        
+      var i = path.lastIndexOf(part_path)       
+      if(i>0){
+        // remove all active class
+        $('#navigation_bar>li').removeClass("active"); 
+        // put active in parent of <a> which is <li>   
+        $(this).parent("li").addClass("active"); 
+      }     
+    }    
+  });
+} 
+</script>
+
 <div class="container">   
   <div class="row">
     <div class="col-xs-1"></div>

@@ -17,7 +17,7 @@ POST    /admin/login                            Admin.PostLogin
 GET     /admin/logout                           Admin.Logout
 GET     /admin/uploadpicture                    Admin.UploadPicture
 POST    /admin/uploadpicture                    Admin.PostUploadPicture
-GET     /admin/usermanage/                      Admin.UserManage
+GET     /admin/usermanage                       Admin.UserManage
 #GET     /admin/usermanage/list                  Admin.SearchUserByNickName
 #POST    /admin/usermanage/list                  Admin.PostSearchUserByNickName
 
