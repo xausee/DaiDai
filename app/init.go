@@ -2,6 +2,7 @@ package app
 
 import (
 	"github.com/revel/revel"
+	//"strconv"
 	"strings"
 )
 
@@ -75,6 +76,17 @@ func init() {
 			return r + "......"
 		} else {
 			return str
+		}
+	}
+
+	// 注册模板里的整除函数
+	revel.TemplateFuncs["divideBy"] = func(numerator, denominator int) bool {
+		// n, _ := strconv.Atoi(numerator)
+		// d, _ := strconv.Atoi(denominator)
+		if (numerator % denominator) == 0 {
+			return true
+		} else {
+			return false
 		}
 	}
 }

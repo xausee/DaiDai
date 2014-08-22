@@ -197,9 +197,14 @@ func (manager *DbManager) AddWatch(watcherNickName string, watchedUserNickName s
 	err = uc.Find(bson.M{"nickname": watcherNickName}).One(&oldUserInfo)
 	err = uc.Find(bson.M{"nickname": watcherNickName}).One(&tmpUser)
 
+	// 查找被关注的用户信息，获取avatarurl
+	var watchedUser User
+	err = uc.Find(bson.M{"nickname": watchedUserNickName}).One(&watchedUser)
+
 	// 追加关注到已有的集合
 	var watch Watch
 	watch.NickName = watchedUserNickName
+	watch.AvatarUrl = watchedUser.AvatarUrl
 
 	wts := tmpUser.Watch
 	for _, v := range wts {
@@ -230,9 +235,14 @@ func (manager *DbManager) AddFans(fansNickName string, ownerNickName string) (er
 	err = uc.Find(bson.M{"nickname": ownerNickName}).One(&oldUserInfo)
 	err = uc.Find(bson.M{"nickname": ownerNickName}).One(&tmpUser)
 
+	// 查找粉丝信息，获取avatarurl
+	var fansUser User
+	err = uc.Find(bson.M{"nickname": fansNickName}).One(&fansUser)
+
 	// 追加粉丝到已有的集合
 	var fans Fans
 	fans.NickName = fansNickName
+	fans.AvatarUrl = fansUser.AvatarUrl
 
 	fs := tmpUser.Fans
 	for _, v := range fs {

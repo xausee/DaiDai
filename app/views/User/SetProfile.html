@@ -2,7 +2,7 @@
 <form role="form-horizontal" action="{{url "User.PostSetProfile"}}" enctype="multipart/form-data" method="POST">  <dl class="dl-horizontal text-success">
     <dt>头像</dt> 
     <dd>
-      <img src={{.user.AvatarUrl}} id="image" class="img-thumbnail" alt="Responsive image">
+      <img src={{.user.AvatarUrl}} id="image" class="img-rounded" alt="Responsive image">
       </br>     
       <input type="file" name="uploadFile" onchange="document.getElementById('image').src=window.URL.createObjectURL(this.files[0])" />
       </br>               

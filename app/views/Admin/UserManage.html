@@ -49,8 +49,8 @@ $(document).ready(function(){
 </script> 
 
 <div id="content">
-  <div class="container">
-    <div class="row">
+  <div class="container">    
+    <div class="row">      
       <div class="col-xs-1"></div> 
       <div class="col-xs-10"> 
         <div class="panel panel-success">      
@@ -72,23 +72,27 @@ $(document).ready(function(){
               </form> 
           	</div>  
 
-            <div id="userlist">
-            {{range .users}}
-            <div class="row">
-              <div class="col-xs-1">
-                <a href="{{url "User.Index" .NickName}}"><img src={{.AvatarUrl}} alt="头像" class="img-thumbnail" height="45" width="45"></a>
-              </div> 
+            <div id="userlist">           
+            {{range $index, $element := .users}}   
+              {{if divideBy $index 6}}&nbsp;</br>{{end}}       
+            <!-- <div class="row"> -->                          
               <div class="col-xs-2">
-                <a href="{{url "User.Index" .NickName}}"><span style="color:black">{{.NickName}}</span></a>
+                <div class="panel panel-success" style="height:150px">      
+                  <div class="panel-body"> 
+                    <div class="text-center">
+                      <a href="{{url "User.Index" .NickName}}"><img src={{.AvatarUrl}} alt="头像" class="img-rounded" height="45" width="45"></a>
+                    </div>                       
+                    <div class="text-center"></br>
+                      <a href="{{url "User.Index" .NickName}}"><span style="color:green">{{.NickName}}</br></br></span></a>
+                    </div>
+                    <div class="text-center">
+                      <a href="{{url "Admin.DeleteUser" .NickName}}"><span style="color:red">删除</span></a>
+                    </div>                                           
+                  </div>
+                </div>
               </div>
-               <div class="col-xs-2">
-                <a href="{{url "Admin.DeleteUser" .NickName}}"><span style="color:red">删除</span></a>
-              </div>
-            </div>  
-            </br>
-            {{end}}  
-            </div>           
-            </div>               
+           <!--  </div>  -->
+            {{end}}               
           </div>            
         </div>      
       </div>     
