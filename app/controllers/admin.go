@@ -218,6 +218,22 @@ func (this *Admin) PostSearchUserByNickName(keywords string) revel.Result {
 	return this.Render()
 }
 
+func (this *Admin) DeleteUser(nickName string) revel.Result {
+	manager, err := models.NewDbManager()
+	if err != nil {
+		fmt.Println("链接数据库失败")
+	}
+	defer manager.Close()
+
+	err = manager.DeleteUserByNickName(nickName)
+
+	if err != nil {
+		return this.RenderError(err)
+	}
+
+	return this.Redirect((*Admin).UserManage)
+}
+
 func initAuthMap() map[string]models.Role {
 	authMap := make(map[string]models.Role)
 	authMap["account.login"] = models.AnonymousRole
@@ -264,6 +280,7 @@ func initAuthMap() map[string]models.Role {
 	authMap["User.ShowArticle"] = models.AnonymousRole
 	authMap["User.PostArticleComment"] = models.AnonymousRole
 	authMap["User.EditArticle"] = models.UserRole
+	authMap["User.DeleteArticle"] = models.UserRole
 	authMap["User.PostEditArticle"] = models.UserRole
 	authMap["User.Message"] = models.AnonymousRole
 	authMap["User.Fans"] = models.AnonymousRole

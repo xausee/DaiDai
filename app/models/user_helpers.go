@@ -49,6 +49,15 @@ func (manager *DbManager) SearchUser(keywords string) (users []User, err error) 
 	return users, err
 }
 
+func (manager *DbManager) DeleteUserByNickName(nickName string) (err error) {
+	type Items map[string]string
+
+	uc := manager.session.DB(DbName).C(UserCollection)
+	err = uc.Remove(bson.M{"nickname": nickName})
+
+	return err
+}
+
 func (manager *DbManager) VerifyPasswordByNickName(nickName, password string) (user *User, err error) {
 	uc := manager.session.DB(DbName).C(UserCollection)
 

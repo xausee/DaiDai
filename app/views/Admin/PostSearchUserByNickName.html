@@ -1,14 +1,14 @@
 {{range .users}}
-            <div class="row">
-              <div class="col-xs-1">
-                <a href="{{url "User.Index" .NickName}}"><img src={{.AvatarUrl}} alt="头像" class="img-thumbnail" height="45" width="45"></a>
-              </div> 
-              <div class="col-xs-2">
-                <a href="{{url "User.Index" .NickName}}"><span style="color:black">{{.NickName}}</span></a>
-              </div>
-               <div class="col-xs-2">
-                <a href="{{url "User.Index" .NickName}}"><span style="color:red">删除</span></a>
-              </div>
-            </div>  
-            </br>
-            {{end}}  
+<div class="row">
+  <div class="col-xs-1">
+     <a href="{{url "User.Index" .NickName}}"><img src={{.AvatarUrl}} alt="头像" class="img-thumbnail" height="45" width="45"></a>
+  </div> 
+  <div class="col-xs-2">
+     <a href="{{url "User.Index" .NickName}}"><span style="color:black">{{.NickName}}</span></a>
+  </div>
+  <div class="col-xs-2">
+      <a href="{{url "User.Index" .NickName}}"><span style="color:red">删除</span></a>
+   </div>
+</div>  
+</br>
+{{end}}
