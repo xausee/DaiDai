@@ -1,0 +1,49 @@
+/* 定义旋转元素相关CSS */
+.xuanzhuan{
+  display: inline-block;
+  position: absolute;
+  
+  -webkit-animation: xuanzhuan 2s linear infinite;
+  -moz-animation: xuanzhuan 2s linear infinite;
+  -ms-animation: xuanzhuan 2s linear infinite;
+  -o-animation: xuanzhuan 2s linear infinite;
+  animation: xuanzhuan 2s linear infinite;
+  
+  left: 50%;
+  top: 50%;
+}
+
+
+/* 定义keyframe动画: 这里有旋转也有缩放效果 */
+
+@keyframes xuanzhuan{
+  0% { transfrom: rotate(0deg);}
+  50%{transform: scale(1.5) rotate(180deg);}
+  100%{transform: scale(.8) rotate(360deg);}
+}
+
+/* 其它浏览器兼容 */
+
+@-webkit-keyframes xuanzhuan{
+  0% { transfrom: rotate(0deg);}
+  50%{transform: scale(1.5) rotate(180deg);}
+  100%{transform: scale(.8) rotate(360deg);}
+}
+
+@-moz-keyframes xuanzhuan{
+  0% { transfrom: rotate(0deg);}
+  50%{transform: scale(1.5) rotate(180deg);}
+  100%{transform: scale(.8) rotate(360deg);}
+}
+
+@-ms-keyframes xuanzhuan{
+  0% { transfrom: rotate(0deg);}
+  50%{transform: scale(1.5) rotate(180deg);}
+  100%{transform: scale(.8) rotate(360deg);}
+}
+
+@-o-keyframes xuanzhuan{
+  0% { transfrom: rotate(0deg);}
+  50%{transform: scale(1.5) rotate(180deg);}
+  100%{transform: scale(.8) rotate(360deg);}
+}
