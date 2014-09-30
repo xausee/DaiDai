@@ -8,7 +8,7 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
-<div id="content">
+<!-- <div id="content">
   <div class="container">    
     <div class="row">
       <div class="col-xs-1"></div>
@@ -40,7 +40,8 @@
                  <div class="text-right text-success">{{.Time}} 发表</div>
                 </div> 
               </div>
-              <div class="row">                
+              <div class="row">
+                </br>
                 <div class="col-xs-12"><div class="text-left">{{nl2br .Content}}</div></div>               
                 </br>  
               </div>               
@@ -85,6 +86,73 @@
             </div>  
           </div>  
         </div>  
+      </div> 
+    </div> 
+  </div>
+ </div> -->
+
+<div id="content">
+  <div class="container">    
+    <div class="row">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10"> 
+        <div class="text-success"> 
+          <well>
+            <span class="glyphicon glyphicon-comment text-warning"></span> 留言 [{{.messageCount}}条]             
+          </well> 
+          <div class="row">                
+            <div id="container"> 
+              <div class="all"> 
+                {{range $index, $element := .messages}} 
+                <div class="all">                  
+                <div class="{{if divideBy $index 2}}msgbox lf{{else}}msgbox rf{{end}}">                                               
+                  <div class="content">
+                    <a href="{{url "User.Index" $element.Author.NickName}}">
+                      <img src={{$element.Author.AvatarUrl}} alt="头像" class="img-rounded" height="45" width="45">
+                    </a>
+                    <a href="{{url "User.Index" $element.Author.NickName}}">{{$element.Author.NickName}}</a>
+                    <br>{{nl2br $element.Content}}
+                    <div class="col-xs-12"><div class="text-right text-success">{{$element.Time}}</div></div>
+                  </div>  
+                </div>  
+                <!-- </div>    -->                      
+                {{end}}                
+              </div>   
+            </div> 
+          </div>  
+
+          <div class="row">    
+            <div class="col-xs-0"></div> 
+            <div class="col-xs-12">            
+              <form role="form" action="{{url "User.PostMessage"}}" method="POST"> 
+                {{$ownerNickName := .ownerNickName}}
+                {{with $field := field "nickName" .}} 
+                <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
+          rows="1" style="visibility:hidden; display:none;">{{$ownerNickName}}</textarea> 
+                {{end}}
+                
+                {{$nickName := .nickName}}
+                {{with $field := field "message.Author.NickName" .}} 
+                <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
+          rows="1" style="visibility:hidden; display:none;">{{$nickName}}</textarea> 
+                {{end}}              
+  
+                {{with $field := field "message.Content" .}} 
+                <div class="input-group {{$field.ErrorClass}}">         
+                  <span class="input-group-addon">新增留言</span>      
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5" placeholder="内容" required></textarea> 
+                  {{if $field.Error}} 
+                  <span class="help-inline">{{$field.Error}}</span> 
+                  {{end}}   
+                  <span class="input-group-addon">
+                    <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
+                  </span>      
+                </div> 
+                {{end}}       
+              </form>  
+            </div>  
+          </div>
+        </div>          
       </div> 
     </div> 
   </div>
