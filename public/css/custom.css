@@ -1,22 +1,114 @@
 /* 定义旋转元素相关CSS */
-.xuanzhuan{
+/* 绕X轴旋转 */
+.xuanzhuanX{
   display: inline-block;
   position: absolute;
   
-  -webkit-animation: xuanzhuan 2s linear infinite;
-  -moz-animation: xuanzhuan 2s linear infinite;
-  -ms-animation: xuanzhuan 2s linear infinite;
-  -o-animation: xuanzhuan 2s linear infinite;
-  animation: xuanzhuan 2s linear infinite;
+  -webkit-animation: xuanzhuanX 2s linear infinite;
+  -moz-animation: xuanzhuanX 2s linear infinite;
+  -ms-animation: xuanzhuanX 2s linear infinite;
+  -o-animation: xuanzhuanX 2s linear infinite;
+  animation: xuanzhuanX 2s linear infinite;
   
   left: 50%;
   top: 50%;
 }
 
+@keyframes xuanzhuanX{
+  100%{transform: scale(1, -1);}
+}
+
+/* 其它浏览器兼容 */
+
+@-webkit-keyframes xuanzhuanX{  
+  100%{transform: scale(1, -1);}
+}
+
+@-moz-keyframes xuanzhuanX{
+  100%{transform: scale(1, -1);}
+}
+
+@-ms-keyframes xuanzhuanX{
+  100%{transform: scale(1, -1);}
+}
+
+@-o-keyframes xuanzhuanX{
+ 100%{transform: scale(1, -1);}
+}
+
+.flipx {
+    -moz-transform:scaleX(-1);
+    -webkit-transform:scaleX(-1);
+    -o-transform:scaleX(-1);
+    transform:scaleX(-1);
+    /*IE*/
+    filter:FlipH;
+}
+
+/* 绕Y轴旋转 */
+.xuanzhuanY{
+  display: inline-block;
+  position: absolute;
+  
+  -webkit-animation: xuanzhuanY 2s linear infinite;
+  -moz-animation: xuanzhuanY 2s linear infinite;
+  -ms-animation: xuanzhuanY 2s linear infinite;
+  -o-animation: xuanzhuanX 2s linear infinite;
+  animation: xuanzhuanY 2s linear infinite;
+  
+  /*left: 50%;
+  top: 50%;*/
+}
+
+@keyframes xuanzhuanY{
+  100%{transform: scale(-1, 1);}
+}
+
+/* 其它浏览器兼容 */
+
+@-webkit-keyframes xuanzhuanY{
+  100%{transform: scale(-1, 1);}
+}
+
+@-moz-keyframes xuanzhuanY{
+ 100%{transform: scale(-1, 1);}
+}
+
+@-ms-keyframes xuanzhuanY{
+  100%{transform: scale(-1, 1);}
+}
+
+@-o-keyframes xuanzhuanY{
+  100%{transform: scale(-1, 1);}
+}
+
+.flipy {
+    -moz-transform:scaleY(-1);
+    -webkit-transform:scaleY(-1);
+    -o-transform:scaleY(-1);
+    transform:scaleY(-1);
+    /*IE*/
+    filter:FlipV;
+}
+
+/* 绕Z轴旋转 */
+.xuanzhuanZ{
+  display: inline-block;
+  position: absolute;
+  
+  -webkit-animation: xuanzhuanZ 2s linear infinite;
+  -moz-animation: xuanzhuanZ 2s linear infinite;
+  -ms-animation: xuanzhuanZ 2s linear infinite;
+  -o-animation: xuanzhuanZ 2s linear infinite;
+  animation: xuanzhuanZ 2s linear infinite;
+  
+  left: 50%;
+  top: 50%;
+}
 
 /* 定义keyframe动画: 这里有旋转也有缩放效果 */
 
-@keyframes xuanzhuan{
+@keyframes xuanzhuanZ{
   0% { transfrom: rotate(0deg);}
   50%{transform: scale(1.5) rotate(180deg);}
   100%{transform: scale(.8) rotate(360deg);}
@@ -24,26 +116,89 @@
 
 /* 其它浏览器兼容 */
 
-@-webkit-keyframes xuanzhuan{
+@-webkit-keyframes xuanzhuanZ{
   0% { transfrom: rotate(0deg);}
   50%{transform: scale(1.5) rotate(180deg);}
   100%{transform: scale(.8) rotate(360deg);}
 }
 
-@-moz-keyframes xuanzhuan{
+@-moz-keyframes xuanzhuanZ{
   0% { transfrom: rotate(0deg);}
   50%{transform: scale(1.5) rotate(180deg);}
   100%{transform: scale(.8) rotate(360deg);}
 }
 
-@-ms-keyframes xuanzhuan{
+@-ms-keyframes xuanzhuanZ{
   0% { transfrom: rotate(0deg);}
   50%{transform: scale(1.5) rotate(180deg);}
   100%{transform: scale(.8) rotate(360deg);}
 }
 
-@-o-keyframes xuanzhuan{
+@-o-keyframes xuanzhuanZ{
   0% { transfrom: rotate(0deg);}
   50%{transform: scale(1.5) rotate(180deg);}
   100%{transform: scale(.8) rotate(360deg);}
 }
+
+/下面是闪烁效果的css/
+/*定义页面基础CSS*/
+
+/*body{
+  font-family: 'microsoft yahei',Arial,sans-serif;
+  color: #EFEFEF;
+  background: #222;
+  text-align: center;
+  margin-top: 50px;
+}*/
+
+/* 定义keyframe动画，命名为blink */
+
+@keyframes blink{
+  0%{opacity: 1;}
+  50%{opacity: 1;}
+  50.01%{opacity: 0;} /* 注意这里定义50.01%立刻透明度为０，可以设置闪烁效果 */
+  100%{opacity: 0;} 
+}
+
+/* 添加兼容性前缀 */
+
+@-webkit-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 1; }
+    50.01% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@-moz-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 1; }
+    50.01% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@-ms-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 1; }
+    50.01% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+@-o-keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 1; }
+    50.01% { opacity: 0; }
+    100% { opacity: 0; }
+}
+
+/* 定义blink类*/
+.blink{
+    animation: blink 2s linear infinite;  
+    /* 其它浏览器兼容性前缀 */
+    -webkit-animation: blink 2s linear infinite;
+    -moz-animation: blink 2s linear infinite;
+    -ms-animation: blink 2s linear infinite;
+    -o-animation: blink 2s linear infinite;
+    color: #black;
+}
+
+
