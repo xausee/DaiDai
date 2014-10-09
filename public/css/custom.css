@@ -201,6 +201,17 @@
     color: #black;
 }
 
+
+/* 留言板块 */
+.content{ 
+  padding:15px; 
+  border:10px solid transparent;
+  border-radius:15px;
+  display:inline-block;
+  line-height:25px; 
+  box-shadow:0px 5px 25px #9b9;
+}
+
 /* 气泡效果的信息 */
 /* CSS代码片段 */
 /**{

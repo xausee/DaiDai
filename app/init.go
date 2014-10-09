@@ -86,4 +86,14 @@ func init() {
 			return false
 		}
 	}
+
+	// 注册模板里的整除函数
+	revel.TemplateFuncs["bettween"] = func(str string, lower, upper int) bool {
+		var length = len(str)
+		if lower < length && length < upper || lower == length {
+			return true
+		} else {
+			return false
+		}
+	}
 }

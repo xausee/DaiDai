@@ -8,18 +8,46 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
-<!-- <div id="content">
+<script language="javascript"  type="text/javascript">
+function controlDIV()
+{
+    status = document.getElementById("content_tradition").style.display;     
+    if(status == "block")
+    {
+        document.getElementById("content_tradition").style.display="none";       
+        document.getElementById("content_art").style.display="block";
+        document.getElementById("bt_display").value="传统布局";       
+    }
+    else
+    {
+        document.getElementById("content_tradition").style.display="block";
+        document.getElementById("content_art").style.display="none";
+        document.getElementById("bt_display").value="模块布局";          
+    }
+}
+</script>
+
+<div class="container"> 
+  <div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-1"> 
+      <div class="text-success">
+        <well><span class="glyphicon glyphicon-comment text-warning"></span> 留言 [{{.messageCount}}条] </well>          
+      </div>       
+    </div>
+    <div class="col-xs-2"> 
+      <input type="button" class="btn btn-primary" id="bt_display" value="模块布局" onclick="controlDIV()"/>
+    </div>    
+  </div>
+</div>
+
+
+<div id="content_tradition" style="display:block;">
   <div class="container">    
     <div class="row">
       <div class="col-xs-1"></div>
       <div class="col-xs-10">      
         <div class="panel panel-success">
-          <div class="text-success">
-            <well>
-              <span class="glyphicon glyphicon-comment text-warning"></span> 留言 [{{.messageCount}}条]
-              <div class="aligncenter" style="width:auto;height:0;border-top:1px dotted #468847;font-size:0;"></div>
-            </well>          
-          </div>
           {{range .messages}}         
           <div class="row">
             </br>                 
@@ -89,37 +117,35 @@
       </div> 
     </div> 
   </div>
- </div> -->
+ </div>
 
-<div id="content">
-  <div class="container">    
+<div id="content_art" style="display:none;">
+  <div class="container">
     <div class="row">
       <div class="col-xs-1"></div>
-      <div class="col-xs-10"> 
+      <div class="col-xs-10">         
         <div class="text-success"> 
-          <well>
-            <span class="glyphicon glyphicon-comment text-warning"></span> 留言 [{{.messageCount}}条]             
-          </well> 
-          <div class="row">                
-            <div id="container"> 
-              <div class="all"> 
-                {{range $index, $element := .messages}} 
-                <div class="all">                  
-                <div class="{{if divideBy $index 2}}msgbox lf{{else}}msgbox rf{{end}}">                                               
-                  <div class="content">
-                    <a href="{{url "User.Index" $element.Author.NickName}}">
-                      <img src={{$element.Author.AvatarUrl}} alt="头像" class="img-rounded" height="45" width="45">
-                    </a>
-                    <a href="{{url "User.Index" $element.Author.NickName}}">{{$element.Author.NickName}}</a>
-                    <br>{{nl2br $element.Content}}
-                    <div class="col-xs-12"><div class="text-right text-success">{{$element.Time}}</div></div>
-                  </div>  
-                </div>  
-                <!-- </div>    -->                      
-                {{end}}                
-              </div>   
-            </div> 
-          </div>  
+          <div class="aligncenter" style="width:auto;height:0;border-top:1px dotted #468847;font-size:0;"></div>
+          <br>          
+          <div class="row"> 
+            {{range $index, $element := .messages}} 
+            <div class="{{if bettween $element.Content 0 30}}col-xs-2            
+            {{else if bettween $element.Content 30 60}}col-xs-4
+            {{else if bettween $element.Content 60 90}}col-xs-6
+            {{else if bettween $element.Content 90 120}}col-xs-8
+            {{else if bettween $element.Content 120 150}}col-xs-10
+            {{else}}col-xs-12{{end}}">
+              <div class="content">
+                <a href="{{url "User.Index" $element.Author.NickName}}">
+                  <img src={{$element.Author.AvatarUrl}} alt="头像" class="img-rounded" height="45" width="45">
+                </a>
+                <a href="{{url "User.Index" $element.Author.NickName}}">{{$element.Author.NickName}}</a>
+                <br>{{nl2br $element.Content}}
+                <div class="col-xs-12"><div class="text-right text-success">{{$element.Time}}</div></div>
+              </div> 
+            </div>
+            {{end}}              
+          </div>
 
           <div class="row">    
             <div class="col-xs-0"></div> 
