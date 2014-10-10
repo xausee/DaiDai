@@ -664,7 +664,11 @@ func (this *User) PostMessage(nickName string, message models.Comment) revel.Res
 	}
 
 	// 增加头像地址
-	message.Author.AvatarUrl = this.Session["avatarUrl"]
+	if this.Session["avatarUrl"] == "" {
+		message.Author.AvatarUrl = models.AnonymousAvatarUrl
+	} else {
+		message.Author.AvatarUrl = this.Session["avatarUrl"]
+	}
 
 	err = manager.UpdateMessageByNickName(nickName, message)
 
@@ -924,7 +928,11 @@ func (this *User) PostArticleComment(authorNickName string, articleid string, co
 	}
 
 	// 增加头像地址
-	comment.Author.AvatarUrl = this.Session["avatarUrl"]
+	if this.Session["avatarUrl"] == "" {
+		comment.Author.AvatarUrl = models.AnonymousAvatarUrl
+	} else {
+		comment.Author.AvatarUrl = this.Session["avatarUrl"]
+	}
 
 	// 添加新的评论
 	err = manager.AddArticleComment(article, comment)

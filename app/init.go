@@ -87,9 +87,15 @@ func init() {
 		}
 	}
 
-	// 注册模板里的整除函数
+	// 注册模板里判断字符串中最长行的字数范围函数
 	revel.TemplateFuncs["bettween"] = func(str string, lower, upper int) bool {
-		var length = len(str)
+		length := 0
+		for _, s := range strings.Split(str, "\r\n") {
+			if length < len(s) {
+				length = len(s)
+			}
+		}
+
 		if lower < length && length < upper || lower == length {
 			return true
 		} else {

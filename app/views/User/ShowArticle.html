@@ -2,6 +2,25 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
+<script language="javascript"  type="text/javascript">
+function controlDIV()
+{
+    status = document.getElementById("content_tradition").style.display;     
+    if(status == "block")
+    {
+        document.getElementById("content_tradition").style.display="none";       
+        document.getElementById("content_art").style.display="block";
+        document.getElementById("bt_display").value="传统范";       
+    }
+    else
+    {
+        document.getElementById("content_tradition").style.display="block";
+        document.getElementById("content_art").style.display="none";
+        document.getElementById("bt_display").value="文艺范";          
+    }
+}
+</script>
+
 <div id="content">
   <div class="container">  
     <div class="row">
@@ -14,7 +33,7 @@
           <div class="text-right">{{.article.CreateTime}} </div>              
         </pre>        
       </div>      
-    </div>
+    </div>    
     <div class="row">  
       <div class="col-xs-1"></div>
       {{if .admin}}
@@ -41,16 +60,25 @@
       </div>  
       {{end}}         
     </div>
-    <div class="row">
+
+
+  <div class="row">
+    <div class="col-xs-1"></div>
+    <div class="col-xs-1"> 
+      <div class="text-success">
+        <well><span class="glyphicon glyphicon-comment text-warning"></span> 留言 [{{.commentCount}}条] </well>          
+      </div>       
+    </div>
+    <div class="col-xs-2"> 
+      <input type="button" class="btn btn-primary" id="bt_display" value="文艺范" onclick="controlDIV()"/>
+    </div>    
+  </div>
+
+
+    <div class="row" id="content_tradition" style="display:block;">
       <div class="col-xs-1"></div>
       <div class="col-xs-10">      
-        <div class="panel panel-success">
-          <div class="text-success">
-            <well>
-              <span class="glyphicon glyphicon-comment text-warning"></span> 评论 [{{.commentCount}}]
-              <div class="aligncenter" style="width:auto;height:0;border-top:1px dotted #468847;font-size:0;"></div>
-            </well>          
-          </div>
+        <div class="panel panel-success">          
           {{range .article.Comments}}         
           <div class="row">
             </br>                 
@@ -83,6 +111,65 @@
             </div> 
           </div>
           {{end}} 
+  
+          <div class="row">    
+            <div class="col-xs-0"></div> 
+            <div class="col-xs-12">            
+              <form role="form" action="{{url "User.PostArticleComment"}}" method="POST"> 
+                {{$authorNickName := .article.AuthorNickName}}
+                {{with $field := field "authorNickName" .}} 
+                <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" 
+          rows="1" style="visibility:hidden; display:none;">{{$authorNickName}}</textarea> 
+                {{end}} 
+  
+                {{$articleid := .article.Id}}
+                {{with $field := field "articleid" .}} 
+                <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="1" style="visibility:hidden; display:none;">{{$articleid}}</textarea> 
+                {{end}}  
+  
+                {{with $field := field "comment.Content" .}} 
+                <div class="input-group {{$field.ErrorClass}}">         
+                  <span class="input-group-addon">新增评论</span>      
+                  <textarea class="form-control" id="{{$field.Id}}" name="{{$field.Name}}" value="{{$field.Flash}}" rows="5" placeholder="内容" required></textarea> 
+                  {{if $field.Error}} 
+                  <span class="help-inline">{{$field.Error}}</span> 
+                  {{end}}   
+                  <span class="input-group-addon">
+                    <button type="submit" class="btn btn-primary" id="button_Form_Submit">提交</button> 
+                  </span>      
+                </div> 
+                {{end}}       
+              </form>  
+            </div>  
+          </div>  
+        </div>  
+      </div> 
+    </div> 
+
+    <div class="row" id="content_art" style="display:none;">
+      <div class="col-xs-1"></div>
+      <div class="col-xs-10">      
+        <div class="text-success">
+          <div class="row">        
+          <div class="aligncenter" style="width:auto;height:0;border-top:1px dotted #468847;font-size:0;"></div><br> 
+            {{range $index, $element := .article.Comments}} 
+            <div class="{{if bettween $element.Content 0 30}}col-xs-2            
+            {{else if bettween $element.Content 30 60}}col-xs-4
+            {{else if bettween $element.Content 60 90}}col-xs-6
+            {{else if bettween $element.Content 90 120}}col-xs-8
+            {{else if bettween $element.Content 120 150}}col-xs-10
+            {{else}}col-xs-12{{end}}">
+              <div class="content">
+                <a href="{{url "User.Index" $element.Author.NickName}}">
+                  <img src={{$element.Author.AvatarUrl}} alt="头像" class="img-rounded" height="45" width="45">
+                </a>
+                <a href="{{url "User.Index" $element.Author.NickName}}">{{$element.Author.NickName}}</a>
+                <br>{{nl2br $element.Content}}
+                <div class="col-xs-12"><div class="text-right text-success">{{$element.Time}}</div></div>
+              </div> 
+            </div> 
+            {{end}} 
+          </div> 
   
           <div class="row">    
             <div class="col-xs-0"></div> 

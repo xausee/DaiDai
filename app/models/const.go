@@ -22,4 +22,5 @@ const (
 	QiNiuSecretKey          = "gRmeHtZ20UhTsUh0AfnlMHcUstwK7fR3vW-BSQQe"
 	DefaultBoyAvatarUrl     = "http://sanwenjia.qiniudn.com/boy.PNG"
 	DefaultGirlAvatarUrl    = "http://sanwenjia.qiniudn.com/girl.PNG"
+	AnonymousAvatarUrl      = "http://sanwenjia.qiniudn.com/unknow.jpeg"
 )

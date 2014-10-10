@@ -16,13 +16,13 @@ function controlDIV()
     {
         document.getElementById("content_tradition").style.display="none";       
         document.getElementById("content_art").style.display="block";
-        document.getElementById("bt_display").value="传统布局";       
+        document.getElementById("bt_display").value="传统范";       
     }
     else
     {
         document.getElementById("content_tradition").style.display="block";
         document.getElementById("content_art").style.display="none";
-        document.getElementById("bt_display").value="模块布局";          
+        document.getElementById("bt_display").value="文艺范";          
     }
 }
 </script>
@@ -36,7 +36,7 @@ function controlDIV()
       </div>       
     </div>
     <div class="col-xs-2"> 
-      <input type="button" class="btn btn-primary" id="bt_display" value="模块布局" onclick="controlDIV()"/>
+      <input type="button" class="btn btn-primary" id="bt_display" value="文艺范" onclick="controlDIV()"/>
     </div>    
   </div>
 </div>
