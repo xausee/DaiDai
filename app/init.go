@@ -1,6 +1,7 @@
 package app
 
 import (
+	"SanWenJia/app/models"
 	"github.com/revel/revel"
 	"strings"
 )
@@ -101,5 +102,10 @@ func init() {
 		} else {
 			return false
 		}
+	}
+
+	// 注册模板里计算文章评论数量的函数
+	revel.TemplateFuncs["lenOfArray"] = func(comments []models.Comment) int {
+		return len(comments)
 	}
 }

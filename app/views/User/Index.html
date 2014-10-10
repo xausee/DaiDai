@@ -157,7 +157,9 @@ xmlhttp.send();
   
     	<div class="col-xs-7">
     	  <div class="panel panel-success" style="height:620px">
-          <div class="panel-heading"><h3 class="panel-title">我的文章 [{{.articleCount}}]</h3></div>
+          <div class="panel-heading"><h3 class="panel-title">我的文章 [{{.articleCount}}]</h3>
+            <div class="text-right">评论</div> 
+          </div>          
           <div class="panel-body"> 
             <div class="text-right">  
               {{if .isAuthor}}
@@ -172,11 +174,12 @@ xmlhttp.send();
               <div class="row">           
                 <div class="col-xs-7">
                   <a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">
-                    <span style="color:black">{{.Title}}</span>
+                    <span style="color:black">{{.Title}}</span>                    
                   </a>
                 </div>
                 <div class="col-xs-5 text-right">
-                  <span class="text-right">{{.CreateTime}}</span> 
+                  <span style="color:green">{{lenOfArray .Comments}}</span>
+                  <!-- <span class="text-right">{{.CreateTime}}</span>  -->
                   {{if $isAuthor}}                        
                   <a id="edit" href="{{url "User.EditArticle" .Id}}">
                     <span class="glyphicon glyphicon-edit"></span> 编辑
