@@ -8,35 +8,41 @@
 {{template "header.html" .}}
 {{template "navigate_bar.html" .}}
 
-<script language="javascript"  type="text/javascript">
-function controlDIV()
-{
-    status = document.getElementById("content_tradition").style.display;     
-    if(status == "block")
-    {
-        document.getElementById("content_tradition").style.display="none";       
-        document.getElementById("content_art").style.display="block";
-        document.getElementById("bt_display").value="传统范";       
-    }
-    else
-    {
+<script type="text/javascript">
+$(document).ready(function () {
+  $(".comment_show").change(function () {
+    var val = $('.comment_show:checked').val();
+     // alert(val);
+     if(val=="传统范")
+     {
         document.getElementById("content_tradition").style.display="block";
-        document.getElementById("content_art").style.display="none";
-        document.getElementById("bt_display").value="文艺范";          
-    }
-}
+        document.getElementById("content_art").style.display="none";        
+     }
+     else
+     {
+        document.getElementById("content_tradition").style.display="none";       
+        document.getElementById("content_art").style.display="block";         
+     }    
+  });
+});
 </script>
 
 <div class="container"> 
   <div class="row">
     <div class="col-xs-1"></div>
-    <div class="col-xs-1"> 
+    <div class="col-xs-2"> 
       <div class="text-success">
         <well><span class="glyphicon glyphicon-comment text-warning"></span> 留言 [{{.messageCount}}条] </well>          
       </div>       
     </div>
-    <div class="col-xs-2"> 
-      <input type="button" class="btn btn-primary" id="bt_display" value="文艺范" onclick="controlDIV()"/>
+    <div class="col-xs-3 text-success"> 
+      <label class="radio-inline">
+          <input  class="comment_show" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="传统范" checked> 传统范
+        </label>
+        <label class="radio-inline">
+          <input  class="comment_show" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="文艺范"> 文艺范
+        </label>   
+      </div> 
     </div>    
   </div>
 </div>
