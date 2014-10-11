@@ -157,35 +157,54 @@ xmlhttp.send();
   
     	<div class="col-xs-7">
     	  <div class="panel panel-success" style="height:620px">
-          <div class="panel-heading"><h3 class="panel-title">我的文章 [{{.articleCount}}]</h3>
+          <!-- <div class="panel-heading"><h3 class="panel-title">我的文章 [{{.articleCount}}]</h3>            
             <div class="text-right">评论</div> 
-          </div>          
+          </div>  -->
           <div class="panel-body"> 
-            <div class="text-right">  
+            <div class="text-left">  
               {{if .isAuthor}}
               <a href="{{url "User.AddArticle"}}">
                 <span class="glyphicon glyphicon-plus-sign"></span> 写作
               </a>  
               {{end}} 
             </div>  
+            <div class="row">
+              <div class="col-xs-8">                
+                 <div class="text-left text-success">我的文章 [{{.articleCount}}]</div>
+              </div>
+              <div class="col-xs-2">          
+                 <div class="text-right text-success">评论</div> 
+              </div>
+              <div class="col-xs-2">          
+                 <div class="text-right text-success">操作</div> 
+              </div>
+            </div>
+            <div class="row">            
+              <div class="col-xs-12">
+                <div class="aligncenter" style="width:auto;height:0;border-top:2px dotted #ccc;font-size:0;"></div>
+              </div> 
+            </div>
+
             <div id="articlelist">    
               {{$isAuthor := .isAuthor}}
               {{range .articlesOnOnePage}}
               <div class="row">           
-                <div class="col-xs-7">
+                <div class="col-xs-8">
                   <a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">
                     <span style="color:black">{{.Title}}</span>                    
                   </a>
                 </div>
-                <div class="col-xs-5 text-right">
+                <div class="col-xs-2 text-right">
                   <span style="color:green">{{lenOfArray .Comments}}</span>
+                </div>
+                <div class="col-xs-2 text-right">                  
                   <!-- <span class="text-right">{{.CreateTime}}</span>  -->
                   {{if $isAuthor}}                        
                   <a id="edit" href="{{url "User.EditArticle" .Id}}">
-                    <span class="glyphicon glyphicon-edit"></span> 编辑
+                    <span class="glyphicon glyphicon-edit"></span> 
                   </a>
                   <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
-                    <span class="glyphicon glyphicon-remove-sign"></span> 删除
+                    <span class="glyphicon glyphicon-remove-sign"></span> 
                   </a>             
                   {{end}} 
                 </div>

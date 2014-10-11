@@ -1,19 +1,22 @@
 {{$isAuthor := .isAuthor}}
 {{range .artilcesOnOnePage}}
 <div class="row">           
-  <div class="col-xs-7">
+  <div class="col-xs-8">
     <a href="{{url "User.ShowArticle" .AuthorNickName .Id}}">
       <span style="color:black">{{.Title}}</span>
     </a>
   </div>
-  <div class="col-xs-5 text-right">
-    <span class="text-right">{{.CreateTime}}</span> 
+  <div class="col-xs-2 text-right">
+    <span style="color:green">{{lenOfArray .Comments}}</span>
+  </div>
+  <div class="col-xs-2 text-right">    
+    <!-- <span class="text-right">{{.CreateTime}}</span>  -->
     {{if $isAuthor}}                        
     <a id="edit" href="{{url "User.EditArticle" .Id}}">
-      <span class="glyphicon glyphicon-edit"></span> 编辑
+      <span class="glyphicon glyphicon-edit"></span>
     </a>
     <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
-      <span class="glyphicon glyphicon-remove-sign"></span> 删除
+      <span class="glyphicon glyphicon-remove-sign"></span>
     </a>             
     {{end}} 
   </div>
