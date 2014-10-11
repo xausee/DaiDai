@@ -172,12 +172,18 @@ xmlhttp.send();
               <div class="col-xs-8">                
                  <div class="text-left text-success">我的文章 [{{.articleCount}}]</div>
               </div>
+              {{if .isAuthor}}
               <div class="col-xs-2">          
                  <div class="text-right text-success">评论</div> 
               </div>
               <div class="col-xs-2">          
                  <div class="text-right text-success">操作</div> 
               </div>
+              {{else}}
+              <div class="col-xs-4">          
+                 <div class="text-right text-success">评论</div> 
+              </div>
+              {{end}}
             </div>
             <div class="row">            
               <div class="col-xs-12">
@@ -194,20 +200,24 @@ xmlhttp.send();
                     <span style="color:black">{{.Title}}</span>                    
                   </a>
                 </div>
+                {{if $isAuthor}}
                 <div class="col-xs-2 text-right">
                   <span style="color:green">{{lenOfArray .Comments}}</span>
                 </div>
                 <div class="col-xs-2 text-right">                  
-                  <!-- <span class="text-right">{{.CreateTime}}</span>  -->
-                  {{if $isAuthor}}                        
+                  <!-- <span class="text-right">{{.CreateTime}}</span>  -->                                          
                   <a id="edit" href="{{url "User.EditArticle" .Id}}">
                     <span class="glyphicon glyphicon-edit"></span> 
                   </a>
                   <a id="delete" href="{{url "User.DeleteArticle" .Id}}">
                     <span class="glyphicon glyphicon-remove-sign"></span> 
-                  </a>             
-                  {{end}} 
+                  </a> 
                 </div>
+                {{else}}
+                <div class="col-xs-4 text-right">
+                  <span style="color:green">{{lenOfArray .Comments}}</span>
+                </div>
+                {{end}} 
               </div>
               {{end}}
             </div>
